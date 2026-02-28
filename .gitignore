@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Raycast build output
+.raycast/
+
+# OS files
+.DS_Store
+
+# Environment
+.env

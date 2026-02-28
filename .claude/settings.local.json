@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:developers.raycast.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh api:*)",
+      "Bash(npm install:*)",
+      "Bash(npx ray:*)",
+      "WebFetch(domain:docs.etherscan.io)",
+      "WebFetch(domain:docs.cosmostation.io)",
+      "WebFetch(domain:publicnode.com)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.alchemy.com)"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "crypto-lookup-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "update-cosmos": "npx tsx scripts/update-cosmos-chains.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "typescript": "^5.8.0",
+    "wrangler": "^3.0.0"
+  }
+}
