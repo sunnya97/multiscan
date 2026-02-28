@@ -1,7 +1,7 @@
 import { CHAINS, Env } from "./chains";
 import { detect } from "./detect";
 import { resolveNameService } from "./resolve";
-import { VerifiedResult, verifyResults } from "./verify";
+import { TokenInfo, VerifiedResult, checkTokenStatus, verifyResults } from "./verify";
 
 function corsHeaders(): HeadersInit {
   return {
@@ -59,8 +59,8 @@ export default {
       return jsonResponse({ results: [] });
     }
 
-    // Detection-only mode or single match — return immediately without verification
-    if (!verify || detections.length === 1) {
+    // Detection-only mode (Phase 1 with multiple matches) — return immediately without verification or token check
+    if (!verify && detections.length > 1) {
       const results: VerifiedResult[] = detections.map((d) => ({
         chainId: d.chain.id,
         chainName: d.chain.name,
@@ -73,8 +73,25 @@ export default {
       return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
     }
 
-    // Multiple matches — verify in parallel
-    const verified = await verifyResults(lookupInput, detections, env);
+    // Single match: skip verification but still check for tokens
+    // Multiple matches: verify + token check in parallel
+    const [verified, tokenInfo] = detections.length === 1
+      ? [
+          detections.map((d): VerifiedResult => ({
+            chainId: d.chain.id,
+            chainName: d.chain.name,
+            symbol: d.chain.symbol,
+            family: d.chain.family,
+            inputType: d.inputType,
+            explorerUrls: d.explorerUrls,
+            status: "unverified" as const,
+          })),
+          await checkTokenStatus(lookupInput, detections),
+        ]
+      : await Promise.all([
+          verifyResults(lookupInput, detections, env),
+          checkTokenStatus(lookupInput, detections),
+        ]);
 
     // Filter results
     const inputType = detections[0].inputType;
@@ -100,6 +117,28 @@ export default {
       results = verified;
     }
 
-    return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
+    // Attach token flag and rewrite explorer URLs to token pages (only for chains where address is actually a token)
+    if (tokenInfo.isToken) {
+      const chainMap = new Map(CHAINS.map((c) => [c.id, c]));
+      results = results.map((r) => {
+        if (!tokenInfo.tokenChainIds.has(r.chainId)) return r;
+        const chain = chainMap.get(r.chainId);
+        if (!chain) return { ...r, isToken: true };
+        return {
+          ...r,
+          isToken: true,
+          explorerUrls: chain.explorers.map((explorer) => {
+            const path = explorer.tokenPath ?? explorer.addressPath;
+            return { name: explorer.name, url: `${explorer.baseUrl}${path.replace("{query}", lookupInput)}` };
+          }),
+        };
+      });
+    }
+
+    return jsonResponse({
+      results,
+      ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress },
+      ...tokenInfo.isToken && { coinGeckoUrl: tokenInfo.coinGeckoUrl },
+    });
   },
 };

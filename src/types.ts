@@ -15,6 +15,7 @@ export interface LookupResult {
   inputType: InputType;
   explorerUrls: ExplorerUrl[];
   status: VerificationStatus;
+  isToken?: boolean;
 }
 
 export interface WorkerResponse {
@@ -22,4 +23,5 @@ export interface WorkerResponse {
   resolvedName?: string;
   resolvedAddress?: string;
   nameNotFound?: boolean;
+  coinGeckoUrl?: string;
 }

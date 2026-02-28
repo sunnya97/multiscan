@@ -11,7 +11,9 @@ interface DisplayResult {
   inputType: InputType;
   explorerUrls: ExplorerUrl[];
   status: "found" | "not_found" | "unverified";
+  isToken?: boolean;
 }
+
 
 function applyExplorerOverride(
   result: LookupResult,
@@ -37,6 +39,7 @@ function applyExplorerOverride(
     inputType: result.inputType,
     explorerUrls,
     status: result.status,
+    isToken: result.isToken,
   };
 }
 
@@ -72,6 +75,7 @@ export default function SearchCommand() {
   const [resolvedName, setResolvedName] = useState<string | null>(null);
   const [resolvedAddress, setResolvedAddress] = useState<string | null>(null);
   const [nameNotFound, setNameNotFound] = useState(false);
+  const [coinGeckoUrl, setCoinGeckoUrl] = useState<string | null>(null);
 
   const { data: clipboardText } = usePromise(async () => {
     const clip = await Clipboard.readText();
@@ -119,6 +123,10 @@ export default function SearchCommand() {
         setResolvedAddress(null);
         setNameNotFound(false);
       }
+      // For single-match results, token info comes back in Phase 1
+      if (resp.results.length === 1 && resp.coinGeckoUrl) {
+        setCoinGeckoUrl(resp.coinGeckoUrl);
+      }
       return resp;
     },
     [searchText],
@@ -136,6 +144,7 @@ export default function SearchCommand() {
       // Clear stale verified results when input changes
       if (trimmedSearch !== verifyingInput) {
         setVerifiedResults(null);
+        setCoinGeckoUrl(null);
       }
     }
     if (!detectResults || detectResults.length <= 1 || !trimmedSearch) return;
@@ -144,7 +153,10 @@ export default function SearchCommand() {
     setVerifyingInput(trimmedSearch);
     let cancelled = false;
     fetchWorker(phase2Input, workerUrl, true).then((resp) => {
-      if (!cancelled) setVerifiedResults(resp.results);
+      if (!cancelled) {
+        setVerifiedResults(resp.results);
+        setCoinGeckoUrl(resp.coinGeckoUrl ?? null);
+      }
     });
     return () => { cancelled = true; };
   }, [detectResults, trimmedSearch]);
@@ -238,7 +250,7 @@ export default function SearchCommand() {
       {sectioned.allMatching.length > 0 && (
         <List.Section title="No activity found — potential matches">
           {sectioned.allMatching.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} />
+            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} coinGeckoUrl={coinGeckoUrl} />
           ))}
         </List.Section>
       )}
@@ -246,7 +258,7 @@ export default function SearchCommand() {
       {sectioned.verified.length > 0 && (
         <List.Section title="Verified">
           {sectioned.verified.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} />
+            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} coinGeckoUrl={coinGeckoUrl} />
           ))}
         </List.Section>
       )}
@@ -254,7 +266,7 @@ export default function SearchCommand() {
       {sectioned.unverified.length > 0 && (
         <List.Section title={sectioned.verified.length > 0 ? "Other Chains" : "Detected Chains"}>
           {sectioned.unverified.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} />
+            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} coinGeckoUrl={coinGeckoUrl} />
           ))}
         </List.Section>
       )}
@@ -262,13 +274,14 @@ export default function SearchCommand() {
   );
 }
 
-function ResultItem({ result, query }: { result: DisplayResult; query: string }) {
-  const { chainName, symbol, inputType, explorerUrls, status } = result;
+function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; query: string; coinGeckoUrl?: string | null }) {
+  const { chainId, chainName, symbol, inputType, explorerUrls, status, isToken } = result;
   const typeLabel = inputType === "address" ? "Address" : "Transaction";
   const tagColor = inputType === "address" ? Color.Blue : Color.Green;
 
   const primaryUrl = explorerUrls[0]?.url ?? "";
   const additionalExplorers = explorerUrls.slice(1);
+
 
   const accessories: List.Item.Accessory[] = [];
 
@@ -276,8 +289,14 @@ function ResultItem({ result, query }: { result: DisplayResult; query: string })
     accessories.push({ icon: { source: Icon.Checkmark, tintColor: Color.Green }, tooltip: "Verified on-chain" });
   }
 
-  accessories.push({ tag: { value: typeLabel, color: tagColor } });
+  if (isToken) {
+    accessories.push({ tag: { value: "Token", color: Color.Orange } });
+  } else {
+    accessories.push({ tag: { value: typeLabel, color: tagColor } });
+  }
 
+  // For tokens: DexScreener first, then CoinGecko, then explorers
+  // For non-tokens: explorers as before
   return (
     <List.Item
       title={chainName}
@@ -286,6 +305,9 @@ function ResultItem({ result, query }: { result: DisplayResult; query: string })
       actions={
         <ActionPanel>
           <Action.OpenInBrowser title={`Open in ${explorerUrls[0]?.name ?? "Explorer"}`} url={primaryUrl} />
+          {isToken && coinGeckoUrl && (
+            <Action.OpenInBrowser title="Open in CoinGecko" url={coinGeckoUrl} />
+          )}
           {additionalExplorers.map((explorer) => (
             <Action.OpenInBrowser key={explorer.name} title={`Open in ${explorer.name}`} url={explorer.url} />
           ))}

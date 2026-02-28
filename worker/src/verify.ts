@@ -11,6 +11,7 @@ export interface VerifiedResult {
   inputType: string;
   explorerUrls: ExplorerUrl[];
   status: VerificationStatus;
+  isToken?: boolean;
 }
 
 const REQUEST_TIMEOUT_MS = 6000;
@@ -393,6 +394,66 @@ async function verifyEvmAddrsBatch(
   }
 
   return results;
+}
+
+// --- Token detection via CoinGecko ---
+
+export interface TokenInfo {
+  isToken: boolean;
+  coinGeckoUrl?: string;
+  tokenChainIds: Set<string>; // which chains this address is a token on
+}
+
+export async function checkTokenStatus(
+  address: string,
+  detections: DetectionResult[],
+): Promise<TokenInfo> {
+  // Only check for address inputs, not transactions
+  if (detections.length === 0 || detections[0].inputType !== "address") {
+    return { isToken: false, tokenChainIds: new Set() };
+  }
+
+  // Prefer Ethereum, then try other chains with CoinGecko platform IDs
+  const withPlatform = detections
+    .filter((d) => d.chain.coingeckoPlatformId)
+    .sort((a, b) => (a.chain.id === "ethereum" ? -1 : b.chain.id === "ethereum" ? 1 : 0));
+
+  for (const detection of withPlatform) {
+    try {
+      const platformId = detection.chain.coingeckoPlatformId!;
+      const resp = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${platformId}/contract/${address.toLowerCase()}`,
+        {
+          headers: { "Accept": "application/json", "User-Agent": "crypto-lookup-worker/1.0" },
+          signal: AbortSignal.timeout(4000),
+        },
+      );
+      if (!resp.ok) continue;
+      const data = (await resp.json()) as { id?: string; web_slug?: string; platforms?: Record<string, string> };
+      const slug = data.web_slug ?? data.id;
+      if (slug) {
+        // Build set of chain IDs where this address is actually the token contract
+        const tokenChainIds = new Set<string>();
+        const platformToChainId = new Map(
+          withPlatform.map((d) => [d.chain.coingeckoPlatformId!, d.chain.id]),
+        );
+        if (data.platforms) {
+          for (const [platform, addr] of Object.entries(data.platforms)) {
+            if (addr.toLowerCase() === address.toLowerCase()) {
+              const chainId = platformToChainId.get(platform);
+              if (chainId) tokenChainIds.add(chainId);
+            }
+          }
+        }
+        // Always include the chain we queried (we know the address matches)
+        tokenChainIds.add(detection.chain.id);
+        return { isToken: true, coinGeckoUrl: `https://www.coingecko.com/en/coins/${slug}`, tokenChainIds };
+      }
+    } catch {
+      continue;
+    }
+  }
+  return { isToken: false, tokenChainIds: new Set() };
 }
 
 // --- Main verification ---

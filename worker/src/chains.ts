@@ -17,6 +17,7 @@ export interface Explorer {
   baseUrl: string;
   addressPath: string;
   txPath: string;
+  tokenPath?: string; // e.g. "/token/{query}" — used when address is a token contract
 }
 
 export interface RpcEndpoint {
@@ -33,6 +34,7 @@ export interface Chain {
   explorers: Explorer[];
   etherscanChainId?: number;
   alchemyNetwork?: string; // e.g. "eth-mainnet" — used by Portfolio API
+  coingeckoPlatformId?: string; // e.g. "ethereum" — used by CoinGecko API for token lookup
   rpcUrls: RpcEndpoint[];
 }
 
@@ -68,11 +70,12 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Etherscan", baseUrl: "https://etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://eth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Etherscan", baseUrl: "https://etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://eth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 1,
     alchemyNetwork: "eth-mainnet",
+    coingeckoPlatformId: "ethereum",
     rpcUrls: [
       { url: "https://eth-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://ethereum-rpc.publicnode.com", provider: "public" },
@@ -84,11 +87,12 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Basescan", baseUrl: "https://basescan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://base.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Basescan", baseUrl: "https://basescan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://base.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 8453,
     alchemyNetwork: "base-mainnet",
+    coingeckoPlatformId: "base",
     rpcUrls: [
       { url: "https://base-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://base-rpc.publicnode.com", provider: "public" },
@@ -100,11 +104,12 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Arbiscan", baseUrl: "https://arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://arbitrum.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Arbiscan", baseUrl: "https://arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://arbitrum.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 42161,
     alchemyNetwork: "arb-mainnet",
+    coingeckoPlatformId: "arbitrum-one",
     rpcUrls: [
       { url: "https://arb-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://arbitrum-one-rpc.publicnode.com", provider: "public" },
@@ -116,11 +121,12 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Optimistic Etherscan", baseUrl: "https://optimistic.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://optimism.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Optimistic Etherscan", baseUrl: "https://optimistic.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://optimism.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 10,
     alchemyNetwork: "opt-mainnet",
+    coingeckoPlatformId: "optimistic-ethereum",
     rpcUrls: [
       { url: "https://opt-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://optimism-rpc.publicnode.com", provider: "public" },
@@ -132,11 +138,12 @@ export const CHAINS: Chain[] = [
     symbol: "POL",
     family: "evm",
     explorers: [
-      { name: "Polygonscan", baseUrl: "https://polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://polygon.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Polygonscan", baseUrl: "https://polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://polygon.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 137,
     alchemyNetwork: "polygon-mainnet",
+    coingeckoPlatformId: "polygon-pos",
     rpcUrls: [
       { url: "https://polygon-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://polygon-bor-rpc.publicnode.com", provider: "public" },
@@ -148,11 +155,12 @@ export const CHAINS: Chain[] = [
     symbol: "BNB",
     family: "evm",
     explorers: [
-      { name: "BscScan", baseUrl: "https://bscscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://bsc.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "BscScan", baseUrl: "https://bscscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://bsc.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 56,
     alchemyNetwork: "bnb-mainnet",
+    coingeckoPlatformId: "binance-smart-chain",
     rpcUrls: [
       { url: "https://bnb-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://bsc-rpc.publicnode.com", provider: "public" },
@@ -164,11 +172,12 @@ export const CHAINS: Chain[] = [
     symbol: "AVAX",
     family: "evm",
     explorers: [
-      { name: "Snowscan", baseUrl: "https://snowscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://avalanche.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Snowscan", baseUrl: "https://snowscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://avalanche.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 43114,
     alchemyNetwork: "avax-mainnet",
+    coingeckoPlatformId: "avalanche",
     rpcUrls: [
       { url: "https://avax-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://avalanche-c-chain-rpc.publicnode.com", provider: "public" },
@@ -180,8 +189,9 @@ export const CHAINS: Chain[] = [
     symbol: "FTM",
     family: "evm",
     explorers: [
-      { name: "FtmScan", baseUrl: "https://ftmscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "FtmScan", baseUrl: "https://ftmscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
+    coingeckoPlatformId: "fantom",
     rpcUrls: [
       { url: "https://rpcapi.fantom.network", provider: "public" },
     ],
@@ -192,10 +202,11 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "zkSync Explorer", baseUrl: "https://explorer.zksync.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://zksync.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "zkSync Explorer", baseUrl: "https://explorer.zksync.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://zksync.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     alchemyNetwork: "zksync-mainnet",
+    coingeckoPlatformId: "zksync",
     rpcUrls: [
       { url: "https://zksync-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://mainnet.era.zksync.io", provider: "public" },
@@ -207,11 +218,12 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Lineascan", baseUrl: "https://lineascan.build", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://linea.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Lineascan", baseUrl: "https://lineascan.build", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://linea.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 59144,
     alchemyNetwork: "linea-mainnet",
+    coingeckoPlatformId: "linea",
     rpcUrls: [
       { url: "https://linea-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://linea-rpc.publicnode.com", provider: "public" },
@@ -223,11 +235,12 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Scrollscan", baseUrl: "https://scrollscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://scroll.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Scrollscan", baseUrl: "https://scrollscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://scroll.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 534352,
     alchemyNetwork: "scroll-mainnet",
+    coingeckoPlatformId: "scroll",
     rpcUrls: [
       { url: "https://scroll-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://scroll-rpc.publicnode.com", provider: "public" },
@@ -239,11 +252,12 @@ export const CHAINS: Chain[] = [
     symbol: "MNT",
     family: "evm",
     explorers: [
-      { name: "Mantlescan", baseUrl: "https://mantlescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockscout", baseUrl: "https://mantle.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mantlescan", baseUrl: "https://mantlescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      { name: "Blockscout", baseUrl: "https://mantle.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     etherscanChainId: 5000,
     alchemyNetwork: "mantle-mainnet",
+    coingeckoPlatformId: "mantle",
     rpcUrls: [
       { url: "https://mantle-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://mantle-rpc.publicnode.com", provider: "public" },
@@ -270,10 +284,11 @@ export const CHAINS: Chain[] = [
     symbol: "SOL",
     family: "solana",
     explorers: [
-      { name: "Solscan", baseUrl: "https://solscan.io", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      { name: "Solscan", baseUrl: "https://solscan.io", addressPath: "/account/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
       { name: "Solana Explorer", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
       { name: "SolanaFM", baseUrl: "https://solana.fm", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
+    coingeckoPlatformId: "solana",
     rpcUrls: [
       { url: "https://mainnet.helius-rpc.com/?api-key={key}", provider: "helius", keyEnvVar: "HELIUS_API_KEY" },
       { url: "https://solana-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
