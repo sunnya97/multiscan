@@ -1,8 +1,8 @@
 import { Action, ActionPanel, Clipboard, Color, Icon, List, getPreferenceValues } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getExplorerOverrides } from "./chains";
-import { ExplorerUrl, InputType, LookupResult } from "./types";
+import { ExplorerUrl, InputType, LookupResult, WorkerResponse } from "./types";
 
 interface DisplayResult {
   chainId: string;
@@ -40,7 +40,18 @@ function applyExplorerOverride(
   };
 }
 
-async function fetchWorker(input: string, workerUrl: string, verify: boolean): Promise<LookupResult[]> {
+const NAME_PATTERN = /\.(eth|sol|bnb|osmo|cosmos)$/i;
+
+function isNameInput(input: string): boolean {
+  return NAME_PATTERN.test(input.trim());
+}
+
+function truncateAddress(addr: string): string {
+  if (addr.length <= 14) return addr;
+  return `${addr.slice(0, 8)}...${addr.slice(-6)}`;
+}
+
+async function fetchWorker(input: string, workerUrl: string, verify: boolean): Promise<WorkerResponse> {
   const response = await fetch(`${workerUrl}/lookup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -51,14 +62,16 @@ async function fetchWorker(input: string, workerUrl: string, verify: boolean): P
     throw new Error(`Worker returned ${response.status}`);
   }
 
-  const data = (await response.json()) as { results: LookupResult[] };
-  return data.results;
+  return (await response.json()) as WorkerResponse;
 }
 
 export default function SearchCommand() {
   const [searchText, setSearchText] = useState("");
   const [verifiedResults, setVerifiedResults] = useState<LookupResult[] | null>(null);
   const [verifyingInput, setVerifyingInput] = useState("");
+  const [resolvedName, setResolvedName] = useState<string | null>(null);
+  const [resolvedAddress, setResolvedAddress] = useState<string | null>(null);
+  const [nameNotFound, setNameNotFound] = useState(false);
 
   const { data: clipboardText } = usePromise(async () => {
     const clip = await Clipboard.readText();
@@ -69,7 +82,11 @@ export default function SearchCommand() {
   useEffect(() => {
     if (clipboardText && !searchText) {
       const clip = clipboardText.trim();
-      if (clip.length >= 20 && /^[a-zA-Z0-9._:\-]+$/.test(clip)) {
+      // Accept long addresses/hashes OR short name-service inputs
+      if (
+        (clip.length >= 20 && /^[a-zA-Z0-9._:\-]+$/.test(clip)) ||
+        isNameInput(clip)
+      ) {
         setSearchText(clip);
       }
     }
@@ -82,19 +99,38 @@ export default function SearchCommand() {
 
   // Phase 1: instant detection (verify=false)
   const {
-    data: detectResults,
+    data: detectResponse,
     isLoading: isDetecting,
   } = usePromise(
     async (input: string) => {
-      if (!input.trim()) return [];
-      return fetchWorker(input.trim(), workerUrl, false);
+      if (!input.trim()) return null;
+      const resp = await fetchWorker(input.trim(), workerUrl, false);
+      // Track resolution state from Phase 1
+      if (resp.resolvedName && resp.resolvedAddress) {
+        setResolvedName(resp.resolvedName);
+        setResolvedAddress(resp.resolvedAddress);
+        setNameNotFound(false);
+      } else if (resp.nameNotFound) {
+        setResolvedName(null);
+        setResolvedAddress(null);
+        setNameNotFound(true);
+      } else {
+        setResolvedName(null);
+        setResolvedAddress(null);
+        setNameNotFound(false);
+      }
+      return resp;
     },
     [searchText],
     { execute: searchText.trim().length > 0 },
   );
 
+  const detectResults = detectResponse?.results ?? null;
+
   // Phase 2: kick off verification in background when detection returns multiple results
+  // For name resolution, send the resolved address directly to skip re-resolution
   const trimmedSearch = searchText.trim();
+  const phase2Input = resolvedAddress ?? trimmedSearch;
   useEffect(() => {
     if (!detectResults || detectResults.length <= 1 || trimmedSearch !== verifyingInput) {
       // Clear stale verified results when input changes
@@ -107,8 +143,8 @@ export default function SearchCommand() {
 
     setVerifyingInput(trimmedSearch);
     let cancelled = false;
-    fetchWorker(trimmedSearch, workerUrl, true).then((results) => {
-      if (!cancelled) setVerifiedResults(results);
+    fetchWorker(phase2Input, workerUrl, true).then((resp) => {
+      if (!cancelled) setVerifiedResults(resp.results);
     });
     return () => { cancelled = true; };
   }, [detectResults, trimmedSearch]);
@@ -141,11 +177,14 @@ export default function SearchCommand() {
     return { allMatching: [], verified: foundResults, unverified: unverifiedResults };
   }, [addressFallback, displayResults, foundResults, unverifiedResults]);
 
+  // The address to show in copy actions — resolved address or raw input
+  const copyAddress = resolvedAddress ?? searchText.trim();
+
   return (
     <List
       searchText={searchText}
       onSearchTextChange={setSearchText}
-      searchBarPlaceholder="Paste a crypto address or transaction hash..."
+      searchBarPlaceholder="Paste address, tx hash, or name (vitalik.eth, toly.sol)..."
       isLoading={isLoading}
       throttle
     >
@@ -154,6 +193,12 @@ export default function SearchCommand() {
           title="Searching across networks..."
           description="Verifying activity on matching chains"
           icon={Icon.Globe}
+        />
+      ) : nameNotFound && !isLoading ? (
+        <List.EmptyView
+          title="Name not found"
+          description={`Could not resolve "${searchText.trim()}" to an address`}
+          icon={Icon.XMarkCircle}
         />
       ) : displayResults.length === 0 && searchText.trim() && !isLoading ? (
         <List.EmptyView
@@ -164,15 +209,36 @@ export default function SearchCommand() {
       ) : !searchText.trim() ? (
         <List.EmptyView
           title="Search Crypto Address / Transaction"
-          description="Paste or type any crypto address or transaction hash to detect the chain"
+          description="Paste or type any crypto address, transaction hash, or name (e.g. vitalik.eth)"
           icon={Icon.MagnifyingGlass}
         />
       ) : null}
 
+      {resolvedName && resolvedAddress && displayResults.length > 0 && (
+        <List.Section title="Name Resolution">
+          <List.Item
+            title={resolvedName}
+            subtitle={truncateAddress(resolvedAddress)}
+            icon={{ source: Icon.Link, tintColor: Color.Purple }}
+            accessories={[{ tag: { value: "Resolved", color: Color.Purple } }]}
+            actions={
+              <ActionPanel>
+                <Action.CopyToClipboard title="Copy Resolved Address" content={resolvedAddress} />
+                <Action.CopyToClipboard
+                  title="Copy Name"
+                  content={resolvedName}
+                  shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
+                />
+              </ActionPanel>
+            }
+          />
+        </List.Section>
+      )}
+
       {sectioned.allMatching.length > 0 && (
         <List.Section title="No activity found — potential matches">
           {sectioned.allMatching.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={searchText} />
+            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} />
           ))}
         </List.Section>
       )}
@@ -180,7 +246,7 @@ export default function SearchCommand() {
       {sectioned.verified.length > 0 && (
         <List.Section title="Verified">
           {sectioned.verified.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={searchText} />
+            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} />
           ))}
         </List.Section>
       )}
@@ -188,7 +254,7 @@ export default function SearchCommand() {
       {sectioned.unverified.length > 0 && (
         <List.Section title={sectioned.verified.length > 0 ? "Other Chains" : "Detected Chains"}>
           {sectioned.unverified.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={searchText} />
+            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} />
           ))}
         </List.Section>
       )}

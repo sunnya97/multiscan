@@ -16,3 +16,10 @@ export interface LookupResult {
   explorerUrls: ExplorerUrl[];
   status: VerificationStatus;
 }
+
+export interface WorkerResponse {
+  results: LookupResult[];
+  resolvedName?: string;
+  resolvedAddress?: string;
+  nameNotFound?: boolean;
+}

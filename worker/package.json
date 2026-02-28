@@ -7,6 +7,9 @@
     "deploy": "wrangler deploy",
     "update-cosmos": "npx tsx scripts/update-cosmos-chains.ts"
   },
+  "dependencies": {
+    "@noble/hashes": "^1.7.0"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.0.0",
     "typescript": "^5.8.0",

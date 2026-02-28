@@ -1,5 +1,6 @@
 import { CHAINS, Env } from "./chains";
 import { detect } from "./detect";
+import { resolveNameService } from "./resolve";
 import { VerifiedResult, verifyResults } from "./verify";
 
 function corsHeaders(): HeadersInit {
@@ -44,9 +45,17 @@ export default {
       return jsonResponse({ error: "Missing input" }, 400);
     }
 
+    // Try name resolution first (e.g. vitalik.eth → 0x...)
+    const resolution = await resolveNameService(input, env, CHAINS);
+    const lookupInput = resolution?.resolvedAddress ?? input;
+
     // Detect matches
-    const detections = detect(input, CHAINS);
+    const detections = detect(lookupInput, CHAINS);
     if (detections.length === 0) {
+      // If input looked like a name but didn't resolve, signal that
+      if (resolution === null && /\.(eth|sol|bnb|osmo|cosmos)$/i.test(input)) {
+        return jsonResponse({ results: [], nameNotFound: true });
+      }
       return jsonResponse({ results: [] });
     }
 
@@ -61,11 +70,11 @@ export default {
         explorerUrls: d.explorerUrls,
         status: "unverified" as const,
       }));
-      return jsonResponse({ results });
+      return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
     }
 
     // Multiple matches — verify in parallel
-    const verified = await verifyResults(input, detections, env);
+    const verified = await verifyResults(lookupInput, detections, env);
 
     // Filter results
     const inputType = detections[0].inputType;
@@ -91,6 +100,6 @@ export default {
       results = verified;
     }
 
-    return jsonResponse({ results });
+    return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
   },
 };
