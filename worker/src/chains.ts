@@ -52,6 +52,13 @@ export function resolveRpcUrl(endpoint: RpcEndpoint, env: Env): string | null {
   return endpoint.url.replace("{key}", key);
 }
 
+/** Returns the Alchemy RPC URL for a chain, or null if no Alchemy endpoint is configured / key is missing. */
+export function getAlchemyRpcUrl(chain: Chain, env: Env): string | null {
+  const ep = chain.rpcUrls.find((e) => e.provider === "alchemy");
+  if (!ep) return null;
+  return resolveRpcUrl(ep, env);
+}
+
 /** Returns ordered list of concrete URLs for a chain, skipping endpoints whose keys are missing. */
 export function getResolvedRpcUrls(chain: Chain, env: Env): string[] {
   const urls: string[] = [];

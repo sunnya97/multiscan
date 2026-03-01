@@ -1,7 +1,7 @@
 import { CHAINS, Env } from "./chains";
 import { detect } from "./detect";
 import { resolveNameService } from "./resolve";
-import { TokenInfo, VerifiedResult, checkTokenStatus, verifyResults } from "./verify";
+import { VerifiedResult, detectTokens, getCoinGeckoUrl, verifyResults } from "./verify";
 
 function corsHeaders(): HeadersInit {
   return {
@@ -73,11 +73,11 @@ export default {
       return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
     }
 
-    // Single match: skip verification but still check for tokens
-    // Multiple matches: verify + token check in parallel
-    const [verified, tokenInfo] = detections.length === 1
-      ? [
-          detections.map((d): VerifiedResult => ({
+    // Single match: skip verification but still detect tokens + CoinGecko URL
+    // Multiple matches: verify + detect tokens + CoinGecko URL all in parallel
+    const [verified, tokenChainIds, coinGeckoUrl] = detections.length === 1
+      ? await Promise.all([
+          Promise.resolve(detections.map((d): VerifiedResult => ({
             chainId: d.chain.id,
             chainName: d.chain.name,
             symbol: d.chain.symbol,
@@ -85,12 +85,14 @@ export default {
             inputType: d.inputType,
             explorerUrls: d.explorerUrls,
             status: "unverified" as const,
-          })),
-          await checkTokenStatus(lookupInput, detections),
-        ]
+          }))),
+          detectTokens(lookupInput, detections, env),
+          getCoinGeckoUrl(lookupInput, detections),
+        ])
       : await Promise.all([
           verifyResults(lookupInput, detections, env),
-          checkTokenStatus(lookupInput, detections),
+          detectTokens(lookupInput, detections, env),
+          getCoinGeckoUrl(lookupInput, detections),
         ]);
 
     // Filter results
@@ -118,10 +120,10 @@ export default {
     }
 
     // Attach token flag and rewrite explorer URLs to token pages (only for chains where address is actually a token)
-    if (tokenInfo.isToken) {
+    if (tokenChainIds.size > 0) {
       const chainMap = new Map(CHAINS.map((c) => [c.id, c]));
       results = results.map((r) => {
-        if (!tokenInfo.tokenChainIds.has(r.chainId)) return r;
+        if (!tokenChainIds.has(r.chainId)) return r;
         const chain = chainMap.get(r.chainId);
         if (!chain) return { ...r, isToken: true };
         return {
@@ -138,7 +140,7 @@ export default {
     return jsonResponse({
       results,
       ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress },
-      ...tokenInfo.isToken && { coinGeckoUrl: tokenInfo.coinGeckoUrl },
+      ...coinGeckoUrl && { coinGeckoUrl },
     });
   },
 };

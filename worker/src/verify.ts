@@ -1,4 +1,4 @@
-import { Chain, Env, getResolvedRpcUrls } from "./chains";
+import { Chain, Env, getAlchemyRpcUrl, getResolvedRpcUrls } from "./chains";
 import { DetectionResult, ExplorerUrl } from "./detect";
 
 export type VerificationStatus = "found" | "not_found" | "unverified";
@@ -396,24 +396,91 @@ async function verifyEvmAddrsBatch(
   return results;
 }
 
-// --- Token detection via CoinGecko ---
+// --- On-chain token detection ---
 
-export interface TokenInfo {
-  isToken: boolean;
-  coinGeckoUrl?: string;
-  tokenChainIds: Set<string>; // which chains this address is a token on
+const SPL_TOKEN_PROGRAM = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const TOKEN_2022_PROGRAM = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
+
+async function detectEvmTokenAlchemy(alchemyUrl: string, address: string): Promise<boolean> {
+  const result = (await evmRpcCall(alchemyUrl, "alchemy_getTokenMetadata", [address])) as {
+    decimals?: number | null;
+  } | null;
+  return result?.decimals != null;
 }
 
-export async function checkTokenStatus(
+async function detectEvmTokenFallback(rpcUrl: string, address: string): Promise<boolean> {
+  // Call decimals() selector on the address
+  const result = (await evmRpcCall(rpcUrl, "eth_call", [
+    { to: address, data: "0x313ce567" },
+    "latest",
+  ])) as string | null;
+  return result != null && result !== "0x" && result !== "0x0";
+}
+
+async function detectSolanaToken(rpcUrl: string, address: string): Promise<boolean> {
+  const result = (await solanaRpcCall(rpcUrl, "getAccountInfo", [
+    address,
+    { encoding: "jsonParsed" },
+  ])) as { value?: { owner?: string } | null } | null;
+  const owner = result?.value?.owner;
+  return owner === SPL_TOKEN_PROGRAM || owner === TOKEN_2022_PROGRAM;
+}
+
+export async function detectTokens(
   address: string,
   detections: DetectionResult[],
-): Promise<TokenInfo> {
-  // Only check for address inputs, not transactions
+  env: Env,
+): Promise<Set<string>> {
   if (detections.length === 0 || detections[0].inputType !== "address") {
-    return { isToken: false, tokenChainIds: new Set() };
+    return new Set();
   }
 
-  // Prefer Ethereum, then try other chains with CoinGecko platform IDs
+  const tokenChainIds = new Set<string>();
+
+  const checks = detections.map(async (d) => {
+    const { chain } = d;
+
+    if (chain.family === "evm") {
+      const alchemyUrl = getAlchemyRpcUrl(chain, env);
+      if (alchemyUrl) {
+        const isToken = await detectEvmTokenAlchemy(alchemyUrl, address);
+        if (isToken) tokenChainIds.add(chain.id);
+      } else {
+        // Fallback for chains without Alchemy (e.g. Fantom)
+        const rpcUrls = getResolvedRpcUrls(chain, env);
+        if (rpcUrls.length > 0) {
+          const isToken = await tryEndpoints(rpcUrls, (url) =>
+            detectEvmTokenFallback(url, address),
+          );
+          if (isToken) tokenChainIds.add(chain.id);
+        }
+      }
+    } else if (chain.family === "solana") {
+      const rpcUrls = getResolvedRpcUrls(chain, env);
+      if (rpcUrls.length > 0) {
+        const isToken = await tryEndpoints(rpcUrls, (url) =>
+          detectSolanaToken(url, address),
+        );
+        if (isToken) tokenChainIds.add(chain.id);
+      }
+    }
+    // Other families: no token detection
+  });
+
+  await Promise.allSettled(checks);
+  return tokenChainIds;
+}
+
+// --- CoinGecko URL enrichment ---
+
+export async function getCoinGeckoUrl(
+  address: string,
+  detections: DetectionResult[],
+): Promise<string | null> {
+  if (detections.length === 0 || detections[0].inputType !== "address") {
+    return null;
+  }
+
   const withPlatform = detections
     .filter((d) => d.chain.coingeckoPlatformId)
     .sort((a, b) => (a.chain.id === "ethereum" ? -1 : b.chain.id === "ethereum" ? 1 : 0));
@@ -429,31 +496,14 @@ export async function checkTokenStatus(
         },
       );
       if (!resp.ok) continue;
-      const data = (await resp.json()) as { id?: string; web_slug?: string; platforms?: Record<string, string> };
+      const data = (await resp.json()) as { id?: string; web_slug?: string };
       const slug = data.web_slug ?? data.id;
-      if (slug) {
-        // Build set of chain IDs where this address is actually the token contract
-        const tokenChainIds = new Set<string>();
-        const platformToChainId = new Map(
-          withPlatform.map((d) => [d.chain.coingeckoPlatformId!, d.chain.id]),
-        );
-        if (data.platforms) {
-          for (const [platform, addr] of Object.entries(data.platforms)) {
-            if (addr.toLowerCase() === address.toLowerCase()) {
-              const chainId = platformToChainId.get(platform);
-              if (chainId) tokenChainIds.add(chainId);
-            }
-          }
-        }
-        // Always include the chain we queried (we know the address matches)
-        tokenChainIds.add(detection.chain.id);
-        return { isToken: true, coinGeckoUrl: `https://www.coingecko.com/en/coins/${slug}`, tokenChainIds };
-      }
+      if (slug) return `https://www.coingecko.com/en/coins/${slug}`;
     } catch {
       continue;
     }
   }
-  return { isToken: false, tokenChainIds: new Set() };
+  return null;
 }
 
 // --- Main verification ---
