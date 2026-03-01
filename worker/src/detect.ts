@@ -56,6 +56,32 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // IBC denom: ibc/ + 64 hex chars — candidate for all Cosmos chains
+  if (/^ibc\/[0-9A-Fa-f]{64}$/i.test(trimmed)) {
+    matches.push(
+      { chainId: "cosmos", inputType: "denom" },
+      { chainId: "osmosis", inputType: "denom" },
+      { chainId: "celestia", inputType: "denom" },
+    );
+    return matches;
+  }
+
+  // Factory denom: factory/<bech32>/... — match chain by bech32 prefix
+  if (/^factory\/[a-z]+1[a-z0-9]+\/.+$/.test(trimmed)) {
+    const bech32Addr = trimmed.split("/")[1];
+    const prefix = bech32Addr.split("1")[0];
+    const prefixToChain: Record<string, string> = {
+      osmo: "osmosis",
+      cosmos: "cosmos",
+      celestia: "celestia",
+    };
+    const chainId = prefixToChain[prefix];
+    if (chainId) {
+      matches.push({ chainId, inputType: "denom" });
+    }
+    return matches;
+  }
+
   // Cosmos-family addresses with specific prefixes
   if (/^cosmos1[a-z0-9]{38,58}$/.test(trimmed)) {
     matches.push({ chainId: "cosmos", inputType: "address" });
@@ -158,11 +184,19 @@ export interface DetectionResult {
 }
 
 function buildExplorerUrls(chain: Chain, inputType: InputType, query: string): ExplorerUrl[] {
-  return chain.explorers.map((explorer) => {
-    const pathTemplate = inputType === "address" ? explorer.addressPath : explorer.txPath;
-    const path = pathTemplate.replace("{query}", query);
-    return { name: explorer.name, url: `${explorer.baseUrl}${path}` };
-  });
+  return chain.explorers
+    .map((explorer) => {
+      let pathTemplate: string;
+      if (inputType === "denom") {
+        if (!explorer.denomPath) return null;
+        pathTemplate = explorer.denomPath;
+      } else {
+        pathTemplate = inputType === "address" ? explorer.addressPath : explorer.txPath;
+      }
+      const path = pathTemplate.replace("{query}", encodeURIComponent(query));
+      return { name: explorer.name, url: `${explorer.baseUrl}${path}` };
+    })
+    .filter((u): u is ExplorerUrl => u !== null);
 }
 
 export function detect(input: string, chains: Chain[]): DetectionResult[] {

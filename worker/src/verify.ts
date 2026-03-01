@@ -146,6 +146,18 @@ async function verifyCosmosAddr(restUrl: string, address: string): Promise<boole
   return false;
 }
 
+// --- Cosmos denom ---
+
+async function verifyCosmosDenom(restUrl: string, denom: string): Promise<boolean> {
+  const response = await fetch(
+    `${restUrl}/cosmos/bank/v1beta1/supply/by_denom?denom=${encodeURIComponent(denom)}`,
+    { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) },
+  );
+  if (!response.ok) return false;
+  const json = (await response.json()) as { amount?: { amount?: string } };
+  return json.amount?.amount != null && json.amount.amount !== "0";
+}
+
 // --- Tron ---
 
 async function verifyTronTx(apiUrl: string, txHash: string): Promise<boolean> {
@@ -556,7 +568,9 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
         break;
       case "cosmos":
         found = await tryEndpoints(rpcUrls, (url) =>
-          isTx ? verifyCosmosTx(url, input) : verifyCosmosAddr(url, input),
+          inputType === "denom"
+            ? verifyCosmosDenom(url, input)
+            : isTx ? verifyCosmosTx(url, input) : verifyCosmosAddr(url, input),
         );
         break;
       case "tron":

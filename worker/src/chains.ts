@@ -10,7 +10,7 @@ export type FormatFamily =
   | "polkadot"
   | "near";
 
-export type InputType = "address" | "transaction";
+export type InputType = "address" | "transaction" | "denom";
 
 export interface Explorer {
   name: string;
@@ -18,6 +18,7 @@ export interface Explorer {
   addressPath: string;
   txPath: string;
   tokenPath?: string; // e.g. "/token/{query}" — used when address is a token contract
+  denomPath?: string; // e.g. "/assets/{query}" — used for Cosmos denom lookups
 }
 
 export interface RpcEndpoint {
@@ -308,7 +309,7 @@ export const CHAINS: Chain[] = [
     symbol: "ATOM",
     family: "cosmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/cosmos", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/cosmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
       { name: "Ping.pub", baseUrl: "https://ping.pub/cosmos", addressPath: "/account/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [
@@ -321,7 +322,7 @@ export const CHAINS: Chain[] = [
     symbol: "OSMO",
     family: "cosmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
       { name: "Ping.pub", baseUrl: "https://ping.pub/osmosis", addressPath: "/account/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [
@@ -334,7 +335,7 @@ export const CHAINS: Chain[] = [
     symbol: "TIA",
     family: "cosmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
       { name: "Celenium", baseUrl: "https://celenium.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [

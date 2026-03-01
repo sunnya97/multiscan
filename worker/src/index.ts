@@ -137,6 +137,27 @@ export default {
       });
     }
 
+    // Denom results are always tokens — set isToken and rewrite explorer URLs to denomPath
+    const isDenom = detections.length > 0 && detections[0].inputType === "denom";
+    if (isDenom) {
+      const chainMap = new Map(CHAINS.map((c) => [c.id, c]));
+      results = results.map((r) => {
+        const chain = chainMap.get(r.chainId);
+        if (!chain) return { ...r, isToken: true };
+        const denomUrls = chain.explorers
+          .filter((explorer) => explorer.denomPath)
+          .map((explorer) => ({
+            name: explorer.name,
+            url: `${explorer.baseUrl}${explorer.denomPath!.replace("{query}", encodeURIComponent(lookupInput))}`,
+          }));
+        return {
+          ...r,
+          isToken: true,
+          explorerUrls: denomUrls.length > 0 ? denomUrls : r.explorerUrls,
+        };
+      });
+    }
+
     return jsonResponse({
       results,
       ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress },
