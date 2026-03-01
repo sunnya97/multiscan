@@ -25,7 +25,17 @@ function applyExplorerOverride(
   if (overrideBaseUrl && explorerUrls.length > 0) {
     const first = explorerUrls[0];
     const originalUrl = new URL(first.url);
-    const overriddenUrl = `${overrideBaseUrl}${originalUrl.pathname}${originalUrl.hash}`;
+    // Strip the override's path prefix from the original pathname to avoid doubling
+    // (e.g. Mintscan base URLs include a chain path like /osmosis)
+    let relativePath = originalUrl.pathname;
+    try {
+      const basePath = new URL(overrideBaseUrl).pathname.replace(/\/+$/, "");
+      if (basePath && relativePath.startsWith(basePath)) {
+        relativePath = relativePath.slice(basePath.length);
+      }
+    } catch { /* invalid override URL, use full pathname */ }
+    const cleanBase = overrideBaseUrl.replace(/\/+$/, "");
+    const overriddenUrl = `${cleanBase}${relativePath}${originalUrl.hash}`;
     explorerUrls = [
       { name: first.name, url: overriddenUrl },
       ...explorerUrls.slice(1),
