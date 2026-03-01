@@ -1,5 +1,5 @@
 {
-  "name": "crypto-lookup-worker",
+  "name": "multiscan-worker",
   "version": "1.0.0",
   "private": true,
   "scripts": {

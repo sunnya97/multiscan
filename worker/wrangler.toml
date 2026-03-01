@@ -1,6 +1,12 @@
-name = "crypto-lookup"
+name = "multiscan"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
+
+workers_dev = true
+
+routes = [
+  { pattern = "multiscan.dev", custom_domain = true }
+]
 
 # Secrets (set via `wrangler secret put <NAME>`):
 # ETHERSCAN_API_KEY

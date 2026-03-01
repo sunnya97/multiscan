@@ -1,7 +1,7 @@
 {
-  "name": "crypto-address-search",
-  "title": "Search Crypto Address/Transaction",
-  "description": "Paste any crypto address or transaction hash, auto-detect the chain, and open the block explorer",
+  "name": "multiscan",
+  "title": "Multiscan",
+  "description": "Multiscan — paste any crypto address or transaction hash, auto-detect the chain, and open the block explorer",
   "icon": "command-icon.png",
   "author": "sunnya97",
   "categories": ["Finance", "Web"],
@@ -9,8 +9,8 @@
   "commands": [
     {
       "name": "search",
-      "title": "Search Crypto Address/Transaction",
-      "subtitle": "Crypto Explorer",
+      "title": "Multiscan",
+      "subtitle": "Multiscan",
       "description": "Detect chain from address or tx hash and open block explorer",
       "mode": "view"
     }
@@ -21,7 +21,7 @@
       "title": "Worker URL",
       "description": "URL of the crypto-lookup Cloudflare Worker",
       "type": "textfield",
-      "default": "https://crypto-lookup.sunnya97.workers.dev",
+      "default": "https://multiscan.dev/api",
       "required": true
     },
     {

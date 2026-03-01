@@ -25,10 +25,10 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders() });
     }
 
-    // Only accept POST /lookup
+    // Only accept POST /api/lookup
     const url = new URL(request.url);
-    if (url.pathname !== "/lookup" || request.method !== "POST") {
-      return jsonResponse({ error: "POST /lookup expected" }, 404);
+    if (url.pathname !== "/api/lookup" || request.method !== "POST") {
+      return jsonResponse({ error: "POST /api/lookup expected" }, 404);
     }
 
     let input: string;

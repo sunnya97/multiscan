@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Clipboard, Color, Icon, List, getPreferenceValues } from "@raycast/api";
+import { Action, ActionPanel, Clipboard, Color, Icon, LaunchProps, List, getPreferenceValues } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useEffect, useMemo, useState } from "react";
 import { getExplorerOverrides } from "./chains";
@@ -78,8 +78,8 @@ async function fetchWorker(input: string, workerUrl: string, verify: boolean): P
   return (await response.json()) as WorkerResponse;
 }
 
-export default function SearchCommand() {
-  const [searchText, setSearchText] = useState("");
+export default function SearchCommand(props: LaunchProps) {
+  const [searchText, setSearchText] = useState(props.fallbackText ?? "");
   const [verifiedResults, setVerifiedResults] = useState<LookupResult[] | null>(null);
   const [verifyingInput, setVerifyingInput] = useState("");
   const [resolvedName, setResolvedName] = useState<string | null>(null);
@@ -92,9 +92,9 @@ export default function SearchCommand() {
     return clip?.trim() ?? "";
   });
 
-  // Auto-fill from clipboard on launch
+  // Auto-fill from clipboard on launch (skip if launched via fallback)
   useEffect(() => {
-    if (clipboardText && !searchText) {
+    if (clipboardText && !searchText && !props.fallbackText) {
       const clip = clipboardText.trim();
       // Accept long addresses/hashes OR short name-service inputs
       if (
