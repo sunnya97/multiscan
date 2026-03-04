@@ -31,6 +31,21 @@ describe("detectNameService", () => {
     expect(result).toEqual({ service: "icns", name: "bob.cosmos", tld: "cosmos" });
   });
 
+  it(".ton → tondns", () => {
+    const result = detectNameService("wallet.ton");
+    expect(result).toEqual({ service: "tondns", name: "wallet.ton", tld: "ton" });
+  });
+
+  it(".sui → suins", () => {
+    const result = detectNameService("myname.sui");
+    expect(result).toEqual({ service: "suins", name: "myname.sui", tld: "sui" });
+  });
+
+  it(".apt → aptosnames", () => {
+    const result = detectNameService("alice.apt");
+    expect(result).toEqual({ service: "aptosnames", name: "alice.apt", tld: "apt" });
+  });
+
   it("rejects .com", () => {
     expect(detectNameService("example.com")).toBeNull();
   });
@@ -195,6 +210,78 @@ describe("ICNS resolution", () => {
     );
 
     const result = await resolveNameService("nobody.osmo", env, CHAINS);
+    expect(result).toBeNull();
+  });
+});
+
+describe("TON DNS resolution", () => {
+  const env: Env = {};
+
+  it("resolves .ton name via tonapi.io", async () => {
+    mockFetch.mockResolvedValue(
+      jsonResponse({ wallet: { address: "EQDtFpEwcFAEcRe5mLVh2N6C0x-_hJEM7W61_JLnSF74p4q2" } }),
+    );
+
+    const result = await resolveNameService("wallet.ton", env, CHAINS);
+    expect(result).not.toBeNull();
+    expect(result!.resolvedName).toBe("wallet.ton");
+    expect(result!.resolvedAddress).toBe("EQDtFpEwcFAEcRe5mLVh2N6C0x-_hJEM7W61_JLnSF74p4q2");
+  });
+
+  it("returns null when not found", async () => {
+    mockFetch.mockResolvedValue(new Response("", { status: 404 }));
+
+    const result = await resolveNameService("nonexistent.ton", env, CHAINS);
+    expect(result).toBeNull();
+  });
+});
+
+describe("SuiNS resolution", () => {
+  const env: Env = {};
+
+  it("resolves .sui name via Sui RPC", async () => {
+    mockFetch.mockResolvedValue(
+      jsonResponse({
+        jsonrpc: "2.0",
+        id: 1,
+        result: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      }),
+    );
+
+    const result = await resolveNameService("myname.sui", env, CHAINS);
+    expect(result).not.toBeNull();
+    expect(result!.resolvedName).toBe("myname.sui");
+    expect(result!.resolvedAddress).toBe("0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef");
+  });
+
+  it("returns null when result is null", async () => {
+    mockFetch.mockResolvedValue(
+      jsonResponse({ jsonrpc: "2.0", id: 1, result: null }),
+    );
+
+    const result = await resolveNameService("nonexistent.sui", env, CHAINS);
+    expect(result).toBeNull();
+  });
+});
+
+describe("Aptos Names resolution", () => {
+  const env: Env = {};
+
+  it("resolves .apt name via aptosnames.com", async () => {
+    mockFetch.mockResolvedValue(
+      jsonResponse({ address: "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890" }),
+    );
+
+    const result = await resolveNameService("alice.apt", env, CHAINS);
+    expect(result).not.toBeNull();
+    expect(result!.resolvedName).toBe("alice.apt");
+    expect(result!.resolvedAddress).toBe("0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890");
+  });
+
+  it("returns null when not found", async () => {
+    mockFetch.mockResolvedValue(new Response("", { status: 404 }));
+
+    const result = await resolveNameService("nonexistent.apt", env, CHAINS);
     expect(result).toBeNull();
   });
 });

@@ -3,7 +3,7 @@ import { Chain, Env, getResolvedRpcUrls } from "./chains";
 
 // --- Name service detection ---
 
-export type NameService = "ens" | "sns" | "spaceid" | "icns";
+export type NameService = "ens" | "sns" | "spaceid" | "icns" | "tondns" | "suins" | "aptosnames";
 
 export interface NameDetection {
   service: NameService;
@@ -22,6 +22,9 @@ const NAME_PATTERNS: { regex: RegExp; service: NameService; tld: string }[] = [
   { regex: /^[a-zA-Z0-9-]+\.bnb$/i, service: "spaceid", tld: "bnb" },
   { regex: /^[a-zA-Z0-9-]+\.osmo$/i, service: "icns", tld: "osmo" },
   { regex: /^[a-zA-Z0-9-]+\.cosmos$/i, service: "icns", tld: "cosmos" },
+  { regex: /^[a-zA-Z0-9-]+\.ton$/i, service: "tondns", tld: "ton" },
+  { regex: /^[a-zA-Z0-9-]+\.sui$/i, service: "suins", tld: "sui" },
+  { regex: /^[a-zA-Z0-9-]+\.apt$/i, service: "aptosnames", tld: "apt" },
 ];
 
 export function detectNameService(input: string): NameDetection | null {
@@ -155,6 +158,54 @@ async function resolveICNS(name: string, tld: string, rpcUrls: string[]): Promis
   return null;
 }
 
+// --- TON DNS resolver ---
+
+async function resolveTonDns(name: string): Promise<string | null> {
+  const resp = await fetch(`https://tonapi.io/v2/dns/${encodeURIComponent(name)}/resolve`);
+  if (!resp.ok) return null;
+  const json = (await resp.json()) as { wallet?: { address?: string } };
+  const address = json.wallet?.address;
+  if (!address || address === "") return null;
+  return address;
+}
+
+// --- SuiNS resolver ---
+
+async function resolveSuiNS(name: string, rpcUrls: string[]): Promise<string | null> {
+  const label = name.replace(/\.sui$/i, "");
+  for (const rpcUrl of rpcUrls) {
+    try {
+      const resp = await fetch(rpcUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "suix_resolveNameServiceAddress",
+          params: [label],
+        }),
+      });
+      const json = (await resp.json()) as { result?: string | null; error?: { message: string } };
+      if (json.error || !json.result) return null;
+      return json.result;
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+// --- Aptos Names resolver ---
+
+async function resolveAptosNames(name: string): Promise<string | null> {
+  const resp = await fetch(`https://www.aptosnames.com/api/mainnet/v1/address/${encodeURIComponent(name)}`);
+  if (!resp.ok) return null;
+  const json = (await resp.json()) as { address?: string };
+  const address = json.address;
+  if (!address || address === "") return null;
+  return address;
+}
+
 // --- Main entry point ---
 
 export async function resolveNameService(
@@ -191,6 +242,21 @@ export async function resolveNameService(
         if (!osmosis) return null;
         const rpcUrls = getResolvedRpcUrls(osmosis, env);
         address = await resolveICNS(detection.name, detection.tld, rpcUrls);
+        break;
+      }
+      case "tondns": {
+        address = await resolveTonDns(detection.name);
+        break;
+      }
+      case "suins": {
+        const sui = chainMap.get("sui");
+        if (!sui) return null;
+        const rpcUrls = getResolvedRpcUrls(sui, env);
+        address = await resolveSuiNS(detection.name, rpcUrls);
+        break;
+      }
+      case "aptosnames": {
+        address = await resolveAptosNames(detection.name);
         break;
       }
     }

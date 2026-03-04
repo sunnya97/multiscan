@@ -141,7 +141,7 @@ export default function ResultsList({
           <div className="integrations__group">
             <span className="integrations__label">Names</span>
             <div className="integrations__tags">
-              {[".eth", ".sol", ".bnb", ".osmo", ".cosmos"].map((c) => (
+              {[".eth", ".sol", ".bnb", ".osmo", ".cosmos", ".ton", ".sui", ".apt"].map((c) => (
                 <span key={c} className="integrations__tag integrations__tag--name">{c}</span>
               ))}
             </div>
