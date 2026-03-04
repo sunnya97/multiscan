@@ -1,4 +1,4 @@
-import { Chain, InputType } from "./chains";
+import { Chain, CHAINS, InputType } from "./chains";
 
 interface Match {
   chainId: string;
@@ -6,6 +6,11 @@ interface Match {
 }
 
 const BASE58_CHAR = "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]";
+
+// Build Cosmos lookup tables from CHAINS data
+const COSMOS_CHAINS_LIST = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix);
+const BECH32_PREFIX_TO_CHAIN = new Map(COSMOS_CHAINS_LIST.map((c) => [c.bech32Prefix!, c.id]));
+const COSMOS_CHAIN_IDS = COSMOS_CHAINS_LIST.map((c) => c.id);
 
 function getMatches(input: string): Match[] {
   const matches: Match[] = [];
@@ -58,11 +63,9 @@ function getMatches(input: string): Match[] {
 
   // IBC denom: ibc/ + 64 hex chars — candidate for all Cosmos chains
   if (/^ibc\/[0-9A-Fa-f]{64}$/i.test(trimmed)) {
-    matches.push(
-      { chainId: "cosmos", inputType: "denom" },
-      { chainId: "osmosis", inputType: "denom" },
-      { chainId: "celestia", inputType: "denom" },
-    );
+    for (const chainId of COSMOS_CHAIN_IDS) {
+      matches.push({ chainId, inputType: "denom" });
+    }
     return matches;
   }
 
@@ -70,30 +73,20 @@ function getMatches(input: string): Match[] {
   if (/^factory\/[a-z]+1[a-z0-9]+\/.+$/.test(trimmed)) {
     const bech32Addr = trimmed.split("/")[1];
     const prefix = bech32Addr.split("1")[0];
-    const prefixToChain: Record<string, string> = {
-      osmo: "osmosis",
-      cosmos: "cosmos",
-      celestia: "celestia",
-    };
-    const chainId = prefixToChain[prefix];
+    const chainId = BECH32_PREFIX_TO_CHAIN.get(prefix);
     if (chainId) {
       matches.push({ chainId, inputType: "denom" });
     }
     return matches;
   }
 
-  // Cosmos-family addresses with specific prefixes
-  if (/^cosmos1[a-z0-9]{38,58}$/.test(trimmed)) {
-    matches.push({ chainId: "cosmos", inputType: "address" });
-    return matches;
-  }
-  if (/^osmo1[a-z0-9]{38,58}$/.test(trimmed)) {
-    matches.push({ chainId: "osmosis", inputType: "address" });
-    return matches;
-  }
-  if (/^celestia1[a-z0-9]{38,58}$/.test(trimmed)) {
-    matches.push({ chainId: "celestia", inputType: "address" });
-    return matches;
+  // Cosmos-family addresses — match by bech32 prefix
+  for (const [prefix, chainId] of BECH32_PREFIX_TO_CHAIN) {
+    const regex = new RegExp(`^${prefix}1[a-z0-9]{38,58}$`);
+    if (regex.test(trimmed)) {
+      matches.push({ chainId, inputType: "address" });
+      return matches;
+    }
   }
 
   // Bitcoin addresses
@@ -149,11 +142,11 @@ function getMatches(input: string): Match[] {
 
   // 64 hex chars (no 0x prefix) — could be Bitcoin tx, Cosmos txs, Tron tx, TON tx, Polkadot tx, NEAR implicit addr
   if (/^[0-9a-fA-F]{64}$/.test(trimmed)) {
+    matches.push({ chainId: "bitcoin", inputType: "transaction" });
+    for (const chainId of COSMOS_CHAIN_IDS) {
+      matches.push({ chainId, inputType: "transaction" });
+    }
     matches.push(
-      { chainId: "bitcoin", inputType: "transaction" },
-      { chainId: "cosmos", inputType: "transaction" },
-      { chainId: "osmosis", inputType: "transaction" },
-      { chainId: "celestia", inputType: "transaction" },
       { chainId: "tron", inputType: "transaction" },
       { chainId: "ton", inputType: "transaction" },
       { chainId: "polkadot", inputType: "transaction" },

@@ -4,6 +4,15 @@ node_modules/
 # Raycast build output
 .raycast/
 
+# Website build output
+website/dist/
+
+# Worker static assets (copied from website)
+worker/dist/
+
+# Wrangler
+.wrangler/
+
 # OS files
 .DS_Store
 
