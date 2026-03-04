@@ -577,6 +577,186 @@ describe("NEAR verification", () => {
   });
 });
 
+// --- Monero verification ---
+
+describe("Monero verification", () => {
+  it("always returns unverified (privacy chain)", async () => {
+    const addr = "4" + "A".repeat(94);
+    const moneroChain = CHAINS.find((c) => c.id === "monero")!;
+    const detections: DetectionResult[] = [{
+      chain: moneroChain,
+      inputType: "address",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(addr, detections, {});
+    expect(results[0].status).toBe("unverified");
+  });
+});
+
+// --- XRP verification ---
+
+describe("XRP verification", () => {
+  const env: Env = {};
+
+  it("tx found via XRPL tx method", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      {
+        match: (url, body) => url.includes("ripple.com") && !!body?.includes('"tx"'),
+        response: jsonResponse({ result: { status: "success", hash: txHash } }),
+      },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const xrpChain = CHAINS.find((c) => c.id === "xrp")!;
+    const detections: DetectionResult[] = [{
+      chain: xrpChain,
+      inputType: "transaction",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address found via account_info", async () => {
+    const addr = "rN7n3473SaZBCG4dFL83w7p1W9cgPJxtfR";
+    routeFetch([
+      {
+        match: (url, body) => url.includes("ripple.com") && !!body?.includes("account_info"),
+        response: jsonResponse({ result: { account_data: { Sequence: 5 } } }),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+});
+
+// --- Stellar verification ---
+
+describe("Stellar verification", () => {
+  const env: Env = {};
+
+  it("tx found via Horizon API", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      {
+        match: "horizon.stellar.org/transactions/",
+        response: new Response("{}", { status: 200 }),
+      },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const stellarChain = CHAINS.find((c) => c.id === "stellar")!;
+    const detections: DetectionResult[] = [{
+      chain: stellarChain,
+      inputType: "transaction",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address found via Horizon accounts", async () => {
+    const addr = "G" + "A".repeat(55);
+    routeFetch([
+      {
+        match: "horizon.stellar.org/accounts/",
+        response: new Response("{}", { status: 200 }),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address 404 → not_found", async () => {
+    const addr = "G" + "A".repeat(55);
+    routeFetch([
+      {
+        match: "horizon.stellar.org/accounts/",
+        response: new Response("", { status: 404 }),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("not_found");
+  });
+});
+
+// --- Bittensor verification ---
+
+describe("Bittensor verification", () => {
+  it("always returns unverified (no free API)", async () => {
+    const addr = "5" + "F".repeat(47);
+    const taoChain = CHAINS.find((c) => c.id === "bittensor")!;
+    const detections: DetectionResult[] = [{
+      chain: taoChain,
+      inputType: "address",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(addr, detections, {});
+    expect(results[0].status).toBe("unverified");
+  });
+});
+
+// --- Cardano verification ---
+
+describe("Cardano verification", () => {
+  const env: Env = {};
+
+  it("address found via Koios", async () => {
+    const addr = "addr1" + "a".repeat(58);
+    routeFetch([
+      {
+        match: "koios.rest/api/v1/address_info",
+        response: jsonResponse([{ balance: "1000000" }]),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address not found (empty array) → not_found", async () => {
+    const addr = "addr1" + "a".repeat(58);
+    routeFetch([
+      {
+        match: "koios.rest/api/v1/address_info",
+        response: jsonResponse([]),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("not_found");
+  });
+
+  it("tx found via Koios tx_info", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      {
+        match: (url, body) => url.includes("koios.rest") && !!body?.includes("_tx_hashes"),
+        response: jsonResponse([{ tx_hash: txHash }]),
+      },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const cardanoChain = CHAINS.find((c) => c.id === "cardano")!;
+    const detections: DetectionResult[] = [{
+      chain: cardanoChain,
+      inputType: "transaction",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+});
+
 // --- Dogecoin verification (BlockCypher) ---
 
 describe("Dogecoin verification", () => {

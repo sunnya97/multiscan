@@ -61,9 +61,9 @@ describe("EVM address detection", () => {
 describe("0x + 64 hex detection", () => {
   const hash = "0x" + "a".repeat(64);
 
-  it("returns 15 EVM tx + Sui addr/tx + Aptos addr/tx = 19 results", () => {
+  it("returns 15 EVM tx + Sui addr/tx + Aptos addr/tx + Bittensor tx = 20 results", () => {
     const results = detect(hash, CHAINS);
-    expect(results).toHaveLength(19);
+    expect(results).toHaveLength(20);
   });
 
   it("includes all EVM chains as transactions", () => {
@@ -285,6 +285,111 @@ describe("ZCash address detection", () => {
   });
 });
 
+// --- Monero ---
+
+describe("Monero address detection", () => {
+  it("detects address starting with 4 (95 chars)", () => {
+    const addr = "4" + "A".repeat(94);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("monero");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects address starting with 8 (subaddress)", () => {
+    const addr = "8" + "B".repeat(94);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("monero");
+  });
+
+  it("rejects wrong length", () => {
+    expect(detect("4" + "A".repeat(93), CHAINS)).toHaveLength(0);
+  });
+});
+
+// --- XRP ---
+
+describe("XRP address detection", () => {
+  it("detects r + base58 address (25-35 chars)", () => {
+    const results = detect("rN7n3473SaZBCG4dFL83w7p1W9cgPJxtfR", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("xrp");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("does not conflict with Cosmos bech32 (no r prefix in Cosmos)", () => {
+    const results = detect("rN7n3473SaZBCG4dFL83w7p1W9cgPJxtfR", CHAINS);
+    expect(results[0].chain.family).toBe("xrp");
+  });
+});
+
+// --- Stellar ---
+
+describe("Stellar address detection", () => {
+  it("detects G + 55 base32 chars", () => {
+    const addr = "G" + "A".repeat(55);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("stellar");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("rejects lowercase", () => {
+    expect(detect("g" + "a".repeat(55), CHAINS)).toHaveLength(0);
+  });
+
+  it("rejects wrong length", () => {
+    expect(detect("G" + "A".repeat(54), CHAINS)).toHaveLength(0);
+  });
+});
+
+// --- Bittensor ---
+
+describe("Bittensor address detection", () => {
+  it("detects 5 + 47 SS58 chars", () => {
+    const addr = "5" + "F".repeat(47);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bittensor");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("Bittensor tx in 0x+64 hex block", () => {
+    const hash = "0x" + "a".repeat(64);
+    const results = detect(hash, CHAINS);
+    const tao = results.find((r) => r.chain.id === "bittensor");
+    expect(tao).toBeDefined();
+    expect(tao!.inputType).toBe("transaction");
+  });
+});
+
+// --- Cardano ---
+
+describe("Cardano address detection", () => {
+  it("detects Shelley addr1 address", () => {
+    const addr = "addr1" + "a".repeat(58);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("cardano");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects Byron Ae2 address", () => {
+    const addr = "Ae2" + "B".repeat(50);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("cardano");
+  });
+
+  it("detects Byron DdzFF address", () => {
+    const addr = "DdzFF" + "B".repeat(50);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("cardano");
+  });
+});
+
 // --- Tron ---
 
 describe("Tron address detection", () => {
@@ -424,6 +529,14 @@ describe("bare 64 hex detection", () => {
   it("includes NEAR as address (implicit account)", () => {
     const results = detect(hex64, CHAINS);
     expect(results.find((r) => r.chain.id === "near")!.inputType).toBe("address");
+  });
+
+  it("includes Monero, XRP, Stellar, Cardano as tx", () => {
+    const results = detect(hex64, CHAINS);
+    expect(results.find((r) => r.chain.id === "monero")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "xrp")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "stellar")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "cardano")!.inputType).toBe("transaction");
   });
 });
 

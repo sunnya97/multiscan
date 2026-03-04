@@ -558,6 +558,71 @@ async function verifyBlockchairAddr(apiUrl: string, address: string): Promise<bo
   return (addrData?.address?.transaction_count ?? 0) > 0;
 }
 
+// --- XRP Ledger ---
+
+async function xrpRpcCall(rpcUrl: string, method: string, params: unknown[]): Promise<unknown> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ method, params }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  const json = (await response.json()) as { result?: { status?: string; [key: string]: unknown } };
+  if (!json.result || json.result.status === "error") return null;
+  return json.result;
+}
+
+async function verifyXrpTx(rpcUrl: string, txHash: string): Promise<boolean> {
+  const result = await xrpRpcCall(rpcUrl, "tx", [{ transaction: txHash }]);
+  return result != null;
+}
+
+async function verifyXrpAddr(rpcUrl: string, address: string): Promise<boolean> {
+  const result = (await xrpRpcCall(rpcUrl, "account_info", [{ account: address }])) as {
+    account_data?: { Sequence?: number };
+  } | null;
+  return result?.account_data != null;
+}
+
+// --- Stellar ---
+
+async function verifyStellarTx(apiUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/transactions/${txHash}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+async function verifyStellarAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/accounts/${address}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+// --- Cardano ---
+
+async function verifyCardanoAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/address_info?_address=${encodeURIComponent(address)}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as Array<{ balance?: string }>;
+  return Array.isArray(json) && json.length > 0;
+}
+
+async function verifyCardanoTx(apiUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/tx_info`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ _tx_hashes: [txHash] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as Array<{ tx_hash?: string }>;
+  return Array.isArray(json) && json.length > 0;
+}
+
 // --- Hyperliquid Core ---
 
 async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promise<boolean> {
@@ -678,6 +743,24 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "zcash":
         found = await tryEndpoints(rpcUrls, (url) =>
           isTx ? verifyBlockchairTx(url, input) : verifyBlockchairAddr(url, input),
+        );
+        break;
+      case "monero":
+      case "bittensor":
+        return "unverified";
+      case "xrp":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyXrpTx(url, input) : verifyXrpAddr(url, input),
+        );
+        break;
+      case "stellar":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyStellarTx(url, input) : verifyStellarAddr(url, input),
+        );
+        break;
+      case "cardano":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyCardanoTx(url, input) : verifyCardanoAddr(url, input),
         );
         break;
       default:

@@ -12,7 +12,12 @@ export type FormatFamily =
   | "dogecoin"
   | "litecoin"
   | "bitcoincash"
-  | "zcash";
+  | "zcash"
+  | "monero"
+  | "xrp"
+  | "stellar"
+  | "bittensor"
+  | "cardano";
 
 export type InputType = "address" | "transaction" | "denom";
 
@@ -954,6 +959,62 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [
       { url: "https://rpc.mainnet.near.org", provider: "public" },
+    ],
+  },
+  {
+    id: "monero",
+    name: "Monero",
+    symbol: "XMR",
+    family: "monero",
+    explorers: [
+      { name: "xmrchain.net", baseUrl: "https://xmrchain.net", addressPath: "/search?value={query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "xrp",
+    name: "XRP Ledger",
+    symbol: "XRP",
+    family: "xrp",
+    explorers: [
+      { name: "XRPScan", baseUrl: "https://xrpscan.com", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://s1.ripple.com:51234/", provider: "public" },
+    ],
+  },
+  {
+    id: "stellar",
+    name: "Stellar",
+    symbol: "XLM",
+    family: "stellar",
+    explorers: [
+      { name: "StellarExpert", baseUrl: "https://stellar.expert/explorer/public", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://horizon.stellar.org", provider: "public" },
+    ],
+  },
+  {
+    id: "bittensor",
+    name: "Bittensor",
+    symbol: "TAO",
+    family: "bittensor",
+    explorers: [
+      { name: "Taostats", baseUrl: "https://taostats.io", addressPath: "/account/{query}", txPath: "/extrinsic/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "cardano",
+    name: "Cardano",
+    symbol: "ADA",
+    family: "cardano",
+    explorers: [
+      { name: "Cardanoscan", baseUrl: "https://cardanoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.koios.rest/api/v1", provider: "public" },
     ],
   },
 ];

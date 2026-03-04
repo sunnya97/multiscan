@@ -64,6 +64,8 @@ function getMatches(input: string): Match[] {
     matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });
     // Aptos address or transaction
     matches.push({ chainId: "aptos", inputType: "address" }, { chainId: "aptos", inputType: "transaction" });
+    // Bittensor extrinsic hash
+    matches.push({ chainId: "bittensor", inputType: "transaction" });
     return matches;
   }
 
@@ -146,6 +148,44 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Monero address: starts with 4 or 8, 95 base58 chars
+  const moneroAddrRegex = new RegExp(`^[48]${BASE58_CHAR}{94}$`);
+  if (moneroAddrRegex.test(trimmed)) {
+    matches.push({ chainId: "monero", inputType: "address" });
+    return matches;
+  }
+
+  // XRP address: starts with r, base58 25-35 chars
+  const xrpAddrRegex = new RegExp(`^r${BASE58_CHAR}{24,34}$`);
+  if (xrpAddrRegex.test(trimmed)) {
+    matches.push({ chainId: "xrp", inputType: "address" });
+    return matches;
+  }
+
+  // Stellar address: starts with G, 56 chars (base32 uppercase)
+  if (/^G[A-Z2-7]{55}$/.test(trimmed)) {
+    matches.push({ chainId: "stellar", inputType: "address" });
+    return matches;
+  }
+
+  // Bittensor address: starts with 5, SS58 format, 48 chars
+  const bittensorAddrRegex = new RegExp(`^5${BASE58_CHAR}{47}$`);
+  if (bittensorAddrRegex.test(trimmed)) {
+    matches.push({ chainId: "bittensor", inputType: "address" });
+    return matches;
+  }
+
+  // Cardano address: Shelley addr1 + bech32 (58+ chars), Byron Ae2/DdzFF + base58
+  if (/^addr1[a-z0-9]{58,}$/.test(trimmed)) {
+    matches.push({ chainId: "cardano", inputType: "address" });
+    return matches;
+  }
+  const cardanoByronRegex = new RegExp(`^(Ae2|DdzFF)${BASE58_CHAR}{50,}$`);
+  if (cardanoByronRegex.test(trimmed)) {
+    matches.push({ chainId: "cardano", inputType: "address" });
+    return matches;
+  }
+
   // Tron address: T + 33 base58 chars (34 chars total)
   const tronAddrRegex = new RegExp(`^T${BASE58_CHAR}{33}$`);
   if (tronAddrRegex.test(trimmed)) {
@@ -199,6 +239,10 @@ function getMatches(input: string): Match[] {
       { chainId: "ton", inputType: "transaction" },
       { chainId: "polkadot", inputType: "transaction" },
       { chainId: "near", inputType: "address" },
+      { chainId: "monero", inputType: "transaction" },
+      { chainId: "xrp", inputType: "transaction" },
+      { chainId: "stellar", inputType: "transaction" },
+      { chainId: "cardano", inputType: "transaction" },
     );
     return matches;
   }

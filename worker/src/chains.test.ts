@@ -94,8 +94,10 @@ describe("CHAINS data integrity", () => {
     }
   });
 
-  it("every chain has at least one rpcUrl", () => {
+  it("every chain has at least one rpcUrl (except unverifiable chains)", () => {
+    const unverifiable = new Set(["monero", "bittensor"]);
     for (const chain of CHAINS) {
+      if (unverifiable.has(chain.id)) continue;
       expect(chain.rpcUrls.length, `${chain.id} has no rpcUrls`).toBeGreaterThanOrEqual(1);
     }
   });
