@@ -8,7 +8,11 @@ export type FormatFamily =
   | "tron"
   | "ton"
   | "polkadot"
-  | "near";
+  | "near"
+  | "dogecoin"
+  | "litecoin"
+  | "bitcoincash"
+  | "zcash";
 
 export type InputType = "address" | "transaction" | "denom";
 
@@ -342,6 +346,55 @@ export const CHAINS: Chain[] = [
       { url: "https://api.mainnet-beta.solana.com", provider: "public" },
     ],
   },
+  {
+    id: "dogecoin",
+    name: "Dogecoin",
+    symbol: "DOGE",
+    family: "dogecoin",
+    explorers: [
+      { name: "Blockchair", baseUrl: "https://blockchair.com/dogecoin", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.blockcypher.com/v1/doge/main", provider: "public" },
+    ],
+  },
+  {
+    id: "litecoin",
+    name: "Litecoin",
+    symbol: "LTC",
+    family: "litecoin",
+    explorers: [
+      { name: "Blockchair", baseUrl: "https://blockchair.com/litecoin", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.blockcypher.com/v1/ltc/main", provider: "public" },
+    ],
+  },
+  {
+    id: "bitcoin-cash",
+    name: "Bitcoin Cash",
+    symbol: "BCH",
+    family: "bitcoincash",
+    explorers: [
+      { name: "Blockchair", baseUrl: "https://blockchair.com/bitcoin-cash", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.blockchair.com/bitcoin-cash", provider: "public" },
+    ],
+  },
+  {
+    id: "zcash",
+    name: "ZCash",
+    symbol: "ZEC",
+    family: "zcash",
+    explorers: [
+      { name: "Blockchair", baseUrl: "https://blockchair.com/zcash", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.blockchair.com/zcash", provider: "public" },
+    ],
+  },
+
   // --- Cosmos Chains ---
   {
     id: "cosmos",

@@ -518,6 +518,46 @@ export async function getCoinGeckoUrl(
   return null;
 }
 
+// --- BlockCypher (Dogecoin, Litecoin) ---
+
+async function verifyBlockCypherTx(apiUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/txs/${txHash}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+async function verifyBlockCypherAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/addrs/${address}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { n_tx?: number; total_received?: number };
+  return (json.n_tx ?? 0) > 0;
+}
+
+// --- Blockchair (Bitcoin Cash, ZCash) ---
+
+async function verifyBlockchairTx(apiUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/dashboards/transaction/${txHash}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { data?: Record<string, unknown> };
+  return json.data != null && Object.keys(json.data).length > 0;
+}
+
+async function verifyBlockchairAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/dashboards/address/${address}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { data?: Record<string, { address?: { transaction_count?: number } }> };
+  if (!json.data) return false;
+  const addrData = Object.values(json.data)[0];
+  return (addrData?.address?.transaction_count ?? 0) > 0;
+}
+
 // --- Hyperliquid Core ---
 
 async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promise<boolean> {
@@ -626,6 +666,18 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "near":
         found = await tryEndpoints(rpcUrls, (url) =>
           isTx ? verifyNearTx(url, input) : verifyNearAddr(url, input),
+        );
+        break;
+      case "dogecoin":
+      case "litecoin":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyBlockCypherTx(url, input) : verifyBlockCypherAddr(url, input),
+        );
+        break;
+      case "bitcoincash":
+      case "zcash":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyBlockchairTx(url, input) : verifyBlockchairAddr(url, input),
         );
         break;
       default:

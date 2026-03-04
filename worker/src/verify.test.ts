@@ -577,6 +577,134 @@ describe("NEAR verification", () => {
   });
 });
 
+// --- Dogecoin verification (BlockCypher) ---
+
+describe("Dogecoin verification", () => {
+  const env: Env = {};
+
+  it("tx found via BlockCypher", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      { match: "blockcypher.com/v1/doge/main/txs/", response: new Response("{}", { status: 200 }) },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "dogecoin");
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address with n_tx > 0 → found", async () => {
+    const addr = "DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L";
+    routeFetch([
+      { match: "blockcypher.com/v1/doge/main/addrs/", response: jsonResponse({ n_tx: 5 }) },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+});
+
+// --- Litecoin verification (BlockCypher) ---
+
+describe("Litecoin verification", () => {
+  const env: Env = {};
+
+  it("tx found via BlockCypher", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      { match: "blockcypher.com/v1/ltc/main/txs/", response: new Response("{}", { status: 200 }) },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "litecoin");
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address with n_tx > 0 → found", async () => {
+    const addr = "LaMT348PWRnrqeeWArpwQPbuanpXDZGEUz";
+    routeFetch([
+      { match: "blockcypher.com/v1/ltc/main/addrs/", response: jsonResponse({ n_tx: 3 }) },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+});
+
+// --- Bitcoin Cash verification (Blockchair) ---
+
+describe("Bitcoin Cash verification", () => {
+  const env: Env = {};
+
+  it("tx found via Blockchair", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      {
+        match: "blockchair.com/bitcoin-cash/dashboards/transaction/",
+        response: jsonResponse({ data: { [txHash]: { transaction: {} } } }),
+      },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "bitcoin-cash");
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address with transaction_count > 0 → found", async () => {
+    const addr = "q" + "a".repeat(41);
+    routeFetch([
+      {
+        match: "blockchair.com/bitcoin-cash/dashboards/address/",
+        response: jsonResponse({ data: { [addr]: { address: { transaction_count: 10 } } } }),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+});
+
+// --- ZCash verification (Blockchair) ---
+
+describe("ZCash verification", () => {
+  const env: Env = {};
+
+  it("tx found via Blockchair", async () => {
+    const txHash = "a".repeat(64);
+    routeFetch([
+      {
+        match: "blockchair.com/zcash/dashboards/transaction/",
+        response: jsonResponse({ data: { [txHash]: { transaction: {} } } }),
+      },
+      { match: () => true, response: new Response("", { status: 404 }) },
+    ]);
+
+    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "zcash");
+    const results = await verifyResults(txHash, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address with transaction_count > 0 → found", async () => {
+    const addr = "t1" + "R".repeat(32);
+    routeFetch([
+      {
+        match: "blockchair.com/zcash/dashboards/address/",
+        response: jsonResponse({ data: { [addr]: { address: { transaction_count: 2 } } } }),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+});
+
 // --- Hyperliquid Core verification ---
 
 describe("Hyperliquid Core verification", () => {

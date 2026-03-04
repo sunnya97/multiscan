@@ -117,7 +117,7 @@ export default function ResultsList({
           <div className="integrations__group">
             <span className="integrations__label">L1</span>
             <div className="integrations__tags">
-              {["Bitcoin", "Solana", "Tron", "TON", "Polkadot", "NEAR"].map((c) => (
+              {["Bitcoin", "Solana", "Tron", "TON", "Polkadot", "NEAR", "Dogecoin", "Litecoin", "Bitcoin Cash", "ZCash"].map((c) => (
                 <span key={c} className="integrations__tag">{c}</span>
               ))}
             </div>

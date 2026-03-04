@@ -193,6 +193,98 @@ describe("Bitcoin address detection", () => {
   });
 });
 
+// --- Dogecoin ---
+
+describe("Dogecoin address detection", () => {
+  it("detects D prefix address", () => {
+    const results = detect("DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("dogecoin");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects A prefix (P2SH)", () => {
+    const results = detect("A" + "B".repeat(33), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("dogecoin");
+  });
+
+  it("detects 9 prefix (P2SH)", () => {
+    const results = detect("9" + "B".repeat(33), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("dogecoin");
+  });
+});
+
+// --- Litecoin ---
+
+describe("Litecoin address detection", () => {
+  it("detects L prefix address", () => {
+    const results = detect("LaMT348PWRnrqeeWArpwQPbuanpXDZGEUz", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("litecoin");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects M prefix (P2SH)", () => {
+    const results = detect("M" + "B".repeat(33), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("litecoin");
+  });
+
+  it("detects ltc1 bech32 address", () => {
+    const results = detect("ltc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfhmdq", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("litecoin");
+  });
+});
+
+// --- Bitcoin Cash ---
+
+describe("Bitcoin Cash address detection", () => {
+  it("detects CashAddr q prefix", () => {
+    const results = detect("q" + "a".repeat(41), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bitcoin-cash");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects CashAddr p prefix", () => {
+    const results = detect("p" + "a".repeat(41), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bitcoin-cash");
+  });
+
+  it("detects with bitcoincash: prefix", () => {
+    const results = detect("bitcoincash:q" + "a".repeat(41), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bitcoin-cash");
+  });
+});
+
+// --- ZCash ---
+
+describe("ZCash address detection", () => {
+  it("detects t1 transparent address", () => {
+    const results = detect("t1" + "R".repeat(32), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("zcash");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects t3 transparent address", () => {
+    const results = detect("t3" + "R".repeat(32), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("zcash");
+  });
+
+  it("detects zs1 shielded address", () => {
+    const results = detect("zs1" + "a".repeat(65), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("zcash");
+  });
+});
+
 // --- Tron ---
 
 describe("Tron address detection", () => {
@@ -314,6 +406,14 @@ describe("bare 64 hex detection", () => {
     expect(cosmosTx.every((r) => r.inputType === "transaction")).toBe(true);
   });
 
+  it("includes UTXO chains as tx", () => {
+    const results = detect(hex64, CHAINS);
+    expect(results.find((r) => r.chain.id === "dogecoin")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "litecoin")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "bitcoin-cash")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "zcash")!.inputType).toBe("transaction");
+  });
+
   it("includes Tron tx, TON tx, Polkadot tx", () => {
     const results = detect(hex64, CHAINS);
     expect(results.find((r) => r.chain.id === "tron")!.inputType).toBe("transaction");
@@ -340,7 +440,7 @@ describe("Solana address detection", () => {
   });
 
   it("detects 32 char base58", () => {
-    const addr = "A".repeat(32);
+    const addr = "B".repeat(32);
     const results = detect(addr, CHAINS);
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("solana");

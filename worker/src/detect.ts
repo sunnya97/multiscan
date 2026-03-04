@@ -108,6 +108,44 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Dogecoin address: D + base58, 25-34 chars (legacy), A/9 for P2SH
+  const dogeAddrRegex = new RegExp(`^[DA9]${BASE58_CHAR}{24,33}$`);
+  if (dogeAddrRegex.test(trimmed)) {
+    // D prefix is unique to Dogecoin; A/9 are Dogecoin P2SH
+    if (trimmed[0] === "D" || trimmed[0] === "A" || trimmed[0] === "9") {
+      matches.push({ chainId: "dogecoin", inputType: "address" });
+      return matches;
+    }
+  }
+
+  // Litecoin address: L/M + base58 (27-34 chars), or ltc1 bech32
+  const ltcLegacyRegex = new RegExp(`^[LM]${BASE58_CHAR}{26,33}$`);
+  if (ltcLegacyRegex.test(trimmed)) {
+    matches.push({ chainId: "litecoin", inputType: "address" });
+    return matches;
+  }
+  if (/^ltc1[a-zA-HJ-NP-Za-km-z0-9]{25,62}$/.test(trimmed)) {
+    matches.push({ chainId: "litecoin", inputType: "address" });
+    return matches;
+  }
+
+  // Bitcoin Cash CashAddr: q/p + base32 (42 chars), optionally prefixed with bitcoincash:
+  if (/^(bitcoincash:)?[qp][a-z0-9]{41}$/.test(trimmed)) {
+    matches.push({ chainId: "bitcoin-cash", inputType: "address" });
+    return matches;
+  }
+
+  // ZCash address: t1/t3 + base58 (33 chars), or zs1 bech32
+  const zcashTransparentRegex = new RegExp(`^t[13]${BASE58_CHAR}{32}$`);
+  if (zcashTransparentRegex.test(trimmed)) {
+    matches.push({ chainId: "zcash", inputType: "address" });
+    return matches;
+  }
+  if (/^zs1[a-z0-9]{65,}$/.test(trimmed)) {
+    matches.push({ chainId: "zcash", inputType: "address" });
+    return matches;
+  }
+
   // Tron address: T + 33 base58 chars (34 chars total)
   const tronAddrRegex = new RegExp(`^T${BASE58_CHAR}{33}$`);
   if (tronAddrRegex.test(trimmed)) {
@@ -146,9 +184,13 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
-  // 64 hex chars (no 0x prefix) — could be Bitcoin tx, Cosmos txs, Tron tx, TON tx, Polkadot tx, NEAR implicit addr
+  // 64 hex chars (no 0x prefix) — could be Bitcoin tx, Cosmos txs, Tron tx, TON tx, Polkadot tx, NEAR implicit addr, UTXO txs
   if (/^[0-9a-fA-F]{64}$/.test(trimmed)) {
     matches.push({ chainId: "bitcoin", inputType: "transaction" });
+    matches.push({ chainId: "dogecoin", inputType: "transaction" });
+    matches.push({ chainId: "litecoin", inputType: "transaction" });
+    matches.push({ chainId: "bitcoin-cash", inputType: "transaction" });
+    matches.push({ chainId: "zcash", inputType: "transaction" });
     for (const chainId of COSMOS_CHAIN_IDS) {
       matches.push({ chainId, inputType: "transaction" });
     }
