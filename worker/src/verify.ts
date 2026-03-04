@@ -623,6 +623,15 @@ async function verifyCardanoTx(apiUrl: string, txHash: string): Promise<boolean>
   return Array.isArray(json) && json.length > 0;
 }
 
+// --- Lightning Network ---
+
+async function verifyLightningNode(apiUrl: string, pubkey: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/nodes/${pubkey}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
 // --- Hyperliquid Core ---
 
 async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promise<boolean> {
@@ -745,6 +754,12 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
           isTx ? verifyBlockchairTx(url, input) : verifyBlockchairAddr(url, input),
         );
         break;
+      case "lightning":
+        if (inputType === "address") {
+          found = await tryEndpoints(rpcUrls, (url) => verifyLightningNode(url, input));
+          break;
+        }
+        return "unverified";
       case "monero":
       case "bittensor":
         return "unverified";

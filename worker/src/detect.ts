@@ -224,6 +224,12 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Lightning Network: node pubkey (66 hex chars, no 0x prefix)
+  if (/^[0-9a-fA-F]{66}$/.test(trimmed)) {
+    matches.push({ chainId: "lightning", inputType: "address" });
+    return matches;
+  }
+
   // 64 hex chars (no 0x prefix) — could be Bitcoin tx, Cosmos txs, Tron tx, TON tx, Polkadot tx, NEAR implicit addr, UTXO txs
   if (/^[0-9a-fA-F]{64}$/.test(trimmed)) {
     matches.push({ chainId: "bitcoin", inputType: "transaction" });

@@ -390,6 +390,28 @@ describe("Cardano address detection", () => {
   });
 });
 
+// --- Lightning Network ---
+
+describe("Lightning Network detection", () => {
+  it("detects node pubkey (66 hex chars)", () => {
+    const pubkey = "02" + "a".repeat(64);
+    const results = detect(pubkey, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("lightning");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("generates explorer URLs for node pubkey", () => {
+    const pubkey = "02" + "a".repeat(64);
+    const results = detect(pubkey, CHAINS);
+    expect(results[0].explorerUrls.length).toBe(2);
+    expect(results[0].explorerUrls[0].name).toBe("mempool.space");
+    expect(results[0].explorerUrls[0].url).toContain("/lightning/node/");
+    expect(results[0].explorerUrls[1].name).toBe("Amboss");
+    expect(results[0].explorerUrls[1].url).toContain("/node/");
+  });
+});
+
 // --- Tron ---
 
 describe("Tron address detection", () => {

@@ -17,7 +17,8 @@ export type FormatFamily =
   | "xrp"
   | "stellar"
   | "bittensor"
-  | "cardano";
+  | "cardano"
+  | "lightning";
 
 export type InputType = "address" | "transaction" | "denom";
 
@@ -1015,6 +1016,19 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [
       { url: "https://api.koios.rest/api/v1", provider: "public" },
+    ],
+  },
+  {
+    id: "lightning",
+    name: "Lightning Network",
+    symbol: "BTC",
+    family: "lightning",
+    explorers: [
+      { name: "mempool.space", baseUrl: "https://mempool.space", addressPath: "/lightning/node/{query}", txPath: "" },
+      { name: "Amboss", baseUrl: "https://amboss.space", addressPath: "/node/{query}", txPath: "" },
+    ],
+    rpcUrls: [
+      { url: "https://mempool.space/api/v1/lightning", provider: "public" },
     ],
   },
 ];
