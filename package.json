@@ -7,6 +7,7 @@
     "dev:website": "npm run dev --workspace=website",
     "dev:raycast": "npm run dev --workspace=raycast",
     "build:website": "npm run build --workspace=website",
+    "test": "npm test --workspace=worker",
     "deploy": "npm run build --workspace=website && rm -rf worker/dist && cp -r website/dist worker/dist && npm run deploy --workspace=worker"
   }
 }

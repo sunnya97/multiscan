@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "update-cosmos": "npx tsx scripts/update-cosmos-chains.ts"
   },
   "dependencies": {
@@ -13,6 +15,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.0.0",
     "typescript": "^5.8.0",
+    "vitest": "^3.0.0",
     "wrangler": "^3.0.0"
   }
 }
