@@ -15,7 +15,7 @@ function inputTypes(results: DetectionResult[]): string[] {
 const EVM_CHAINS = [
   "ethereum", "base", "arbitrum", "optimism", "polygon",
   "bsc", "avalanche", "fantom", "zksync", "linea", "scroll", "mantle",
-  "ethereum-classic",
+  "ethereum-classic", "hyperliquid-evm", "hyperliquid-core",
 ];
 
 const COSMOS_CHAIN_IDS = CHAINS.filter((c) => c.family === "cosmos").map((c) => c.id);
@@ -61,16 +61,16 @@ describe("EVM address detection", () => {
 describe("0x + 64 hex detection", () => {
   const hash = "0x" + "a".repeat(64);
 
-  it("returns 13 EVM tx + Sui addr/tx + Aptos addr/tx = 17 results", () => {
+  it("returns 15 EVM tx + Sui addr/tx + Aptos addr/tx = 19 results", () => {
     const results = detect(hash, CHAINS);
-    expect(results).toHaveLength(17);
+    expect(results).toHaveLength(19);
   });
 
   it("includes all EVM chains as transactions", () => {
     const results = detect(hash, CHAINS);
     const evmTx = results.filter((r) => r.chain.family === "evm");
     expect(evmTx.every((r) => r.inputType === "transaction")).toBe(true);
-    expect(evmTx).toHaveLength(13);
+    expect(evmTx).toHaveLength(15);
   });
 
   it("includes Sui as both address and transaction", () => {

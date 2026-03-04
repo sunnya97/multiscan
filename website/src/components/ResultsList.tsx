@@ -109,7 +109,7 @@ export default function ResultsList({
           <div className="integrations__group">
             <span className="integrations__label">EVM</span>
             <div className="integrations__tags">
-              {["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic"].map((c) => (
+              {["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM", "HyperCore"].map((c) => (
                 <span key={c} className="integrations__tag">{c}</span>
               ))}
             </div>

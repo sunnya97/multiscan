@@ -518,6 +518,21 @@ export async function getCoinGeckoUrl(
   return null;
 }
 
+// --- Hyperliquid Core ---
+
+async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type: "clearinghouseState", user: address }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { marginSummary?: { accountValue?: string } };
+  const accountValue = json.marginSummary?.accountValue;
+  return accountValue != null && accountValue !== "0" && accountValue !== "0.0";
+}
+
 // --- Main verification ---
 
 async function verifyEvm(chain: Chain, inputType: string, input: string, env: Env): Promise<boolean> {
@@ -559,6 +574,11 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
 
     switch (chain.family) {
       case "evm":
+        // HyperCore uses a custom API, not standard EVM RPC
+        if (chain.id === "hyperliquid-core" && inputType === "address") {
+          found = await tryEndpoints(rpcUrls, (url) => verifyHyperliquidCoreAddr(url, input));
+          break;
+        }
         found = await verifyEvm(chain, inputType, input, env);
         break;
       case "bitcoin":

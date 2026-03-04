@@ -577,6 +577,49 @@ describe("NEAR verification", () => {
   });
 });
 
+// --- Hyperliquid Core verification ---
+
+describe("Hyperliquid Core verification", () => {
+  const env: Env = {};
+  const addr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+
+  it("address found via clearinghouseState", async () => {
+    routeFetch([
+      {
+        match: (url, body) => url.includes("hyperliquid.xyz/info") && !!body?.includes("clearinghouseState"),
+        response: jsonResponse({ marginSummary: { accountValue: "1000.0" } }),
+      },
+    ]);
+
+    const coreChain = CHAINS.find((c) => c.id === "hyperliquid-core")!;
+    const detections: DetectionResult[] = [{
+      chain: coreChain,
+      inputType: "address",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("found");
+  });
+
+  it("address with zero account value → not_found", async () => {
+    routeFetch([
+      {
+        match: (url, body) => url.includes("hyperliquid.xyz/info") && !!body?.includes("clearinghouseState"),
+        response: jsonResponse({ marginSummary: { accountValue: "0.0" } }),
+      },
+    ]);
+
+    const coreChain = CHAINS.find((c) => c.id === "hyperliquid-core")!;
+    const detections: DetectionResult[] = [{
+      chain: coreChain,
+      inputType: "address",
+      explorerUrls: [],
+    }];
+    const results = await verifyResults(addr, detections, env);
+    expect(results[0].status).toBe("not_found");
+  });
+});
+
 // --- Cross-cutting: tryEndpoints failover ---
 
 describe("tryEndpoints failover", () => {

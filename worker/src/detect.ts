@@ -34,6 +34,8 @@ function getMatches(input: string): Match[] {
       { chainId: "scroll", inputType: "address" },
       { chainId: "mantle", inputType: "address" },
       { chainId: "ethereum-classic", inputType: "address" },
+      { chainId: "hyperliquid-evm", inputType: "address" },
+      { chainId: "hyperliquid-core", inputType: "address" },
     );
     return matches;
   }
@@ -55,6 +57,8 @@ function getMatches(input: string): Match[] {
       { chainId: "scroll", inputType: "transaction" },
       { chainId: "mantle", inputType: "transaction" },
       { chainId: "ethereum-classic", inputType: "transaction" },
+      { chainId: "hyperliquid-evm", inputType: "transaction" },
+      { chainId: "hyperliquid-core", inputType: "transaction" },
     );
     // Sui address or transaction (both are 0x + 64 hex)
     matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });

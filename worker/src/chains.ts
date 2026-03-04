@@ -286,6 +286,31 @@ export const CHAINS: Chain[] = [
     ],
   },
 
+  {
+    id: "hyperliquid-evm",
+    name: "HyperEVM",
+    symbol: "HYPE",
+    family: "evm",
+    explorers: [
+      { name: "Hypurrscan", baseUrl: "https://hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.hyperliquid.xyz/evm", provider: "public" },
+    ],
+  },
+  {
+    id: "hyperliquid-core",
+    name: "HyperCore",
+    symbol: "HYPE",
+    family: "evm",
+    explorers: [
+      { name: "Hypurrscan", baseUrl: "https://hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.hyperliquid.xyz/info", provider: "public" },
+    ],
+  },
+
   // --- Non-EVM Chains ---
   {
     id: "bitcoin",
