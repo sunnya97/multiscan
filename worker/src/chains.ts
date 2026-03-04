@@ -273,6 +273,19 @@ export const CHAINS: Chain[] = [
     ],
   },
 
+  {
+    id: "ethereum-classic",
+    name: "Ethereum Classic",
+    symbol: "ETC",
+    family: "evm",
+    explorers: [
+      { name: "Blockscout", baseUrl: "https://etc.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://etc.blockscout.com/api/eth-rpc", provider: "public" },
+    ],
+  },
+
   // --- Non-EVM Chains ---
   {
     id: "bitcoin",

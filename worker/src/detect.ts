@@ -33,6 +33,7 @@ function getMatches(input: string): Match[] {
       { chainId: "linea", inputType: "address" },
       { chainId: "scroll", inputType: "address" },
       { chainId: "mantle", inputType: "address" },
+      { chainId: "ethereum-classic", inputType: "address" },
     );
     return matches;
   }
@@ -53,6 +54,7 @@ function getMatches(input: string): Match[] {
       { chainId: "linea", inputType: "transaction" },
       { chainId: "scroll", inputType: "transaction" },
       { chainId: "mantle", inputType: "transaction" },
+      { chainId: "ethereum-classic", inputType: "transaction" },
     );
     // Sui address or transaction (both are 0x + 64 hex)
     matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });
