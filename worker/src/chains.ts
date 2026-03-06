@@ -18,7 +18,13 @@ export type FormatFamily =
   | "stellar"
   | "bittensor"
   | "cardano"
-  | "lightning";
+  | "lightning"
+  | "filecoin"
+  | "hedera"
+  | "kaspa"
+  | "algorand"
+  | "multiversx"
+  | "starknet";
 
 export type InputType = "address" | "transaction" | "denom";
 
@@ -1029,6 +1035,79 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [
       { url: "https://mempool.space/api/v1/lightning", provider: "public" },
+    ],
+  },
+  {
+    id: "filecoin",
+    name: "Filecoin",
+    symbol: "FIL",
+    family: "filecoin",
+    explorers: [
+      { name: "Filfox", baseUrl: "https://filfox.info", addressPath: "/en/address/{query}", txPath: "/en/message/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.node.glif.io/rpc/v1", provider: "public" },
+    ],
+  },
+  {
+    id: "hedera",
+    name: "Hedera",
+    symbol: "HBAR",
+    family: "hedera",
+    explorers: [
+      { name: "HashScan", baseUrl: "https://hashscan.io", addressPath: "/mainnet/account/{query}", txPath: "/mainnet/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://mainnet.mirrornode.hedera.com", provider: "public" },
+    ],
+  },
+  {
+    id: "kaspa",
+    name: "Kaspa",
+    symbol: "KAS",
+    family: "kaspa",
+    explorers: [
+      { name: "Kaspa Explorer", baseUrl: "https://explorer.kaspa.org", addressPath: "/addresses/{query}", txPath: "/txs/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.kaspa.org", provider: "public" },
+    ],
+  },
+  {
+    id: "algorand",
+    name: "Algorand",
+    symbol: "ALGO",
+    family: "algorand",
+    explorers: [
+      { name: "Allo.info", baseUrl: "https://allo.info", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://mainnet-idx.algonode.cloud", provider: "public" },
+    ],
+  },
+  {
+    id: "multiversx",
+    name: "MultiversX",
+    symbol: "EGLD",
+    family: "multiversx",
+    explorers: [
+      { name: "MultiversX Explorer", baseUrl: "https://explorer.multiversx.com", addressPath: "/accounts/{query}", txPath: "/transactions/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.multiversx.com", provider: "public" },
+    ],
+  },
+  {
+    id: "starknet",
+    name: "Starknet",
+    symbol: "STRK",
+    family: "starknet",
+    explorers: [
+      { name: "Starkscan", baseUrl: "https://starkscan.co", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
+      { name: "Voyager", baseUrl: "https://voyager.online", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://free-rpc.nethermind.io/mainnet-juno/", provider: "public" },
     ],
   },
 ];

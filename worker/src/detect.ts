@@ -66,6 +66,8 @@ function getMatches(input: string): Match[] {
     matches.push({ chainId: "aptos", inputType: "address" }, { chainId: "aptos", inputType: "transaction" });
     // Bittensor extrinsic hash
     matches.push({ chainId: "bittensor", inputType: "transaction" });
+    // Starknet address or transaction
+    matches.push({ chainId: "starknet", inputType: "address" }, { chainId: "starknet", inputType: "transaction" });
     return matches;
   }
 
@@ -217,6 +219,42 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Filecoin address: f0-f4 + alphanumeric
+  if (/^f[0-4][a-z0-9]+$/i.test(trimmed)) {
+    matches.push({ chainId: "filecoin", inputType: "address" });
+    return matches;
+  }
+
+  // Filecoin transaction (CID): bafy + base32
+  if (/^bafy[a-z0-9]+$/i.test(trimmed)) {
+    matches.push({ chainId: "filecoin", inputType: "transaction" });
+    return matches;
+  }
+
+  // Hedera account: 0.0.digits
+  if (/^0\.0\.\d+$/.test(trimmed)) {
+    matches.push({ chainId: "hedera", inputType: "address" });
+    return matches;
+  }
+
+  // Kaspa address: kaspa: prefix
+  if (/^kaspa:[a-z0-9]+$/.test(trimmed)) {
+    matches.push({ chainId: "kaspa", inputType: "address" });
+    return matches;
+  }
+
+  // Algorand address: 58 uppercase base32 chars
+  if (/^[A-Z2-7]{58}$/.test(trimmed)) {
+    matches.push({ chainId: "algorand", inputType: "address" });
+    return matches;
+  }
+
+  // MultiversX address: erd1 + 58 lowercase alphanumeric (62 chars total)
+  if (/^erd1[a-z0-9]{58}$/.test(trimmed)) {
+    matches.push({ chainId: "multiversx", inputType: "address" });
+    return matches;
+  }
+
   // Solana transaction signature: base58, 80-90 chars
   const solanaTxRegex = new RegExp(`^${BASE58_CHAR}{80,90}$`);
   if (solanaTxRegex.test(trimmed)) {
@@ -249,6 +287,8 @@ function getMatches(input: string): Match[] {
       { chainId: "xrp", inputType: "transaction" },
       { chainId: "stellar", inputType: "transaction" },
       { chainId: "cardano", inputType: "transaction" },
+      { chainId: "multiversx", inputType: "transaction" },
+      { chainId: "kaspa", inputType: "transaction" },
     );
     return matches;
   }

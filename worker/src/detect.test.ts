@@ -61,9 +61,9 @@ describe("EVM address detection", () => {
 describe("0x + 64 hex detection", () => {
   const hash = "0x" + "a".repeat(64);
 
-  it("returns 15 EVM tx + Sui addr/tx + Aptos addr/tx + Bittensor tx = 20 results", () => {
+  it("returns 15 EVM tx + Sui addr/tx + Aptos addr/tx + Bittensor tx + Starknet addr/tx = 22 results", () => {
     const results = detect(hash, CHAINS);
-    expect(results).toHaveLength(20);
+    expect(results).toHaveLength(22);
   });
 
   it("includes all EVM chains as transactions", () => {
@@ -412,6 +412,155 @@ describe("Lightning Network detection", () => {
   });
 });
 
+// --- Filecoin ---
+
+describe("Filecoin detection", () => {
+  it("detects f1 address (secp256k1)", () => {
+    const results = detect("f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("filecoin");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects f0 address (ID)", () => {
+    const results = detect("f01234", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("filecoin");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects f3 address (BLS)", () => {
+    const results = detect("f3vfs6f7tagrcpnwv65wq3leznbajqyg77bmijrpvoyjv3zjyi3urq25vigfbs3ob6ug5xdihajumtgsxnz2pa", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("filecoin");
+  });
+
+  it("detects bafy CID as transaction", () => {
+    const results = detect("bafy2bzacedfto5wl5xbafi3yiop6xfbji4wnr2qhp64zra73wku7qdmcuwsta", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("filecoin");
+    expect(results[0].inputType).toBe("transaction");
+  });
+
+  it("generates explorer URLs", () => {
+    const results = detect("f01234", CHAINS);
+    expect(results[0].explorerUrls[0].name).toBe("Filfox");
+    expect(results[0].explorerUrls[0].url).toContain("/en/address/f01234");
+  });
+});
+
+// --- Hedera ---
+
+describe("Hedera detection", () => {
+  it("detects 0.0.xxx account", () => {
+    const results = detect("0.0.1234567", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("hedera");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("generates explorer URLs", () => {
+    const results = detect("0.0.1234567", CHAINS);
+    expect(results[0].explorerUrls[0].name).toBe("HashScan");
+    expect(results[0].explorerUrls[0].url).toContain("/mainnet/account/0.0.1234567");
+  });
+});
+
+// --- Kaspa ---
+
+describe("Kaspa detection", () => {
+  it("detects kaspa: prefixed address", () => {
+    const results = detect("kaspa:qr6m0t8gkfhsn0l5ynfadtvuetg3fle940dalpsqqaqeqqq4lujwsg3wrr50", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("kaspa");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("generates explorer URLs", () => {
+    const results = detect("kaspa:qz1234abc", CHAINS);
+    expect(results[0].explorerUrls[0].name).toBe("Kaspa Explorer");
+    expect(results[0].explorerUrls[0].url).toContain("/addresses/");
+  });
+});
+
+// --- Algorand ---
+
+describe("Algorand detection", () => {
+  it("detects 58-char uppercase base32 address", () => {
+    const addr = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    expect(addr.length).toBe(58);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("algorand");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("rejects lowercase", () => {
+    const addr = "a".repeat(58);
+    const results = detect(addr, CHAINS);
+    // Should not match Algorand (lowercase)
+    const algo = results.find((r) => r.chain.id === "algorand");
+    expect(algo).toBeUndefined();
+  });
+
+  it("does not conflict with Stellar (56 chars)", () => {
+    const stellar = "G" + "A".repeat(55);
+    expect(stellar.length).toBe(56);
+    const results = detect(stellar, CHAINS);
+    expect(results[0].chain.id).toBe("stellar");
+  });
+});
+
+// --- MultiversX ---
+
+describe("MultiversX detection", () => {
+  it("detects erd1 address (62 chars)", () => {
+    const addr = "erd1" + "a".repeat(58);
+    expect(addr.length).toBe(62);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("multiversx");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("rejects wrong length", () => {
+    const addr = "erd1" + "a".repeat(57);
+    const results = detect(addr, CHAINS);
+    const mvx = results.find((r) => r.chain.id === "multiversx");
+    expect(mvx).toBeUndefined();
+  });
+
+  it("MultiversX tx in bare 64 hex block", () => {
+    const hex64 = "a".repeat(64);
+    const results = detect(hex64, CHAINS);
+    const mvx = results.find((r) => r.chain.id === "multiversx");
+    expect(mvx).toBeDefined();
+    expect(mvx!.inputType).toBe("transaction");
+  });
+});
+
+// --- Starknet ---
+
+describe("Starknet detection", () => {
+  it("detects in 0x + 64 hex block as address and transaction", () => {
+    const hash = "0x" + "a".repeat(64);
+    const results = detect(hash, CHAINS);
+    const starknet = results.filter((r) => r.chain.id === "starknet");
+    expect(starknet).toHaveLength(2);
+    expect(starknet.map((r) => r.inputType).sort()).toEqual(["address", "transaction"]);
+  });
+
+  it("generates explorer URLs", () => {
+    const hash = "0x" + "a".repeat(64);
+    const results = detect(hash, CHAINS);
+    const starknetAddr = results.find((r) => r.chain.id === "starknet" && r.inputType === "address")!;
+    expect(starknetAddr.explorerUrls.length).toBe(2);
+    expect(starknetAddr.explorerUrls[0].name).toBe("Starkscan");
+    expect(starknetAddr.explorerUrls[0].url).toContain("/contract/");
+    expect(starknetAddr.explorerUrls[1].name).toBe("Voyager");
+  });
+});
+
 // --- Tron ---
 
 describe("Tron address detection", () => {
@@ -559,6 +708,12 @@ describe("bare 64 hex detection", () => {
     expect(results.find((r) => r.chain.id === "xrp")!.inputType).toBe("transaction");
     expect(results.find((r) => r.chain.id === "stellar")!.inputType).toBe("transaction");
     expect(results.find((r) => r.chain.id === "cardano")!.inputType).toBe("transaction");
+  });
+
+  it("includes MultiversX and Kaspa as tx", () => {
+    const results = detect(hex64, CHAINS);
+    expect(results.find((r) => r.chain.id === "multiversx")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "kaspa")!.inputType).toBe("transaction");
   });
 });
 

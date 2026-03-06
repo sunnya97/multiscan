@@ -647,6 +647,118 @@ async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promi
   return accountValue != null && accountValue !== "0" && accountValue !== "0.0";
 }
 
+// --- Filecoin ---
+
+async function verifyFilecoinAddr(rpcUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "Filecoin.StateGetActor", params: [address, null] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  const json = (await response.json()) as { result?: unknown; error?: unknown };
+  return json.result != null && !json.error;
+}
+
+async function verifyFilecoinTx(rpcUrl: string, cid: string): Promise<boolean> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "Filecoin.ChainGetMessage", params: [{ "/": cid }] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  const json = (await response.json()) as { result?: unknown; error?: unknown };
+  return json.result != null && !json.error;
+}
+
+// --- Hedera ---
+
+async function verifyHederaAddr(apiUrl: string, accountId: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/api/v1/accounts/${accountId}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+async function verifyHederaTx(apiUrl: string, txId: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/api/v1/transactions/${txId}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+// --- Kaspa ---
+
+async function verifyKaspaAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/addresses/${address}/balance`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+async function verifyKaspaTx(apiUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/transactions/${txHash}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+// --- Algorand ---
+
+async function verifyAlgorandAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/v2/accounts/${address}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+async function verifyAlgorandTx(apiUrl: string, txId: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/v2/transactions/${txId}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+// --- MultiversX ---
+
+async function verifyMultiversXAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/accounts/${address}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+async function verifyMultiversXTx(apiUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/transactions/${txHash}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  return response.ok;
+}
+
+// --- Starknet ---
+
+async function verifyStarknetAddr(rpcUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "starknet_getNonce", params: ["latest", address] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  const json = (await response.json()) as { result?: unknown; error?: unknown };
+  return json.result != null && !json.error;
+}
+
+async function verifyStarknetTx(rpcUrl: string, txHash: string): Promise<boolean> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "starknet_getTransactionByHash", params: [txHash] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  const json = (await response.json()) as { result?: unknown; error?: unknown };
+  return json.result != null && !json.error;
+}
+
 // --- Main verification ---
 
 async function verifyEvm(chain: Chain, inputType: string, input: string, env: Env): Promise<boolean> {
@@ -776,6 +888,36 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "cardano":
         found = await tryEndpoints(rpcUrls, (url) =>
           isTx ? verifyCardanoTx(url, input) : verifyCardanoAddr(url, input),
+        );
+        break;
+      case "filecoin":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyFilecoinTx(url, input) : verifyFilecoinAddr(url, input),
+        );
+        break;
+      case "hedera":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyHederaTx(url, input) : verifyHederaAddr(url, input),
+        );
+        break;
+      case "kaspa":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyKaspaTx(url, input) : verifyKaspaAddr(url, input),
+        );
+        break;
+      case "algorand":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyAlgorandTx(url, input) : verifyAlgorandAddr(url, input),
+        );
+        break;
+      case "multiversx":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyMultiversXTx(url, input) : verifyMultiversXAddr(url, input),
+        );
+        break;
+      case "starknet":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyStarknetTx(url, input) : verifyStarknetAddr(url, input),
         );
         break;
       default:
