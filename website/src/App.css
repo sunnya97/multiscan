@@ -484,6 +484,120 @@ html, body {
   border-color: color-mix(in srgb, var(--resolve) 30%, transparent);
 }
 
+/* ─── Network Cloud ──────────────────────────────────── */
+
+.integrations__cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.integrations__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tag-logo {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.tag-logo--fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.tag-logo-stack {
+  display: inline-flex;
+  align-items: center;
+}
+
+.tag-logo-stack .tag-logo,
+.tag-logo-stack .tag-logo--fallback {
+  margin-right: -4px;
+  border: 1.5px solid var(--bg-surface);
+}
+
+.tag-logo-stack .tag-logo:last-child,
+.tag-logo-stack .tag-logo--fallback:last-child {
+  margin-right: 2px;
+}
+
+.integrations__tag--group {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-dim);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 7px;
+  gap: 4px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.integrations__tag--group:hover {
+  color: var(--text-muted);
+  border-color: var(--border-active);
+}
+
+.integrations__tag--group-open {
+  color: var(--text-muted);
+  border-color: var(--border-active);
+  background: var(--bg-elevated);
+}
+
+.tag-chevron {
+  flex-shrink: 0;
+  color: var(--text-dim);
+  transition: transform 0.2s ease;
+}
+
+.tag-chevron--open {
+  transform: rotate(180deg);
+}
+
+.tag-group-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.tag-group-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(420px, 90vw);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  animation: fadeSlideIn 0.15s ease-out;
+}
+
 /* ─── Raycast CTA ────────────────────────────────────── */
 
 .raycast-cta {
@@ -704,14 +818,11 @@ html, body {
     padding: 4px 8px;
   }
 
-  .integrations__group {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .integrations__label {
-    width: auto;
-    text-align: left;
+  .tag-logo,
+  .tag-logo--fallback {
+    width: 12px;
+    height: 12px;
+    font-size: 7px;
   }
 
   .raycast-cta {

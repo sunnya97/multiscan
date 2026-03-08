@@ -1,6 +1,200 @@
-import { useMemo } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { LookupResult } from "../types";
 import ResultCard from "./ResultCard";
+
+const L = (file: string) => `/logos/${file}.png`;
+
+const CHAIN_LOGO: Record<string, string> = {
+  // EVM
+  Ethereum: L("ethereum"),
+  Base: L("base"),
+  Arbitrum: L("arbitrum"),
+  Optimism: L("optimism"),
+  Polygon: L("polygon"),
+  BSC: L("smartchain"),
+  Avalanche: L("avalanchec"),
+  Fantom: L("fantom"),
+  zkSync: L("zksync"),
+  Linea: L("linea"),
+  Scroll: L("scroll"),
+  Mantle: L("mantle"),
+  "Ethereum Classic": L("classic"),
+  HyperEVM: L("ethereum"),
+  HyperCore: L("ethereum"),
+  // L1
+  Bitcoin: L("bitcoin"),
+  Lightning: L("lightning"),
+  Solana: L("solana"),
+  Tron: L("tron"),
+  TON: L("ton"),
+  Polkadot: L("polkadot"),
+  NEAR: L("near"),
+  Dogecoin: L("doge"),
+  Litecoin: L("litecoin"),
+  "Bitcoin Cash": L("bitcoincash"),
+  ZCash: L("zcash"),
+  Monero: L("monero"),
+  "XRP Ledger": L("xrp"),
+  Stellar: L("stellar"),
+  Bittensor: L("bittensor"),
+  Cardano: L("cardano"),
+  Filecoin: L("filecoin"),
+  Hedera: L("hedera"),
+  Kaspa: L("kaspa"),
+  Algorand: L("algorand"),
+  MultiversX: L("elrond"),
+  Starknet: L("starknet"),
+  // Cosmos
+  "Cosmos Hub": L("cosmos"),
+  Osmosis: L("osmosis"),
+  Celestia: L("celestia"),
+  dYdX: L("dydx"),
+  Injective: L("injective"),
+  Sei: L("sei"),
+  Stride: L("stride"),
+  Stargaze: L("stargaze"),
+  Akash: L("akash"),
+  Axelar: L("axelar"),
+  Kava: L("kava"),
+  Juno: L("juno"),
+  Evmos: L("evmos"),
+  Secret: L("secret"),
+  Band: L("band"),
+  Persistence: L("persistence"),
+  Regen: L("regen"),
+  Sommelier: L("sommelier"),
+  Chihuahua: L("cosmos"),
+  Archway: L("archway"),
+  Noble: L("noble"),
+  Neutron: L("neutron"),
+  Coreum: L("coreum"),
+  KYVE: L("kyve"),
+  Agoric: L("agoric"),
+  Terra: L("terra"),
+  IRISnet: L("iris"),
+  "Cronos POS": L("cronos"),
+  Dymension: L("dymension"),
+  MANTRA: L("cosmos"),
+  Babylon: L("cosmos"),
+  Nolus: L("cosmos"),
+  Pryzm: L("cosmos"),
+  // Move
+  Sui: L("sui"),
+  Aptos: L("aptos"),
+};
+
+type CloudItem =
+  | { type: "chain"; name: string }
+  | { type: "group"; id: string; label: string; preview: string[]; chains: string[] }
+  | { type: "name"; name: string };
+
+const CLOUD_ITEMS: CloudItem[] = [
+  { type: "chain", name: "Bitcoin" },
+  { type: "group", id: "evm", label: "EVM", preview: ["Ethereum", "Base", "Arbitrum", "Optimism"], chains: ["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM", "HyperCore"] },
+  { type: "chain", name: "Solana" },
+  { type: "group", id: "cosmos", label: "Cosmos", preview: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX"], chains: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX", "Injective", "Sei", "Stride", "Stargaze", "Akash", "Axelar", "Kava", "Juno", "Evmos", "Secret", "Band", "Persistence", "Fetch.ai", "Regen", "Sentinel", "Sommelier", "Chihuahua", "Archway", "Noble", "Neutron", "Coreum", "KYVE", "Agoric", "OmniFlix", "Terra", "Gravity Bridge", "IRISnet", "Cronos POS", "Dymension", "MANTRA", "Babylon", "Nolus", "Pryzm"] },
+  { type: "chain", name: "Sui" },
+  { type: "chain", name: "Aptos" },
+  { type: "chain", name: "Cardano" },
+  { type: "chain", name: "Polkadot" },
+  { type: "chain", name: "TON" },
+  { type: "chain", name: "XRP Ledger" },
+  { type: "chain", name: "Tron" },
+  { type: "chain", name: "NEAR" },
+  { type: "chain", name: "Dogecoin" },
+  { type: "chain", name: "Stellar" },
+  { type: "chain", name: "Filecoin" },
+  { type: "chain", name: "Monero" },
+  { type: "chain", name: "Litecoin" },
+  { type: "chain", name: "Hedera" },
+  { type: "chain", name: "Algorand" },
+  { type: "chain", name: "Starknet" },
+  { type: "chain", name: "MultiversX" },
+  { type: "chain", name: "Kaspa" },
+  { type: "chain", name: "Lightning" },
+  { type: "chain", name: "Bitcoin Cash" },
+  { type: "chain", name: "ZCash" },
+  { type: "chain", name: "Bittensor" },
+  { type: "name", name: ".eth" },
+  { type: "name", name: ".sol" },
+  { type: "name", name: ".bnb" },
+  { type: "name", name: ".osmo" },
+  { type: "name", name: ".cosmos" },
+  { type: "name", name: ".ton" },
+  { type: "name", name: ".sui" },
+  { type: "name", name: ".apt" },
+];
+
+function ChainLogo({ name }: { name: string }) {
+  const [broken, setBroken] = useState(false);
+  const src = CHAIN_LOGO[name];
+
+  if (broken || !src) {
+    return (
+      <span className="tag-logo tag-logo--fallback" aria-label={name}>
+        {name[0]}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      className="tag-logo"
+      src={src}
+      alt={name}
+      onError={() => setBroken(true)}
+    />
+  );
+}
+
+function GroupTag({ group }: { group: Extract<CloudItem, { type: "group" }> }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  return (
+    <div className="tag-group-wrapper" ref={ref}>
+      <button
+        className={`integrations__tag integrations__tag--group${open ? " integrations__tag--group-open" : ""}`}
+        onClick={() => setOpen(!open)}
+      >
+        <span className="tag-logo-stack">
+          {group.preview.map((c) => (
+            <ChainLogo key={c} name={c} />
+          ))}
+        </span>
+        {group.label} ({group.chains.length})
+        <svg
+          className={`tag-chevron${open ? " tag-chevron--open" : ""}`}
+          width="10"
+          height="10"
+          viewBox="0 0 14 14"
+          fill="none"
+        >
+          <path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="tag-group-popover">
+          {group.chains.map((c) => (
+            <span key={c} className="integrations__tag">
+              <ChainLogo name={c} />
+              {c}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface ResultsListProps {
   results: LookupResult[];
@@ -106,45 +300,21 @@ export default function ResultsList({
 
         <div className="integrations">
           <p className="integrations__header">Supported Networks</p>
-          <div className="integrations__group">
-            <span className="integrations__label">EVM</span>
-            <div className="integrations__tags">
-              {["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM", "HyperCore"].map((c) => (
-                <span key={c} className="integrations__tag">{c}</span>
-              ))}
-            </div>
-          </div>
-          <div className="integrations__group">
-            <span className="integrations__label">L1</span>
-            <div className="integrations__tags">
-              {["Bitcoin", "Lightning", "Solana", "Tron", "TON", "Polkadot", "NEAR", "Dogecoin", "Litecoin", "Bitcoin Cash", "ZCash", "Monero", "XRP Ledger", "Stellar", "Bittensor", "Cardano", "Filecoin", "Hedera", "Kaspa", "Algorand", "MultiversX", "Starknet"].map((c) => (
-                <span key={c} className="integrations__tag">{c}</span>
-              ))}
-            </div>
-          </div>
-          <div className="integrations__group">
-            <span className="integrations__label">Cosmos</span>
-            <div className="integrations__tags">
-              {["Cosmos Hub", "Osmosis", "Celestia", "dYdX", "Injective", "Sei", "Stride", "Stargaze", "Akash", "Axelar", "Kava", "Juno", "Evmos", "Secret", "Band", "Persistence", "Fetch.ai", "Regen", "Sentinel", "Sommelier", "Chihuahua", "Archway", "Noble", "Neutron", "Coreum", "KYVE", "Agoric", "OmniFlix", "Terra", "Gravity Bridge", "IRISnet", "Cronos POS", "Dymension", "MANTRA", "Babylon", "Nolus", "Pryzm"].map((c) => (
-                <span key={c} className="integrations__tag">{c}</span>
-              ))}
-            </div>
-          </div>
-          <div className="integrations__group">
-            <span className="integrations__label">Move</span>
-            <div className="integrations__tags">
-              {["Sui", "Aptos"].map((c) => (
-                <span key={c} className="integrations__tag">{c}</span>
-              ))}
-            </div>
-          </div>
-          <div className="integrations__group">
-            <span className="integrations__label">Names</span>
-            <div className="integrations__tags">
-              {[".eth", ".sol", ".bnb", ".osmo", ".cosmos", ".ton", ".sui", ".apt"].map((c) => (
-                <span key={c} className="integrations__tag integrations__tag--name">{c}</span>
-              ))}
-            </div>
+          <div className="integrations__cloud">
+            {CLOUD_ITEMS.map((item) => {
+              if (item.type === "group") {
+                return <GroupTag key={item.id} group={item} />;
+              }
+              if (item.type === "name") {
+                return <span key={item.name} className="integrations__tag integrations__tag--name">{item.name}</span>;
+              }
+              return (
+                <span key={item.name} className="integrations__tag">
+                  <ChainLogo name={item.name} />
+                  {item.name}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>
