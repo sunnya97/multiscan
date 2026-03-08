@@ -899,6 +899,17 @@ describe("Bitcoin Cash testnet detection", () => {
   });
 });
 
+// --- THORChain detection ---
+
+describe("THORChain address detection", () => {
+  it("detects thor bech32 address", () => {
+    const results = detect("thor13r58hsww07rassmm98kual9x4k4gp53fxzcus5", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("thorchain");
+    expect(results[0].inputType).toBe("address");
+  });
+});
+
 // --- Urbit detection ---
 
 describe("Urbit ship name detection", () => {
