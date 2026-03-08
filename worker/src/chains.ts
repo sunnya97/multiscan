@@ -34,7 +34,7 @@ export type FormatFamily =
   | "iota"
   | "bitcoin-testnet";
 
-export type InputType = "address" | "transaction" | "denom";
+export type InputType = "address" | "transaction" | "denom" | "validator";
 
 export interface Explorer {
   name: string;
@@ -43,6 +43,7 @@ export interface Explorer {
   txPath: string;
   tokenPath?: string; // e.g. "/token/{query}" — used when address is a token contract
   denomPath?: string; // e.g. "/assets/{query}" — used for Cosmos denom lookups
+  validatorPath?: string; // e.g. "/validators/{query}" — used for Cosmos validator addresses
 }
 
 export interface RpcEndpoint {
@@ -591,7 +592,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "cosmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/cosmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/cosmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://cosmos-rest.publicnode.com", provider: "public" },
@@ -604,7 +605,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "osmo",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://osmosis-rest.publicnode.com", provider: "public" },
@@ -617,7 +618,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "celestia",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
       { name: "Celenium", baseUrl: "https://celenium.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [
@@ -631,7 +632,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "dydx",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://dydx-rest.publicnode.com", provider: "public" },
@@ -644,7 +645,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "inj",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://injective-rest.publicnode.com", provider: "public" },
@@ -657,7 +658,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "sei",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sei", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sei", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://sei-rest.publicnode.com", provider: "public" },
@@ -670,7 +671,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "stride",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/stride", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/stride", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://stride-rest.publicnode.com", provider: "public" },
@@ -683,7 +684,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "stars",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/stargaze", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/stargaze", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://stargaze-rest.publicnode.com", provider: "public" },
@@ -696,7 +697,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "akash",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/akash", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/akash", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://akash-rest.publicnode.com", provider: "public" },
@@ -709,7 +710,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "axelar",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://axelar-rest.publicnode.com", provider: "public" },
@@ -722,7 +723,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "kava",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://kava-rest.publicnode.com", provider: "public" },
@@ -735,7 +736,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "juno",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/juno", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/juno", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://juno-rest.publicnode.com", provider: "public" },
@@ -748,7 +749,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "evmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/evmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/evmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://evmos-rest.publicnode.com", provider: "public" },
@@ -761,7 +762,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "secret",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/secret", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/secret", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://rest.lavenderfive.com:443/secretnetwork", provider: "public" },
@@ -774,7 +775,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "band",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/band", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/band", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://laozi1.bandchain.org/api", provider: "public" },
@@ -787,7 +788,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "persistence",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://persistence-rest.publicnode.com", provider: "public" },
@@ -800,7 +801,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "fetch",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/fetchai", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/fetchai", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://fetch-rest.publicnode.com", provider: "public" },
@@ -813,7 +814,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "regen",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/regen", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/regen", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://regen-rest.publicnode.com", provider: "public" },
@@ -826,7 +827,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "sent",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sentinel", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sentinel", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://sentinel-rest.publicnode.com", provider: "public" },
@@ -839,7 +840,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "somm",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sommelier", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sommelier", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://api-sommelier.pupmos.network", provider: "public" },
@@ -852,7 +853,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "chihuahua",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/chihuahua", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/chihuahua", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://chihuahua-rest.publicnode.com", provider: "public" },
@@ -865,7 +866,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "archway",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://api.mainnet.archway.io", provider: "public" },
@@ -878,7 +879,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "noble",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://noble-api.polkachu.com", provider: "public" },
@@ -891,7 +892,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "neutron",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://neutron-rest.publicnode.com", provider: "public" },
@@ -904,7 +905,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "core",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://coreum-rest.publicnode.com", provider: "public" },
@@ -917,7 +918,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "kyve",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kyve", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kyve", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://api.kyve.network", provider: "public" },
@@ -930,7 +931,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "agoric",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/agoric", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/agoric", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://main.api.agoric.net:443", provider: "public" },
@@ -943,7 +944,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "omniflix",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/omniflix", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/omniflix", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://api.omniflix.nodestake.org", provider: "public" },
@@ -956,7 +957,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "terra",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/terra", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/terra", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://terra-rest.publicnode.com", provider: "public" },
@@ -969,7 +970,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "gravity",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/gravity-bridge", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/gravity-bridge", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://gravitychain.io:1317", provider: "public" },
@@ -982,7 +983,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "iaa",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/iris", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/iris", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://iris-rest.publicnode.com", provider: "public" },
@@ -995,7 +996,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "cro",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/crypto-org", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/crypto-org", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://rest.mainnet.crypto.org", provider: "public" },
@@ -1008,7 +1009,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "dym",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dymension", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dymension", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://dymension-rest.publicnode.com", provider: "public" },
@@ -1021,7 +1022,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "mantra",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://api.mantrachain.io", provider: "public" },
@@ -1034,7 +1035,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "bbn",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://babylon-rest.publicnode.com", provider: "public" },
@@ -1047,7 +1048,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "nolus",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/nolus", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/nolus", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://nolus-rest.publicnode.com", provider: "public" },
@@ -1060,7 +1061,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "pryzm",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/pryzm", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/pryzm", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [
       { url: "https://api.pryzm.zone", provider: "public" },
@@ -1978,7 +1979,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -1989,7 +1990,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2000,7 +2001,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2011,7 +2012,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2022,7 +2023,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2033,7 +2034,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2044,7 +2045,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2055,7 +2056,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2066,7 +2067,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2077,7 +2078,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2088,7 +2089,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2099,7 +2100,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },
@@ -2110,7 +2111,7 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
     ],
     rpcUrls: [],
   },

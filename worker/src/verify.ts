@@ -812,6 +812,7 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
   const isTx = inputType === "transaction";
   const rpcUrls = getResolvedRpcUrls(chain, env);
 
+  if (inputType === "validator") return "unverified";
   if (rpcUrls.length === 0 && chain.family !== "evm") return "unverified";
 
   try {
