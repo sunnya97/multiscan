@@ -382,6 +382,44 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Tezos address: tz1/tz2/tz3 (implicit accounts) or KT1 (contracts), 36 base58 chars
+  const tezosAddrRegex = new RegExp(`^(tz[123]|KT1)${BASE58_CHAR}{33}$`);
+  if (tezosAddrRegex.test(trimmed)) {
+    matches.push({ chainId: "tezos", inputType: "address" });
+    return matches;
+  }
+
+  // Tezos transaction (operation hash): starts with "o", 51 base58 chars
+  const tezosTxRegex = new RegExp(`^o${BASE58_CHAR}{50}$`);
+  if (tezosTxRegex.test(trimmed)) {
+    matches.push({ chainId: "tezos", inputType: "transaction" });
+    return matches;
+  }
+
+  // Aleo address: aleo1 + 58 bech32 chars (63 total)
+  if (/^aleo1[a-z0-9]{58}$/.test(trimmed)) {
+    matches.push({ chainId: "aleo", inputType: "address" });
+    return matches;
+  }
+
+  // Aleo transaction: at1 + bech32 chars (~61 total)
+  if (/^at1[a-z0-9]{58,}$/.test(trimmed)) {
+    matches.push({ chainId: "aleo", inputType: "transaction" });
+    return matches;
+  }
+
+  // Nano address: nano_ + 60 chars (65 total)
+  if (/^nano_[13][a-z0-9]{59}$/.test(trimmed)) {
+    matches.push({ chainId: "nano", inputType: "address" });
+    return matches;
+  }
+
+  // Chia address: xch1 + 59 bech32 chars (62 total)
+  if (/^xch1[a-z0-9]{59}$/.test(trimmed)) {
+    matches.push({ chainId: "chia", inputType: "address" });
+    return matches;
+  }
+
   // Urbit ship name: ~galaxy (3 chars), ~star (6 chars), ~planet-planet (13 chars)
   // Accept with or without leading ~, validated against actual phoneme tables
   {
