@@ -2,6 +2,7 @@ import { Action, ActionPanel, Clipboard, Color, Icon, LaunchProps, List, getPref
 import { usePromise } from "@raycast/utils";
 import { useEffect, useMemo, useState } from "react";
 import { getExplorerOverrides } from "./chains";
+import { getChainLogoUrl } from "./chainLogos";
 import { ExplorerUrl, InputType, LookupResult, WorkerResponse } from "./types";
 
 interface DisplayResult {
@@ -293,6 +294,8 @@ function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; qu
   const additionalExplorers = explorerUrls.slice(1);
 
 
+  const logoUrl = getChainLogoUrl(chainName);
+
   const accessories: List.Item.Accessory[] = [];
 
   if (status === "found") {
@@ -311,6 +314,7 @@ function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; qu
     <List.Item
       title={chainName}
       subtitle={symbol}
+      icon={logoUrl ? { source: logoUrl } : Icon.Globe}
       accessories={accessories}
       actions={
         <ActionPanel>
