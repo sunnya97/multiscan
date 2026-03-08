@@ -132,6 +132,20 @@ const CHAIN_LOGO_SLUG: Record<string, string> = {
   "Coreum Testnet": "coreum",
   "MANTRA Testnet": "cosmos",
   "Babylon Testnet": "cosmos",
+  Berachain: "berachain",
+  "Berachain Testnet": "berachain",
+  Ronin: "ronin",
+  "Ronin Saigon": "ronin",
+  Flare: "flare",
+  "Flare Coston2": "flare",
+  "Oasis Sapphire": "oasis",
+  "Oasis Sapphire Testnet": "oasis",
+  Core: "core",
+  "Core Testnet": "core",
+  Monad: "monad",
+  "Monad Testnet": "monad",
+  MegaETH: "megaeth",
+  Plasma: "plasma",
 };
 
 export function getChainLogoUrl(chainName: string): string | undefined {
