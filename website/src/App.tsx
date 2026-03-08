@@ -140,6 +140,8 @@ export default function App() {
   // Global keyboard handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept keys when a modal is open
+      if (showSuggestModal) return;
       const metaOrCtrl = e.metaKey || e.ctrlKey;
       const inputFocused = document.activeElement === inputRef.current;
 
@@ -206,7 +208,7 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [displayResults, selectedIndex, trimmedSearch, resolvedAddress, handleSearch, showToast]);
+  }, [displayResults, selectedIndex, trimmedSearch, resolvedAddress, handleSearch, showToast, showSuggestModal]);
 
   return (
     <div className="app">

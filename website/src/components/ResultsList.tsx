@@ -10,7 +10,7 @@ type CloudItem =
 
 const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Bitcoin" },
-  { type: "group", id: "evm", label: "EVM", preview: ["Ethereum", "Base", "Arbitrum", "Optimism"], chains: ["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM", "HyperCore"] },
+  { type: "group", id: "evm", label: "EVM", preview: ["Ethereum", "Base", "Arbitrum", "Optimism"], chains: ["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM"] },
   { type: "chain", name: "Solana" },
   { type: "group", id: "cosmos", label: "Cosmos", preview: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX"], chains: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX", "Injective", "Sei", "Stride", "Stargaze", "Akash", "Axelar", "Kava", "Juno", "Evmos", "Secret", "Band", "Persistence", "Fetch.ai", "Regen", "Sentinel", "Sommelier", "Chihuahua", "Archway", "Noble", "Neutron", "Coreum", "KYVE", "Agoric", "OmniFlix", "Terra", "Gravity Bridge", "IRISnet", "Cronos POS", "Dymension", "MANTRA", "Babylon", "Nolus", "Pryzm"] },
   { type: "chain", name: "Sui" },
@@ -35,6 +35,8 @@ const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Bitcoin Cash" },
   { type: "chain", name: "ZCash" },
   { type: "chain", name: "Bittensor" },
+  { type: "chain", name: "HyperCore" },
+  { type: "chain", name: "Dash" },
   { type: "name", name: ".eth" },
   { type: "name", name: ".sol" },
   { type: "name", name: ".bnb" },
