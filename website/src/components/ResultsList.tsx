@@ -16,6 +16,7 @@ const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Sui" },
   { type: "chain", name: "Aptos" },
   { type: "chain", name: "Movement" },
+  { type: "chain", name: "IOTA" },
   { type: "chain", name: "Cardano" },
   { type: "chain", name: "Polkadot" },
   { type: "chain", name: "TON" },

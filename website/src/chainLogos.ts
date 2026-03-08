@@ -78,6 +78,7 @@ export const CHAIN_LOGO: Record<string, string> = {
   Sui: L("sui"),
   Aptos: L("aptos"),
   Movement: L("movement"),
+  IOTA: L("iota"),
   // Testnets (reuse mainnet logos)
   "Ethereum Sepolia": L("ethereum"),
   "Ethereum Holesky": L("ethereum"),
