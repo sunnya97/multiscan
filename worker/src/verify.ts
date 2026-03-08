@@ -900,6 +900,7 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "aleo":
       case "nano":
       case "chia":
+      case "iota":
         return "unverified";
       case "xrp":
         found = await tryEndpoints(rpcUrls, (url) =>

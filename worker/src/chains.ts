@@ -31,6 +31,7 @@ export type FormatFamily =
   | "aleo"
   | "nano"
   | "chia"
+  | "iota"
   | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom";
@@ -1117,6 +1118,18 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [
       { url: "https://mainnet.movementnetwork.xyz/v1", provider: "public" },
+    ],
+  },
+  {
+    id: "iota",
+    name: "IOTA",
+    symbol: "IOTA",
+    family: "iota",
+    explorers: [
+      { name: "IOTA Explorer", baseUrl: "https://explorer.iota.org", addressPath: "/address/{query}", txPath: "/txblock/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.mainnet.iota.cafe", provider: "public" },
     ],
   },
   {
