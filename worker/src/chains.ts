@@ -1015,6 +1015,20 @@ export const CHAINS: Chain[] = [
     ],
   },
   {
+    id: "thorchain",
+    name: "THORChain",
+    symbol: "RUNE",
+    family: "cosmos",
+    bech32Prefix: "thor",
+    explorers: [
+      { name: "RuneScan", baseUrl: "https://runescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "ViewBlock", baseUrl: "https://viewblock.io/thorchain", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://thornode.ninerealms.com", provider: "public" },
+    ],
+  },
+  {
     id: "sui",
     name: "Sui",
     symbol: "SUI",

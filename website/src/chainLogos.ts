@@ -134,6 +134,7 @@ export const CHAIN_LOGO: Record<string, string> = {
   "Coreum Testnet": L("coreum"),
   "MANTRA Testnet": L("cosmos"),
   "Babylon Testnet": L("cosmos"),
+  THORChain: L("thorchain"),
   Berachain: L("berachain"),
   "Berachain Testnet": L("berachain"),
   Ronin: L("ronin"),

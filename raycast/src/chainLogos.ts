@@ -132,6 +132,7 @@ const CHAIN_LOGO_SLUG: Record<string, string> = {
   "Coreum Testnet": "coreum",
   "MANTRA Testnet": "cosmos",
   "Babylon Testnet": "cosmos",
+  THORChain: "thorchain",
   Berachain: "berachain",
   "Berachain Testnet": "berachain",
   Ronin: "ronin",
