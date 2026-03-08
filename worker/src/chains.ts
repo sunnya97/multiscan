@@ -331,6 +331,103 @@ export const CHAINS: Chain[] = [
     ],
   },
 
+  {
+    id: "berachain",
+    name: "Berachain",
+    symbol: "BERA",
+    family: "evm",
+    explorers: [
+      { name: "Berascan", baseUrl: "https://berascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.berachain.com", provider: "public" },
+    ],
+  },
+  {
+    id: "ronin",
+    name: "Ronin",
+    symbol: "RON",
+    family: "evm",
+    explorers: [
+      { name: "Ronin Explorer", baseUrl: "https://app.roninchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.roninchain.com/rpc", provider: "public" },
+    ],
+  },
+  {
+    id: "flare",
+    name: "Flare",
+    symbol: "FLR",
+    family: "evm",
+    explorers: [
+      { name: "Flarescan", baseUrl: "https://mainnet.flarescan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.ankr.com/flare", provider: "public" },
+    ],
+  },
+  {
+    id: "oasis-sapphire",
+    name: "Oasis Sapphire",
+    symbol: "ROSE",
+    family: "evm",
+    explorers: [
+      { name: "Oasis Explorer", baseUrl: "https://explorer.oasis.io/mainnet/sapphire", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://sapphire.oasis.io", provider: "public" },
+    ],
+  },
+  {
+    id: "core",
+    name: "Core",
+    symbol: "CORE",
+    family: "evm",
+    explorers: [
+      { name: "Core Scan", baseUrl: "https://scan.coredao.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.coredao.org", provider: "public" },
+    ],
+  },
+  {
+    id: "monad",
+    name: "Monad",
+    symbol: "MON",
+    family: "evm",
+    explorers: [
+      { name: "MonadScan", baseUrl: "https://monadscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.monad.xyz", provider: "public" },
+    ],
+  },
+  {
+    id: "megaeth",
+    name: "MegaETH",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "MegaETH Explorer", baseUrl: "https://megaeth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.megaeth.com", provider: "public" },
+    ],
+  },
+  {
+    id: "plasma",
+    name: "Plasma",
+    symbol: "PLASMA",
+    family: "evm",
+    explorers: [
+      { name: "Plasma Scan", baseUrl: "https://plasmascan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.plasma.to", provider: "public" },
+    ],
+  },
+
   // --- Non-EVM Chains ---
   {
     id: "bitcoin",
@@ -1315,6 +1412,76 @@ export const CHAINS: Chain[] = [
     rpcUrls: [
       { url: "https://rpc.sepolia.mantle.xyz", provider: "public" },
     ],
+  },
+
+  // --- New EVM Testnets ---
+  {
+    id: "berachain-testnet",
+    name: "Berachain Testnet",
+    symbol: "BERA",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Berascan Testnet", baseUrl: "https://testnet.berascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "ronin-testnet",
+    name: "Ronin Saigon",
+    symbol: "RON",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Ronin Saigon Explorer", baseUrl: "https://saigon-app.roninchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "flare-testnet",
+    name: "Flare Coston2",
+    symbol: "FLR",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Flarescan Coston2", baseUrl: "https://coston2.testnet.flarescan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.ankr.com/flare_coston2", provider: "public" },
+    ],
+  },
+  {
+    id: "oasis-testnet",
+    name: "Oasis Sapphire Testnet",
+    symbol: "ROSE",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Oasis Explorer Testnet", baseUrl: "https://explorer.oasis.io/testnet/sapphire", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "core-testnet",
+    name: "Core Testnet",
+    symbol: "CORE",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Core Scan Testnet", baseUrl: "https://scan.test2.btcs.network", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "monad-testnet",
+    name: "Monad Testnet",
+    symbol: "MON",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "MonadScan Testnet", baseUrl: "https://testnet.monadscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
   },
 
   // --- Ethereum Classic Testnet ---

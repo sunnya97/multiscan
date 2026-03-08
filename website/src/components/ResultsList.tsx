@@ -10,7 +10,7 @@ type CloudItem =
 
 const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Bitcoin" },
-  { type: "group", id: "evm", label: "EVM", preview: ["Ethereum", "Base", "Arbitrum", "Optimism"], chains: ["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM"] },
+  { type: "group", id: "evm", label: "EVM", preview: ["Ethereum", "Base", "Arbitrum", "Optimism"], chains: ["Ethereum", "Base", "Arbitrum", "Optimism", "Polygon", "BSC", "Avalanche", "Fantom", "zkSync", "Linea", "Scroll", "Mantle", "Ethereum Classic", "HyperEVM", "Berachain", "Ronin", "Flare", "Oasis Sapphire", "Core", "Monad", "MegaETH", "Plasma"] },
   { type: "chain", name: "Solana" },
   { type: "group", id: "cosmos", label: "Cosmos", preview: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX"], chains: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX", "Injective", "Sei", "Stride", "Stargaze", "Akash", "Axelar", "Kava", "Juno", "Evmos", "Secret", "Band", "Persistence", "Fetch.ai", "Regen", "Sentinel", "Sommelier", "Chihuahua", "Archway", "Noble", "Neutron", "Coreum", "KYVE", "Agoric", "OmniFlix", "Terra", "Gravity Bridge", "IRISnet", "Cronos POS", "Dymension", "MANTRA", "Babylon", "Nolus", "Pryzm"] },
   { type: "chain", name: "Sui" },

@@ -16,6 +16,7 @@ const EVM_CHAINS = [
   "ethereum", "base", "arbitrum", "optimism", "polygon",
   "bsc", "avalanche", "fantom", "zksync", "linea", "scroll", "mantle",
   "ethereum-classic", "hyperliquid-evm", "hyperliquid-core",
+  "berachain", "ronin", "flare", "oasis-sapphire", "core", "monad", "megaeth", "plasma",
 ];
 
 const COSMOS_CHAIN_IDS = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix).map((c) => c.id);
@@ -61,16 +62,17 @@ describe("EVM address detection", () => {
 describe("0x + 64 hex detection", () => {
   const hash = "0x" + "a".repeat(64);
 
-  it("returns 15 EVM tx + Sui addr/tx + Aptos addr/tx + Bittensor tx + Starknet addr/tx = 22 results", () => {
+  it("returns EVM tx + Sui addr/tx + Aptos addr/tx + Bittensor tx + Starknet addr/tx", () => {
     const results = detect(hash, CHAINS);
-    expect(results).toHaveLength(22);
+    // EVM chains + 2 Sui + 2 Aptos + 1 Bittensor + 2 Starknet = EVM_CHAINS.length + 7
+    expect(results).toHaveLength(EVM_CHAINS.length + 7);
   });
 
   it("includes all EVM chains as transactions", () => {
     const results = detect(hash, CHAINS);
     const evmTx = results.filter((r) => r.chain.family === "evm");
     expect(evmTx.every((r) => r.inputType === "transaction")).toBe(true);
-    expect(evmTx).toHaveLength(15);
+    expect(evmTx).toHaveLength(EVM_CHAINS.length);
   });
 
   it("includes Sui as both address and transaction", () => {

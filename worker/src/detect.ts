@@ -53,6 +53,14 @@ function getMatches(input: string): Match[] {
       { chainId: "ethereum-classic", inputType: "address" },
       { chainId: "hyperliquid-evm", inputType: "address" },
       { chainId: "hyperliquid-core", inputType: "address" },
+      { chainId: "berachain", inputType: "address" },
+      { chainId: "ronin", inputType: "address" },
+      { chainId: "flare", inputType: "address" },
+      { chainId: "oasis-sapphire", inputType: "address" },
+      { chainId: "core", inputType: "address" },
+      { chainId: "monad", inputType: "address" },
+      { chainId: "megaeth", inputType: "address" },
+      { chainId: "plasma", inputType: "address" },
     );
     return matches;
   }
@@ -76,6 +84,14 @@ function getMatches(input: string): Match[] {
       { chainId: "ethereum-classic", inputType: "transaction" },
       { chainId: "hyperliquid-evm", inputType: "transaction" },
       { chainId: "hyperliquid-core", inputType: "transaction" },
+      { chainId: "berachain", inputType: "transaction" },
+      { chainId: "ronin", inputType: "transaction" },
+      { chainId: "flare", inputType: "transaction" },
+      { chainId: "oasis-sapphire", inputType: "transaction" },
+      { chainId: "core", inputType: "transaction" },
+      { chainId: "monad", inputType: "transaction" },
+      { chainId: "megaeth", inputType: "transaction" },
+      { chainId: "plasma", inputType: "transaction" },
     );
     // Sui address or transaction (both are 0x + 64 hex)
     matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });
