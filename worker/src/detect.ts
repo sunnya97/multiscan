@@ -97,6 +97,8 @@ function getMatches(input: string): Match[] {
     matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });
     // Aptos address or transaction
     matches.push({ chainId: "aptos", inputType: "address" }, { chainId: "aptos", inputType: "transaction" });
+    // Movement address or transaction (Move-based, same format as Aptos)
+    matches.push({ chainId: "movement", inputType: "address" }, { chainId: "movement", inputType: "transaction" });
     // Bittensor extrinsic hash
     matches.push({ chainId: "bittensor", inputType: "transaction" });
     // Starknet address or transaction

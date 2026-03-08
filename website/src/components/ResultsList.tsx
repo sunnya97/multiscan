@@ -15,6 +15,7 @@ const CLOUD_ITEMS: CloudItem[] = [
   { type: "group", id: "cosmos", label: "Cosmos", preview: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX"], chains: ["Cosmos Hub", "Osmosis", "Celestia", "dYdX", "Injective", "Sei", "Stride", "Stargaze", "Akash", "Axelar", "Kava", "Juno", "Evmos", "Secret", "Band", "Persistence", "Fetch.ai", "Regen", "Sentinel", "Sommelier", "Chihuahua", "Archway", "Noble", "Neutron", "Coreum", "KYVE", "Agoric", "OmniFlix", "Terra", "Gravity Bridge", "IRISnet", "Cronos POS", "Dymension", "MANTRA", "Babylon", "Nolus", "Pryzm", "THORChain"] },
   { type: "chain", name: "Sui" },
   { type: "chain", name: "Aptos" },
+  { type: "chain", name: "Movement" },
   { type: "chain", name: "Cardano" },
   { type: "chain", name: "Polkadot" },
   { type: "chain", name: "TON" },

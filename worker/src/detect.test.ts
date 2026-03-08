@@ -62,10 +62,10 @@ describe("EVM address detection", () => {
 describe("0x + 64 hex detection", () => {
   const hash = "0x" + "a".repeat(64);
 
-  it("returns EVM tx + Sui addr/tx + Aptos addr/tx + Bittensor tx + Starknet addr/tx", () => {
+  it("returns EVM tx + Sui addr/tx + Aptos addr/tx + Movement addr/tx + Bittensor tx + Starknet addr/tx", () => {
     const results = detect(hash, CHAINS);
-    // EVM chains + 2 Sui + 2 Aptos + 1 Bittensor + 2 Starknet = EVM_CHAINS.length + 7
-    expect(results).toHaveLength(EVM_CHAINS.length + 7);
+    // EVM chains + 2 Sui + 2 Aptos + 2 Movement + 1 Bittensor + 2 Starknet = EVM_CHAINS.length + 9
+    expect(results).toHaveLength(EVM_CHAINS.length + 9);
   });
 
   it("includes all EVM chains as transactions", () => {

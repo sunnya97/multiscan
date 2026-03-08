@@ -75,6 +75,7 @@ const CHAIN_LOGO_SLUG: Record<string, string> = {
   // Move
   Sui: "sui",
   Aptos: "aptos",
+  Movement: "movement",
   // Testnets (reuse mainnet logos)
   "Ethereum Sepolia": "ethereum",
   "Ethereum Holesky": "ethereum",
