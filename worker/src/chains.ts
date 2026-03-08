@@ -1108,6 +1108,18 @@ export const CHAINS: Chain[] = [
     ],
   },
   {
+    id: "movement",
+    name: "Movement",
+    symbol: "MOVE",
+    family: "aptos",
+    explorers: [
+      { name: "Movement Explorer", baseUrl: "https://explorer.movementnetwork.xyz", addressPath: "/account/{query}?network=mainnet", txPath: "/txn/{query}?network=mainnet" },
+    ],
+    rpcUrls: [
+      { url: "https://mainnet.movementnetwork.xyz/v1", provider: "public" },
+    ],
+  },
+  {
     id: "tron",
     name: "Tron",
     symbol: "TRX",
