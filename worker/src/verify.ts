@@ -636,16 +636,34 @@ async function verifyLightningNode(apiUrl: string, pubkey: string): Promise<bool
 // --- Hyperliquid Core ---
 
 async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promise<boolean> {
-  const response = await fetch(apiUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ type: "clearinghouseState", user: address }),
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-  });
-  if (!response.ok) return false;
-  const json = (await response.json()) as { marginSummary?: { accountValue?: string } };
-  const accountValue = json.marginSummary?.accountValue;
-  return accountValue != null && accountValue !== "0" && accountValue !== "0.0";
+  // Check perps and spot balances in parallel
+  const [perpsRes, spotRes] = await Promise.all([
+    fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "clearinghouseState", user: address }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    }),
+    fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "spotClearinghouseState", user: address }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    }),
+  ]);
+
+  if (perpsRes.ok) {
+    const json = (await perpsRes.json()) as { marginSummary?: { accountValue?: string } };
+    const val = json.marginSummary?.accountValue;
+    if (val != null && val !== "0" && val !== "0.0") return true;
+  }
+
+  if (spotRes.ok) {
+    const json = (await spotRes.json()) as { balances?: Array<{ total?: string }> };
+    if (Array.isArray(json.balances) && json.balances.length > 0) return true;
+  }
+
+  return false;
 }
 
 // --- Filecoin ---
