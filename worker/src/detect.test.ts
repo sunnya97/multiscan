@@ -375,11 +375,15 @@ describe("Stellar address detection", () => {
   });
 
   it("rejects lowercase", () => {
-    expect(detect("g" + "a".repeat(55), CHAINS)).toHaveLength(0);
+    const results = detect("g" + "a".repeat(55), CHAINS);
+    const stellar = results.find((r) => r.chain.id === "stellar");
+    expect(stellar).toBeUndefined();
   });
 
   it("rejects wrong length", () => {
-    expect(detect("G" + "A".repeat(54), CHAINS)).toHaveLength(0);
+    const results = detect("G" + "A".repeat(54), CHAINS);
+    const stellar = results.find((r) => r.chain.id === "stellar");
+    expect(stellar).toBeUndefined();
   });
 });
 
@@ -1140,5 +1144,44 @@ describe("Chia detection", () => {
     const results = detect(addr, CHAINS);
     const chia = results.find((r) => r.chain.id === "chia");
     expect(chia).toBeUndefined();
+  });
+});
+
+// --- Nockchain detection ---
+
+describe("Nockchain detection", () => {
+  it("detects 55-char base58 as Nockchain address and transaction", () => {
+    const addr = "51qFuv98Rg3Jg4Ka92KGdXEh16ocuzTmDZFH9wyCTeVHwaBwGSNHjWW";
+    expect(addr.length).toBe(55);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(2);
+    const nock = results.filter((r) => r.chain.id === "nockchain");
+    expect(nock).toHaveLength(2);
+    expect(nock.map((r) => r.inputType).sort()).toEqual(["address", "transaction"]);
+  });
+
+  it("generates NockBlocks explorer URLs", () => {
+    const addr = "51qFuv98Rg3Jg4Ka92KGdXEh16ocuzTmDZFH9wyCTeVHwaBwGSNHjWW";
+    const results = detect(addr, CHAINS);
+    const nockAddr = results.find((r) => r.chain.id === "nockchain" && r.inputType === "address")!;
+    expect(nockAddr.explorerUrls[0].name).toBe("NockBlocks");
+    expect(nockAddr.explorerUrls[0].url).toContain("/address/");
+    const nockTx = results.find((r) => r.chain.id === "nockchain" && r.inputType === "transaction")!;
+    expect(nockTx.explorerUrls[0].url).toContain("/tx/");
+  });
+
+  it("rejects 49-char base58 (too short)", () => {
+    const addr = "5" + "A".repeat(48);
+    expect(addr.length).toBe(49);
+    const results = detect(addr, CHAINS);
+    const nock = results.find((r) => r.chain.id === "nockchain");
+    expect(nock).toBeUndefined();
+  });
+
+  it("does not conflict with Bittensor (48 chars starting with 5)", () => {
+    const addr = "5" + "F".repeat(47);
+    expect(addr.length).toBe(48);
+    const results = detect(addr, CHAINS);
+    expect(results[0].chain.id).toBe("bittensor");
   });
 });
