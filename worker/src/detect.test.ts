@@ -978,3 +978,130 @@ describe("Urbit ship name detection", () => {
     expect(detect("abcde", CHAINS)).toHaveLength(0);
   });
 });
+
+// --- Tezos detection ---
+
+describe("Tezos detection", () => {
+  it("detects tz1 implicit address (36 chars)", () => {
+    const addr = "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb";
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("tezos");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects tz2 address", () => {
+    const addr = "tz2TSvNTh2epDMhZHrw73nV9piBX7kLZ9K9m";
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("tezos");
+  });
+
+  it("detects tz3 address", () => {
+    const addr = "tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5";
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("tezos");
+  });
+
+  it("detects KT1 contract address", () => {
+    const addr = "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn";
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("tezos");
+  });
+
+  it("detects operation hash (transaction)", () => {
+    const opHash = "oo7BSaWnVPfbLSjeAEkSqkR5WEFmFptGMbkHkSAemiSKFMJH9f6";
+    const results = detect(opHash, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("tezos");
+    expect(results[0].inputType).toBe("transaction");
+  });
+
+  it("rejects invalid prefix (tz4 is not Tezos)", () => {
+    const results = detect("tz4VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb", CHAINS);
+    const tezos = results.find((r) => r.chain.id === "tezos");
+    expect(tezos).toBeUndefined();
+  });
+});
+
+// --- Aleo detection ---
+
+describe("Aleo detection", () => {
+  it("detects aleo1 address (63 chars)", () => {
+    const addr = "aleo1" + "a".repeat(58);
+    expect(addr.length).toBe(63);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("aleo");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects at1 transaction hash", () => {
+    const txHash = "at1" + "a".repeat(58);
+    const results = detect(txHash, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("aleo");
+    expect(results[0].inputType).toBe("transaction");
+  });
+
+  it("rejects wrong length", () => {
+    const addr = "aleo1" + "a".repeat(57);
+    const results = detect(addr, CHAINS);
+    const aleo = results.find((r) => r.chain.id === "aleo");
+    expect(aleo).toBeUndefined();
+  });
+});
+
+// --- Nano detection ---
+
+describe("Nano detection", () => {
+  it("detects nano_ address starting with 1 (65 chars)", () => {
+    const addr = "nano_1" + "a".repeat(59);
+    expect(addr.length).toBe(65);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("nano");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects nano_ address starting with 3", () => {
+    const addr = "nano_3" + "a".repeat(59);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("nano");
+  });
+
+  it("rejects nano_ with wrong second char", () => {
+    const addr = "nano_2" + "a".repeat(59);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(0);
+  });
+
+  it("rejects wrong length", () => {
+    const addr = "nano_1" + "a".repeat(58);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(0);
+  });
+});
+
+// --- Chia detection ---
+
+describe("Chia detection", () => {
+  it("detects xch1 address (62 chars)", () => {
+    const addr = "xch1" + "a".repeat(59);
+    expect(addr.length).toBe(63);
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("chia");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("rejects wrong length", () => {
+    const addr = "xch1" + "a".repeat(58);
+    const results = detect(addr, CHAINS);
+    const chia = results.find((r) => r.chain.id === "chia");
+    expect(chia).toBeUndefined();
+  });
+});

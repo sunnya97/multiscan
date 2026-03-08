@@ -27,6 +27,10 @@ export type FormatFamily =
   | "starknet"
   | "dash"
   | "urbit"
+  | "tezos"
+  | "aleo"
+  | "nano"
+  | "chia"
   | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom";
@@ -527,6 +531,53 @@ export const CHAINS: Chain[] = [
     explorers: [
       { name: "Network Explorer", baseUrl: "https://network.urbit.org", addressPath: "/{query}", txPath: "" },
       { name: "Urbit Live", baseUrl: "https://urbit.live", addressPath: "/{query}", txPath: "" },
+    ],
+    rpcUrls: [],
+  },
+
+  {
+    id: "tezos",
+    name: "Tezos",
+    symbol: "XTZ",
+    family: "tezos",
+    explorers: [
+      { name: "TzKT", baseUrl: "https://tzkt.io", addressPath: "/{query}", txPath: "/{query}" },
+      { name: "TzStats", baseUrl: "https://tzstats.com", addressPath: "/{query}", txPath: "/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://mainnet.api.tez.ie", provider: "public" },
+    ],
+  },
+  {
+    id: "aleo",
+    name: "Aleo",
+    symbol: "ALEO",
+    family: "aleo",
+    explorers: [
+      { name: "Aleo Explorer", baseUrl: "https://explorer.aleo.org", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      { name: "AleoScan", baseUrl: "https://aleoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "nano",
+    name: "Nano",
+    symbol: "XNO",
+    family: "nano",
+    explorers: [
+      { name: "NanoCrawler", baseUrl: "https://nanocrawler.cc", addressPath: "/explorer/account/{query}", txPath: "/explorer/block/{query}" },
+      { name: "Nanexplorer", baseUrl: "https://nanexplorer.com", addressPath: "/accounts/{query}", txPath: "/blocks/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "chia",
+    name: "Chia",
+    symbol: "XCH",
+    family: "chia",
+    explorers: [
+      { name: "XCHscan", baseUrl: "https://xchscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      { name: "Spacescan", baseUrl: "https://www.spacescan.io", addressPath: "/address/{query}", txPath: "/coin/{query}" },
     ],
     rpcUrls: [],
   },
