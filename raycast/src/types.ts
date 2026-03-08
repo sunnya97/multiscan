@@ -16,6 +16,7 @@ export interface LookupResult {
   explorerUrls: ExplorerUrl[];
   status: VerificationStatus;
   isToken?: boolean;
+  isTestnet?: boolean;
 }
 
 export interface WorkerResponse {

@@ -124,6 +124,13 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Dash address: X + base58 (25-34 chars), or 7 + base58 P2SH
+  const dashAddrRegex = new RegExp(`^X${BASE58_CHAR}{24,33}$`);
+  if (dashAddrRegex.test(trimmed)) {
+    matches.push({ chainId: "dash", inputType: "address" });
+    return matches;
+  }
+
   // Dogecoin address: D + base58, 25-34 chars (legacy), A/9 for P2SH
   const dogeAddrRegex = new RegExp(`^[DA9]${BASE58_CHAR}{24,33}$`);
   if (dogeAddrRegex.test(trimmed)) {
@@ -145,9 +152,21 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Litecoin Testnet: tltc1 bech32
+  if (/^tltc1[a-zA-HJ-NP-Za-km-z0-9]{25,62}$/.test(trimmed)) {
+    matches.push({ chainId: "litecoin-testnet", inputType: "address" });
+    return matches;
+  }
+
   // Bitcoin Cash CashAddr: q/p + base32 (42 chars), optionally prefixed with bitcoincash:
   if (/^(bitcoincash:)?[qp][a-z0-9]{41}$/.test(trimmed)) {
     matches.push({ chainId: "bitcoin-cash", inputType: "address" });
+    return matches;
+  }
+
+  // Bitcoin Cash Testnet CashAddr: bchtest: prefix
+  if (/^bchtest:[qp][a-z0-9]{41}$/.test(trimmed)) {
+    matches.push({ chainId: "bitcoin-cash-testnet", inputType: "address" });
     return matches;
   }
 
@@ -247,6 +266,13 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Filecoin Calibration testnet address: t0-t4 + alphanumeric
+  // (placed after ZCash detection to avoid conflicts with t1/t3 transparent addresses)
+  if (/^t[0-4][a-z0-9]+$/i.test(trimmed)) {
+    matches.push({ chainId: "filecoin-calibration", inputType: "address" });
+    return matches;
+  }
+
   // Filecoin transaction (CID): bafy + base32
   if (/^bafy[a-z0-9]+$/i.test(trimmed)) {
     matches.push({ chainId: "filecoin", inputType: "transaction" });
@@ -262,6 +288,12 @@ function getMatches(input: string): Match[] {
   // Kaspa address: kaspa: prefix
   if (/^kaspa:[a-z0-9]+$/.test(trimmed)) {
     matches.push({ chainId: "kaspa", inputType: "address" });
+    return matches;
+  }
+
+  // Kaspa Testnet: kaspatest: prefix
+  if (/^kaspatest:[a-z0-9]+$/.test(trimmed)) {
+    matches.push({ chainId: "kaspa-testnet", inputType: "address" });
     return matches;
   }
 
@@ -298,6 +330,7 @@ function getMatches(input: string): Match[] {
     matches.push({ chainId: "litecoin", inputType: "transaction" });
     matches.push({ chainId: "bitcoin-cash", inputType: "transaction" });
     matches.push({ chainId: "zcash", inputType: "transaction" });
+    matches.push({ chainId: "dash", inputType: "transaction" });
     for (const chainId of COSMOS_CHAIN_IDS) {
       matches.push({ chainId, inputType: "transaction" });
     }

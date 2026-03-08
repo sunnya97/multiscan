@@ -101,6 +101,7 @@ export default {
         inputType: d.inputType,
         explorerUrls: d.explorerUrls,
         status: "unverified" as const,
+        ...(d.chain.isTestnet && { isTestnet: true }),
       }));
       return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
     }
@@ -117,6 +118,7 @@ export default {
             inputType: d.inputType,
             explorerUrls: d.explorerUrls,
             status: "unverified" as const,
+            ...(d.chain.isTestnet && { isTestnet: true }),
           }))),
           detectTokens(lookupInput, detections, env),
           getCoinGeckoUrl(lookupInput, detections),

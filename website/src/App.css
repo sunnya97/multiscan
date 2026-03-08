@@ -26,6 +26,8 @@
   --token-dim: rgba(251, 146, 60, 0.12);
   --type-blue: #60a5fa;
   --type-blue-dim: rgba(96, 165, 250, 0.12);
+  --testnet: #fbbf24;
+  --testnet-dim: rgba(251, 191, 36, 0.12);
   --resolve: #c084fc;
   --resolve-dim: rgba(192, 132, 252, 0.12);
   --danger: #f87171;
@@ -52,6 +54,8 @@
     --token-dim: rgba(234, 88, 12, 0.08);
     --type-blue: #2563eb;
     --type-blue-dim: rgba(37, 99, 235, 0.08);
+    --testnet: #d97706;
+    --testnet-dim: rgba(217, 119, 6, 0.08);
     --resolve: #9333ea;
     --resolve-dim: rgba(147, 51, 234, 0.08);
     --danger: #dc2626;
@@ -381,6 +385,11 @@ html, body {
 .result-card__badge--type {
   color: var(--type-blue);
   background: var(--type-blue-dim);
+}
+
+.result-card__badge--testnet {
+  color: var(--testnet);
+  background: var(--testnet-dim);
 }
 
 .result-card__actions {

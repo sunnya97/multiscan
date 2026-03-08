@@ -25,6 +25,7 @@ export type FormatFamily =
   | "algorand"
   | "multiversx"
   | "starknet"
+  | "dash"
   | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom";
@@ -55,6 +56,7 @@ export interface Chain {
   coingeckoPlatformId?: string; // e.g. "ethereum" — used by CoinGecko API for token lookup
   bech32Prefix?: string; // e.g. "cosmos", "osmo" — used for Cosmos address detection
   rpcUrls: RpcEndpoint[];
+  isTestnet?: boolean;
 }
 
 export interface Env {
@@ -406,6 +408,17 @@ export const CHAINS: Chain[] = [
     rpcUrls: [
       { url: "https://api.blockchair.com/zcash", provider: "public" },
     ],
+  },
+
+  {
+    id: "dash",
+    name: "Dash",
+    symbol: "DASH",
+    family: "dash",
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dash/mainnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
   },
 
   // --- Cosmos Chains ---
@@ -1118,6 +1131,7 @@ export const CHAINS: Chain[] = [
     name: "Ethereum Sepolia",
     symbol: "ETH",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Etherscan Sepolia", baseUrl: "https://sepolia.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1131,6 +1145,7 @@ export const CHAINS: Chain[] = [
     name: "Ethereum Holesky",
     symbol: "ETH",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Etherscan Holesky", baseUrl: "https://holesky.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1144,6 +1159,7 @@ export const CHAINS: Chain[] = [
     name: "Base Sepolia",
     symbol: "ETH",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Basescan Sepolia", baseUrl: "https://sepolia.basescan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1157,6 +1173,7 @@ export const CHAINS: Chain[] = [
     name: "Arbitrum Sepolia",
     symbol: "ETH",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Arbiscan Sepolia", baseUrl: "https://sepolia.arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1170,6 +1187,7 @@ export const CHAINS: Chain[] = [
     name: "Optimism Sepolia",
     symbol: "ETH",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Etherscan Optimism Sepolia", baseUrl: "https://sepolia-optimism.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1183,6 +1201,7 @@ export const CHAINS: Chain[] = [
     name: "Polygon Amoy",
     symbol: "POL",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Polygonscan Amoy", baseUrl: "https://amoy.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1196,6 +1215,7 @@ export const CHAINS: Chain[] = [
     name: "BSC Testnet",
     symbol: "BNB",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "BscScan Testnet", baseUrl: "https://testnet.bscscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1209,6 +1229,7 @@ export const CHAINS: Chain[] = [
     name: "Avalanche Fuji",
     symbol: "AVAX",
     family: "evm",
+    isTestnet: true,
     explorers: [
       { name: "Snowscan Fuji", baseUrl: "https://testnet.snowscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
@@ -1217,6 +1238,110 @@ export const CHAINS: Chain[] = [
       { url: "https://avalanche-fuji-c-chain-rpc.publicnode.com", provider: "public" },
     ],
   },
+  {
+    id: "fantom-testnet",
+    name: "Fantom Testnet",
+    symbol: "FTM",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "FtmScan Testnet", baseUrl: "https://testnet.ftmscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.testnet.fantom.network", provider: "public" },
+    ],
+  },
+  {
+    id: "zksync-sepolia",
+    name: "zkSync Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "zkSync Explorer Sepolia", baseUrl: "https://sepolia.explorer.zksync.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://sepolia.era.zksync.dev", provider: "public" },
+    ],
+  },
+  {
+    id: "linea-sepolia",
+    name: "Linea Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Lineascan Sepolia", baseUrl: "https://sepolia.lineascan.build", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://linea-sepolia-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "scroll-sepolia",
+    name: "Scroll Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Scrollscan Sepolia", baseUrl: "https://sepolia.scrollscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://scroll-sepolia-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "mantle-sepolia",
+    name: "Mantle Sepolia",
+    symbol: "MNT",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Mantlescan Sepolia", baseUrl: "https://sepolia.mantlescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.sepolia.mantle.xyz", provider: "public" },
+    ],
+  },
+
+  // --- Ethereum Classic Testnet ---
+  {
+    id: "ethereum-classic-mordor",
+    name: "Ethereum Classic Mordor",
+    symbol: "ETC",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/ethereum-classic/mordor", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- HyperEVM / HyperCore Testnets ---
+  {
+    id: "hyperliquid-evm-testnet",
+    name: "HyperEVM Testnet",
+    symbol: "HYPE",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Hypurrscan Testnet", baseUrl: "https://testnet.hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.hyperliquid-testnet.xyz/evm", provider: "public" },
+    ],
+  },
+  {
+    id: "hyperliquid-core-testnet",
+    name: "HyperCore Testnet",
+    symbol: "HYPE",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Hypurrscan Testnet", baseUrl: "https://testnet.hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
 
   // --- Bitcoin Testnet ---
   {
@@ -1224,6 +1349,7 @@ export const CHAINS: Chain[] = [
     name: "Bitcoin Testnet",
     symbol: "BTC",
     family: "bitcoin-testnet",
+    isTestnet: true,
     explorers: [
       { name: "mempool.space Testnet", baseUrl: "https://mempool.space/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
@@ -1238,6 +1364,7 @@ export const CHAINS: Chain[] = [
     name: "Solana Testnet",
     symbol: "SOL",
     family: "solana",
+    isTestnet: true,
     explorers: [
       { name: "Solana Explorer Testnet", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}?cluster=testnet", txPath: "/tx/{query}?cluster=testnet" },
     ],
@@ -1250,6 +1377,7 @@ export const CHAINS: Chain[] = [
     name: "Solana Devnet",
     symbol: "SOL",
     family: "solana",
+    isTestnet: true,
     explorers: [
       { name: "Solana Explorer Devnet", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}?cluster=devnet", txPath: "/tx/{query}?cluster=devnet" },
     ],
@@ -1264,6 +1392,7 @@ export const CHAINS: Chain[] = [
     name: "Cardano Preprod",
     symbol: "ADA",
     family: "cardano",
+    isTestnet: true,
     explorers: [
       { name: "Cardanoscan Preprod", baseUrl: "https://preprod.cardanoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
     ],
@@ -1278,6 +1407,7 @@ export const CHAINS: Chain[] = [
     name: "Sui Testnet",
     symbol: "SUI",
     family: "sui",
+    isTestnet: true,
     explorers: [
       { name: "SuiVision Testnet", baseUrl: "https://testnet.suivision.xyz", addressPath: "/account/{query}", txPath: "/tx/{query}" },
     ],
@@ -1290,6 +1420,7 @@ export const CHAINS: Chain[] = [
     name: "Aptos Testnet",
     symbol: "APT",
     family: "aptos",
+    isTestnet: true,
     explorers: [
       { name: "Aptos Explorer Testnet", baseUrl: "https://explorer.aptoslabs.com", addressPath: "/account/{query}?network=testnet", txPath: "/txn/{query}?network=testnet" },
     ],
@@ -1304,11 +1435,413 @@ export const CHAINS: Chain[] = [
     name: "NEAR Testnet",
     symbol: "NEAR",
     family: "near",
+    isTestnet: true,
     explorers: [
       { name: "NearBlocks Testnet", baseUrl: "https://testnet.nearblocks.io", addressPath: "/address/{query}", txPath: "/txns/{query}" },
     ],
     rpcUrls: [
       { url: "https://rpc.testnet.near.org", provider: "public" },
     ],
+  },
+
+  // --- Tron Testnets ---
+  {
+    id: "tron-shasta",
+    name: "Tron Shasta",
+    symbol: "TRX",
+    family: "tron",
+    isTestnet: true,
+    explorers: [
+      { name: "Tronscan Shasta", baseUrl: "https://shasta.tronscan.org", addressPath: "/#/address/{query}", txPath: "/#/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.shasta.trongrid.io", provider: "public" },
+    ],
+  },
+  {
+    id: "tron-nile",
+    name: "Tron Nile",
+    symbol: "TRX",
+    family: "tron",
+    isTestnet: true,
+    explorers: [
+      { name: "Tronscan Nile", baseUrl: "https://nile.tronscan.org", addressPath: "/#/address/{query}", txPath: "/#/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://nile.trongrid.io", provider: "public" },
+    ],
+  },
+
+  // --- TON Testnet ---
+  {
+    id: "ton-testnet",
+    name: "TON Testnet",
+    symbol: "TON",
+    family: "ton",
+    isTestnet: true,
+    explorers: [
+      { name: "TON Viewer Testnet", baseUrl: "https://testnet.tonviewer.com", addressPath: "/{query}", txPath: "/transaction/{query}" },
+      { name: "Tonscan Testnet", baseUrl: "https://testnet.tonscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://testnet.toncenter.com/api/v2", provider: "public" },
+    ],
+  },
+
+  // --- Starknet Testnet ---
+  {
+    id: "starknet-sepolia",
+    name: "Starknet Sepolia",
+    symbol: "STRK",
+    family: "starknet",
+    isTestnet: true,
+    explorers: [
+      { name: "Starkscan Sepolia", baseUrl: "https://sepolia.starkscan.co", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
+      { name: "Voyager Sepolia", baseUrl: "https://sepolia.voyager.online", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://free-rpc.nethermind.io/sepolia-juno/", provider: "public" },
+    ],
+  },
+
+  // --- XRP Testnet ---
+  {
+    id: "xrp-testnet",
+    name: "XRP Testnet",
+    symbol: "XRP",
+    family: "xrp",
+    isTestnet: true,
+    explorers: [
+      { name: "XRPScan Testnet", baseUrl: "https://testnet.xrpscan.com", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://s.altnet.rippletest.net:51234/", provider: "public" },
+    ],
+  },
+
+  // --- Stellar Testnet ---
+  {
+    id: "stellar-testnet",
+    name: "Stellar Testnet",
+    symbol: "XLM",
+    family: "stellar",
+    isTestnet: true,
+    explorers: [
+      { name: "StellarExpert Testnet", baseUrl: "https://stellar.expert/explorer/testnet", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://horizon-testnet.stellar.org", provider: "public" },
+    ],
+  },
+
+  // --- Hedera Testnet ---
+  {
+    id: "hedera-testnet",
+    name: "Hedera Testnet",
+    symbol: "HBAR",
+    family: "hedera",
+    isTestnet: true,
+    explorers: [
+      { name: "HashScan Testnet", baseUrl: "https://hashscan.io", addressPath: "/testnet/account/{query}", txPath: "/testnet/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://testnet.mirrornode.hedera.com", provider: "public" },
+    ],
+  },
+
+  // --- Algorand Testnet ---
+  {
+    id: "algorand-testnet",
+    name: "Algorand Testnet",
+    symbol: "ALGO",
+    family: "algorand",
+    isTestnet: true,
+    explorers: [
+      { name: "Allo.info Testnet", baseUrl: "https://testnet.allo.info", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://testnet-idx.algonode.cloud", provider: "public" },
+    ],
+  },
+
+  // --- MultiversX Devnet ---
+  {
+    id: "multiversx-devnet",
+    name: "MultiversX Devnet",
+    symbol: "EGLD",
+    family: "multiversx",
+    isTestnet: true,
+    explorers: [
+      { name: "MultiversX Devnet Explorer", baseUrl: "https://devnet-explorer.multiversx.com", addressPath: "/accounts/{query}", txPath: "/transactions/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://devnet-api.multiversx.com", provider: "public" },
+    ],
+  },
+
+  // --- Polkadot Testnet ---
+  {
+    id: "polkadot-westend",
+    name: "Polkadot Westend",
+    symbol: "WND",
+    family: "polkadot",
+    isTestnet: true,
+    explorers: [
+      { name: "Subscan Westend", baseUrl: "https://westend.subscan.io", addressPath: "/account/{query}", txPath: "/extrinsic/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://westend-rpc.polkadot.io", provider: "public" },
+    ],
+  },
+
+  // --- Filecoin Testnet ---
+  {
+    id: "filecoin-calibration",
+    name: "Filecoin Calibration",
+    symbol: "FIL",
+    family: "filecoin",
+    isTestnet: true,
+    explorers: [
+      { name: "Filfox Calibration", baseUrl: "https://calibration.filfox.info", addressPath: "/en/address/{query}", txPath: "/en/message/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://api.calibration.node.glif.io/rpc/v1", provider: "public" },
+    ],
+  },
+
+  // --- Litecoin Testnet ---
+  {
+    id: "litecoin-testnet",
+    name: "Litecoin Testnet",
+    symbol: "LTC",
+    family: "litecoin",
+    isTestnet: true,
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/litecoin/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- Dogecoin Testnet ---
+  {
+    id: "dogecoin-testnet",
+    name: "Dogecoin Testnet",
+    symbol: "DOGE",
+    family: "dogecoin",
+    isTestnet: true,
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dogecoin/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- Bitcoin Cash Testnet ---
+  {
+    id: "bitcoin-cash-testnet",
+    name: "Bitcoin Cash Testnet",
+    symbol: "BCH",
+    family: "bitcoincash",
+    isTestnet: true,
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/bitcoin-cash/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- ZCash Testnet ---
+  {
+    id: "zcash-testnet",
+    name: "ZCash Testnet",
+    symbol: "ZEC",
+    family: "zcash",
+    isTestnet: true,
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/zcash/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- Dash Testnet ---
+  {
+    id: "dash-testnet",
+    name: "Dash Testnet",
+    symbol: "DASH",
+    family: "dash",
+    isTestnet: true,
+    explorers: [
+      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dash/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- Lightning Testnet ---
+  {
+    id: "lightning-testnet",
+    name: "Lightning Testnet",
+    symbol: "BTC",
+    family: "lightning",
+    isTestnet: true,
+    explorers: [
+      { name: "mempool.space Testnet", baseUrl: "https://mempool.space/testnet/lightning", addressPath: "/node/{query}", txPath: "" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- Kaspa Testnet ---
+  {
+    id: "kaspa-testnet",
+    name: "Kaspa Testnet",
+    symbol: "KAS",
+    family: "kaspa",
+    isTestnet: true,
+    explorers: [
+      { name: "Kaspa Explorer Testnet", baseUrl: "https://explorer-tn11.kaspa.org", addressPath: "/addresses/{query}", txPath: "/txs/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  // --- Cosmos Testnets ---
+  {
+    id: "osmosis-testnet",
+    name: "Osmosis Testnet",
+    symbol: "OSMO",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "celestia-testnet",
+    name: "Celestia Testnet",
+    symbol: "TIA",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "dydx-testnet",
+    name: "dYdX Testnet",
+    symbol: "DYDX",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "injective-testnet",
+    name: "Injective Testnet",
+    symbol: "INJ",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "axelar-testnet",
+    name: "Axelar Testnet",
+    symbol: "AXL",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "kava-testnet",
+    name: "Kava Testnet",
+    symbol: "KAVA",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "persistence-testnet",
+    name: "Persistence Testnet",
+    symbol: "XPRT",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "archway-testnet",
+    name: "Archway Testnet",
+    symbol: "ARCH",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "noble-testnet",
+    name: "Noble Testnet",
+    symbol: "USDC",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "neutron-testnet",
+    name: "Neutron Testnet",
+    symbol: "NTRN",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "coreum-testnet",
+    name: "Coreum Testnet",
+    symbol: "CORE",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "mantra-testnet",
+    name: "MANTRA Testnet",
+    symbol: "OM",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "babylon-testnet",
+    name: "Babylon Testnet",
+    symbol: "BBN",
+    family: "cosmos",
+    isTestnet: true,
+    explorers: [
+      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
   },
 ];

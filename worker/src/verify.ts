@@ -12,6 +12,7 @@ export interface VerifiedResult {
   explorerUrls: ExplorerUrl[];
   status: VerificationStatus;
   isToken?: boolean;
+  isTestnet?: boolean;
 }
 
 const REQUEST_TIMEOUT_MS = 6000;
@@ -875,6 +876,7 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
         return "unverified";
       case "monero":
       case "bittensor":
+      case "dash":
         return "unverified";
       case "xrp":
         found = await tryEndpoints(rpcUrls, (url) =>
@@ -975,5 +977,6 @@ export async function verifyResults(
     inputType: r.inputType,
     explorerUrls: r.explorerUrls,
     status: batchStatuses.get(r.chain.id) ?? singleStatuses.get(r.chain.id) ?? "unverified",
+    ...(r.chain.isTestnet && { isTestnet: true }),
   }));
 }

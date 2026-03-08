@@ -13,6 +13,7 @@ interface DisplayResult {
   explorerUrls: ExplorerUrl[];
   status: "found" | "not_found" | "unverified";
   isToken?: boolean;
+  isTestnet?: boolean;
 }
 
 
@@ -51,6 +52,7 @@ function applyExplorerOverride(
     explorerUrls,
     status: result.status,
     isToken: result.isToken,
+    isTestnet: result.isTestnet,
   };
 }
 
@@ -286,7 +288,7 @@ export default function SearchCommand(props: LaunchProps) {
 }
 
 function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; query: string; coinGeckoUrl?: string | null }) {
-  const { chainId, chainName, symbol, inputType, explorerUrls, status, isToken } = result;
+  const { chainId, chainName, symbol, inputType, explorerUrls, status, isToken, isTestnet } = result;
   const typeLabel = inputType === "address" ? "Address" : "Transaction";
   const tagColor = inputType === "address" ? Color.Blue : Color.Green;
 
@@ -297,6 +299,10 @@ function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; qu
   const logoUrl = getChainLogoUrl(chainName);
 
   const accessories: List.Item.Accessory[] = [];
+
+  if (isTestnet) {
+    accessories.push({ tag: { value: "Testnet", color: Color.Yellow } });
+  }
 
   if (status === "found") {
     accessories.push({ icon: { source: Icon.Checkmark, tintColor: Color.Green }, tooltip: "Verified on-chain" });

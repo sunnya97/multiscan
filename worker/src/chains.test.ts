@@ -95,7 +95,7 @@ describe("CHAINS data integrity", () => {
   });
 
   it("every chain has at least one rpcUrl (except unverifiable chains)", () => {
-    const unverifiable = new Set(["monero", "bittensor"]);
+    const unverifiable = new Set(["monero", "bittensor", "litecoin-testnet", "kaspa-testnet", "dogecoin-testnet", "bitcoin-cash-testnet", "zcash-testnet", "dash", "dash-testnet", "lightning-testnet", "ethereum-classic-mordor", "hyperliquid-core-testnet", "osmosis-testnet", "celestia-testnet", "dydx-testnet", "injective-testnet", "axelar-testnet", "kava-testnet", "persistence-testnet", "archway-testnet", "noble-testnet", "neutron-testnet", "coreum-testnet", "mantra-testnet", "babylon-testnet"]);
     for (const chain of CHAINS) {
       if (unverifiable.has(chain.id)) continue;
       expect(chain.rpcUrls.length, `${chain.id} has no rpcUrls`).toBeGreaterThanOrEqual(1);
@@ -103,7 +103,7 @@ describe("CHAINS data integrity", () => {
   });
 
   it("cosmos chains have bech32Prefix", () => {
-    const cosmosChains = CHAINS.filter((c) => c.family === "cosmos");
+    const cosmosChains = CHAINS.filter((c) => c.family === "cosmos" && !c.isTestnet);
     expect(cosmosChains.length).toBeGreaterThan(0);
     for (const chain of cosmosChains) {
       expect(chain.bech32Prefix, `${chain.id} missing bech32Prefix`).toBeTruthy();

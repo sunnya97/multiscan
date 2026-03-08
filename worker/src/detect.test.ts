@@ -18,7 +18,7 @@ const EVM_CHAINS = [
   "ethereum-classic", "hyperliquid-evm", "hyperliquid-core",
 ];
 
-const COSMOS_CHAIN_IDS = CHAINS.filter((c) => c.family === "cosmos").map((c) => c.id);
+const COSMOS_CHAIN_IDS = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix).map((c) => c.id);
 
 // --- EVM address (0x + 40 hex) ---
 
@@ -809,5 +809,90 @@ describe("edge cases", () => {
 
   it("rejects random text", () => {
     expect(detect("hello world", CHAINS)).toHaveLength(0);
+  });
+});
+
+// --- Testnet detection ---
+
+describe("Litecoin testnet detection", () => {
+  it("detects tltc1 bech32 address", () => {
+    const results = detect("tltc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfhmdq", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("litecoin-testnet");
+    expect(results[0].inputType).toBe("address");
+  });
+});
+
+describe("Filecoin Calibration testnet detection", () => {
+  it("detects t0 address (ID)", () => {
+    const results = detect("t01234", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("filecoin-calibration");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects t1 address (secp256k1) — not conflicting with ZCash", () => {
+    // Filecoin t1 addresses are typically ~41 chars, ZCash t1 is exactly 34
+    const results = detect("t1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("filecoin-calibration");
+  });
+
+  it("ZCash t1 still detected as ZCash (34 chars, base58)", () => {
+    // ZCash: t1 + 32 base58 chars
+    const results = detect("t1" + "R".repeat(32), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("zcash");
+  });
+});
+
+describe("Kaspa testnet detection", () => {
+  it("detects kaspatest: prefixed address", () => {
+    const results = detect("kaspatest:qr6m0t8gkfhsn0l5ynfadtvuetg3fle940dalpsqqaqeqqq4lujwsg3wrr50", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("kaspa-testnet");
+    expect(results[0].inputType).toBe("address");
+  });
+});
+
+describe("Bitcoin testnet detection", () => {
+  it("detects tb1 bech32 address", () => {
+    const results = detect("tb1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bitcoin-testnet");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects m prefix legacy address", () => {
+    const results = detect("m" + "A".repeat(33), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bitcoin-testnet");
+  });
+});
+
+describe("Cardano testnet detection", () => {
+  it("detects addr_test1 address", () => {
+    const results = detect("addr_test1" + "a".repeat(50), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("cardano-preprod");
+    expect(results[0].inputType).toBe("address");
+  });
+});
+
+describe("NEAR testnet detection", () => {
+  it("detects *.testnet addresses", () => {
+    const results = detect("alice.testnet", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("near-testnet");
+    expect(results[0].inputType).toBe("address");
+  });
+});
+
+describe("Bitcoin Cash testnet detection", () => {
+  it("detects bchtest: prefixed address", () => {
+    const results = detect("bchtest:q" + "a".repeat(41), CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("bitcoin-cash-testnet");
+    expect(results[0].inputType).toBe("address");
   });
 });

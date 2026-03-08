@@ -10,7 +10,7 @@ interface ResultCardProps {
 }
 
 export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: ResultCardProps) {
-  const { chainName, symbol, inputType, explorerUrls, status, isToken } = result;
+  const { chainName, symbol, inputType, explorerUrls, status, isToken, isTestnet } = result;
   const isVerified = status === "found";
   const typeLabel = inputType === "address" ? "ADDR" : inputType === "transaction" ? "TX" : "DENOM";
   const cardRef = useRef<HTMLDivElement>(null);
@@ -45,6 +45,9 @@ export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: 
           <span className="result-card__symbol">{symbol}</span>
         </div>
         <div className="result-card__badges">
+          {isTestnet && (
+            <span className="result-card__badge result-card__badge--testnet">TESTNET</span>
+          )}
           {isVerified && (
             <span className="result-card__badge result-card__badge--verified">
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
