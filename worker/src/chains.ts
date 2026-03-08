@@ -32,6 +32,7 @@ export type FormatFamily =
   | "nano"
   | "chia"
   | "iota"
+  | "nockchain"
   | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom" | "validator";
@@ -70,6 +71,7 @@ export interface Env {
   ETHERSCAN_API_KEY?: string;
   ALCHEMY_API_KEY?: string;
   HELIUS_API_KEY?: string;
+  NOCKBLOCKS_API_KEY?: string;
 }
 
 /** Replace {key} placeholder with the actual secret value. Returns null if key is required but missing. */
@@ -582,6 +584,19 @@ export const CHAINS: Chain[] = [
       { name: "Spacescan", baseUrl: "https://www.spacescan.io", addressPath: "/address/{query}", txPath: "/coin/{query}" },
     ],
     rpcUrls: [],
+  },
+
+  {
+    id: "nockchain",
+    name: "Nockchain",
+    symbol: "NOCK",
+    family: "nockchain",
+    explorers: [
+      { name: "NockBlocks", baseUrl: "https://nockblocks.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://nockblocks.com/rpc/v1", provider: "public" },
+    ],
   },
 
   // --- Cosmos Chains ---

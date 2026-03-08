@@ -443,6 +443,15 @@ function getMatches(input: string): Match[] {
     }
   }
 
+  // Nockchain address or transaction: base58, 50-60 chars
+  // Placed after all specific-prefix chains to avoid conflicts
+  const nockchainRegex = new RegExp(`^${BASE58_CHAR}{50,60}$`);
+  if (nockchainRegex.test(trimmed)) {
+    matches.push({ chainId: "nockchain", inputType: "address" });
+    matches.push({ chainId: "nockchain", inputType: "transaction" });
+    return matches;
+  }
+
   // Solana address: base58, 32-44 chars
   const solanaAddrRegex = new RegExp(`^${BASE58_CHAR}{32,44}$`);
   if (solanaAddrRegex.test(trimmed)) {

@@ -778,6 +778,32 @@ async function verifyStarknetTx(rpcUrl: string, txHash: string): Promise<boolean
   return json.result != null && !json.error;
 }
 
+// --- Nockchain ---
+
+async function verifyNockchainAddr(rpcUrl: string, address: string, apiKey: string): Promise<boolean> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": apiKey },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getTransactionsByAddress", params: [{ address }] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { result?: { totalTransactions?: number } };
+  return (json.result?.totalTransactions ?? 0) > 0;
+}
+
+async function verifyNockchainTx(rpcUrl: string, txId: string, apiKey: string): Promise<boolean> {
+  const response = await fetch(rpcUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": apiKey },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getTransactionByTxid", params: [{ transactionId: txId }] }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { result?: { id?: string } };
+  return json.result?.id != null;
+}
+
 // --- Main verification ---
 
 async function verifyEvm(chain: Chain, inputType: string, input: string, env: Env): Promise<boolean> {
@@ -903,6 +929,12 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "chia":
       case "iota":
         return "unverified";
+      case "nockchain":
+        if (!env.NOCKBLOCKS_API_KEY) return "unverified";
+        found = isTx
+          ? await verifyNockchainTx(rpcUrls[0], input, env.NOCKBLOCKS_API_KEY)
+          : await verifyNockchainAddr(rpcUrls[0], input, env.NOCKBLOCKS_API_KEY);
+        break;
       case "xrp":
         found = await tryEndpoints(rpcUrls, (url) =>
           isTx ? verifyXrpTx(url, input) : verifyXrpAddr(url, input),
