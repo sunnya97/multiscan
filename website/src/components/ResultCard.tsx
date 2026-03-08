@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LookupResult } from "../types";
+import { CHAIN_LOGO } from "../chainLogos";
 
 interface ResultCardProps {
   result: LookupResult;
@@ -13,6 +14,8 @@ export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: 
   const isVerified = status === "found";
   const typeLabel = inputType === "address" ? "ADDR" : inputType === "transaction" ? "TX" : "DENOM";
   const cardRef = useRef<HTMLDivElement>(null);
+  const [logoBroken, setLogoBroken] = useState(false);
+  const logoSrc = CHAIN_LOGO[chainName];
 
   useEffect(() => {
     if (isSelected && cardRef.current) {
@@ -28,6 +31,16 @@ export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: 
     >
       <div className="result-card__header">
         <div className="result-card__chain">
+          {logoSrc && !logoBroken ? (
+            <img
+              className="result-card__logo"
+              src={logoSrc}
+              alt=""
+              onError={() => setLogoBroken(true)}
+            />
+          ) : (
+            <span className="result-card__logo-fallback">{chainName[0]}</span>
+          )}
           <span className="result-card__name">{chainName}</span>
           <span className="result-card__symbol">{symbol}</span>
         </div>
