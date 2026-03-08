@@ -94,9 +94,10 @@ export async function createSuggestion(
   }
 
   // Create new issue
+  const disclaimer = `\n\n---\n*This issue was automatically created via the [multiscan.dev](https://multiscan.dev) suggestion form, not by the repository owner.*`;
   const body = description
-    ? `**Network:** ${networkName}\n\n**Description:** ${description}`
-    : `**Network:** ${networkName}`;
+    ? `**Network:** ${networkName}\n\n**Description:** ${description}${disclaimer}`
+    : `**Network:** ${networkName}${disclaimer}`;
 
   const createUrl = `${GITHUB_API}/repos/${REPO}/issues`;
   const resp = await fetch(createUrl, {
