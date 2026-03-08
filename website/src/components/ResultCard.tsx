@@ -12,7 +12,7 @@ interface ResultCardProps {
 export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: ResultCardProps) {
   const { chainName, symbol, inputType, explorerUrls, status, isToken, isTestnet } = result;
   const isVerified = status === "found";
-  const typeLabel = inputType === "address" ? "ADDR" : inputType === "transaction" ? "TX" : "DENOM";
+  const typeLabel = inputType === "address" ? "ADDR" : inputType === "transaction" ? "TX" : inputType === "validator" ? "VALIDATOR" : "DENOM";
   const cardRef = useRef<HTMLDivElement>(null);
   const [logoBroken, setLogoBroken] = useState(false);
   const logoSrc = CHAIN_LOGO[chainName];

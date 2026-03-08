@@ -166,6 +166,43 @@ describe("Cosmos bech32 address detection", () => {
   });
 });
 
+// --- Cosmos valoper addresses ---
+
+describe("Cosmos valoper address detection", () => {
+  it("detects cosmosvaloper address", () => {
+    const results = detect("cosmosvaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4epsluffn", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("cosmos");
+    expect(results[0].inputType).toBe("validator");
+  });
+
+  it("detects osmovaloper address", () => {
+    const results = detect("osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("osmosis");
+    expect(results[0].inputType).toBe("validator");
+  });
+
+  it("generates Mintscan validator URL", () => {
+    const results = detect("osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4", CHAINS);
+    expect(results[0].explorerUrls.length).toBeGreaterThan(0);
+    expect(results[0].explorerUrls[0].url).toContain("/validators/");
+  });
+
+  it("detects celestiavaloper address", () => {
+    const results = detect("celestiavaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4eptv8mxz", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("celestia");
+    expect(results[0].inputType).toBe("validator");
+  });
+
+  it("does not match regular address as validator", () => {
+    const results = detect("osmo1qypqxpq9qcrsszg2pvxq6rs0zqg3yyc50eacts", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].inputType).toBe("address");
+  });
+});
+
 // --- Bitcoin ---
 
 describe("Bitcoin address detection", () => {

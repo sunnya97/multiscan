@@ -289,8 +289,8 @@ export default function SearchCommand(props: LaunchProps) {
 
 function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; query: string; coinGeckoUrl?: string | null }) {
   const { chainId, chainName, symbol, inputType, explorerUrls, status, isToken, isTestnet } = result;
-  const typeLabel = inputType === "address" ? "Address" : "Transaction";
-  const tagColor = inputType === "address" ? Color.Blue : Color.Green;
+  const typeLabel = inputType === "address" ? "Address" : inputType === "validator" ? "Validator" : inputType === "denom" ? "Denom" : "Transaction";
+  const tagColor = inputType === "address" || inputType === "validator" ? Color.Blue : Color.Green;
 
   const primaryUrl = explorerUrls[0]?.url ?? "";
   const additionalExplorers = explorerUrls.slice(1);

@@ -127,6 +127,15 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Cosmos-family validator addresses — match by bech32 prefix + "valoper"
+  for (const [prefix, chainId] of BECH32_PREFIX_TO_CHAIN) {
+    const valoperRegex = new RegExp(`^${prefix}valoper1[a-z0-9]{38,58}$`);
+    if (valoperRegex.test(trimmed)) {
+      matches.push({ chainId, inputType: "validator" });
+      return matches;
+    }
+  }
+
   // Cosmos-family addresses — match by bech32 prefix
   for (const [prefix, chainId] of BECH32_PREFIX_TO_CHAIN) {
     const regex = new RegExp(`^${prefix}1[a-z0-9]{38,58}$`);
@@ -462,6 +471,9 @@ function buildExplorerUrls(chain: Chain, inputType: InputType, query: string): E
       if (inputType === "denom") {
         if (!explorer.denomPath) return null;
         pathTemplate = explorer.denomPath;
+      } else if (inputType === "validator") {
+        if (!explorer.validatorPath) return null;
+        pathTemplate = explorer.validatorPath;
       } else {
         pathTemplate = inputType === "address" ? explorer.addressPath : explorer.txPath;
       }
