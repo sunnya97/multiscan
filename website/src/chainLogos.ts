@@ -115,6 +115,7 @@ export const CHAIN_LOGO: Record<string, string> = {
   "ZCash Testnet": L("zcash"),
   "Kaspa Testnet": L("kaspa"),
   Dash: L("dash"),
+  Urbit: L("urbit"),
   "Dash Testnet": L("dash"),
   "Lightning Testnet": L("lightning"),
   "Ethereum Classic Mordor": L("classic"),

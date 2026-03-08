@@ -113,6 +113,7 @@ const CHAIN_LOGO_SLUG: Record<string, string> = {
   "ZCash Testnet": "zcash",
   "Kaspa Testnet": "kaspa",
   Dash: "dash",
+  Urbit: "urbit",
   "Dash Testnet": "dash",
   "Lightning Testnet": "lightning",
   "Ethereum Classic Mordor": "classic",

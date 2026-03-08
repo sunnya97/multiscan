@@ -895,6 +895,7 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "monero":
       case "bittensor":
       case "dash":
+      case "urbit":
         return "unverified";
       case "xrp":
         found = await tryEndpoints(rpcUrls, (url) =>

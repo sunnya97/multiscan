@@ -37,6 +37,7 @@ const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Bittensor" },
   { type: "chain", name: "HyperCore" },
   { type: "chain", name: "Dash" },
+  { type: "chain", name: "Urbit" },
   { type: "name", name: ".eth" },
   { type: "name", name: ".sol" },
   { type: "name", name: ".bnb" },

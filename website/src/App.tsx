@@ -248,7 +248,7 @@ export default function App() {
         <footer className="footer">
           <span>Multiscan</span>
           <span className="footer__sep">&middot;</span>
-          <span>Open source</span>
+          <a href="https://github.com/sunnya97/multiscan" target="_blank" rel="noopener noreferrer">Open source</a>
         </footer>
       </div>
       {showSuggestModal && (

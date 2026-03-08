@@ -26,6 +26,7 @@ export type FormatFamily =
   | "multiversx"
   | "starknet"
   | "dash"
+  | "urbit"
   | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom";
@@ -417,6 +418,18 @@ export const CHAINS: Chain[] = [
     family: "dash",
     explorers: [
       { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dash/mainnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [],
+  },
+
+  {
+    id: "urbit",
+    name: "Urbit",
+    symbol: "URBIT",
+    family: "urbit",
+    explorers: [
+      { name: "Network Explorer", baseUrl: "https://network.urbit.org", addressPath: "/{query}", txPath: "" },
+      { name: "Urbit Live", baseUrl: "https://urbit.live", addressPath: "/{query}", txPath: "" },
     ],
     rpcUrls: [],
   },

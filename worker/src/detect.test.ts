@@ -896,3 +896,72 @@ describe("Bitcoin Cash testnet detection", () => {
     expect(results[0].inputType).toBe("address");
   });
 });
+
+// --- Urbit detection ---
+
+describe("Urbit ship name detection", () => {
+  it("detects galaxy with tilde (~zod)", () => {
+    const results = detect("~zod", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("urbit");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("detects galaxy without tilde (zod)", () => {
+    const results = detect("zod", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("urbit");
+  });
+
+  it("detects star with tilde (~marzod)", () => {
+    const results = detect("~marzod", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("urbit");
+  });
+
+  it("detects star without tilde (marzod)", () => {
+    const results = detect("marzod", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("urbit");
+  });
+
+  it("detects planet with tilde (~sampel-palnet)", () => {
+    const results = detect("~sampel-palnet", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("urbit");
+  });
+
+  it("detects planet without tilde (sampel-palnet)", () => {
+    const results = detect("sampel-palnet", CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("urbit");
+  });
+
+  it("normalizes explorer URL to include tilde", () => {
+    const results = detect("ripled", CHAINS);
+    expect(results[0].explorerUrls[0].url).toContain("~ripled");
+  });
+
+  it("explorer URL includes tilde when input already has it", () => {
+    const results = detect("~ripled", CHAINS);
+    expect(results[0].explorerUrls[0].url).toContain("~ripled");
+    // Should not have double tilde
+    expect(results[0].explorerUrls[0].url).not.toContain("~~");
+  });
+
+  it("rejects invalid phonemes (abc is not a valid suffix)", () => {
+    expect(detect("~abc", CHAINS)).toHaveLength(0);
+  });
+
+  it("rejects invalid star (abczod — abc is not a valid prefix)", () => {
+    expect(detect("~abczod", CHAINS)).toHaveLength(0);
+  });
+
+  it("rejects names with wrong length (4 chars)", () => {
+    expect(detect("abcd", CHAINS)).toHaveLength(0);
+  });
+
+  it("rejects names with wrong length (5 chars)", () => {
+    expect(detect("abcde", CHAINS)).toHaveLength(0);
+  });
+});
