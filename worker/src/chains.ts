@@ -24,7 +24,8 @@ export type FormatFamily =
   | "kaspa"
   | "algorand"
   | "multiversx"
-  | "starknet";
+  | "starknet"
+  | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom";
 
@@ -60,7 +61,6 @@ export interface Env {
   ETHERSCAN_API_KEY?: string;
   ALCHEMY_API_KEY?: string;
   HELIUS_API_KEY?: string;
-  GITHUB_TOKEN?: string;
 }
 
 /** Replace {key} placeholder with the actual secret value. Returns null if key is required but missing. */
@@ -1109,6 +1109,206 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [
       { url: "https://free-rpc.nethermind.io/mainnet-juno/", provider: "public" },
+    ],
+  },
+
+  // --- EVM Testnets ---
+  {
+    id: "ethereum-sepolia",
+    name: "Ethereum Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Etherscan Sepolia", baseUrl: "https://sepolia.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 11155111,
+    rpcUrls: [
+      { url: "https://ethereum-sepolia-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "ethereum-holesky",
+    name: "Ethereum Holesky",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Etherscan Holesky", baseUrl: "https://holesky.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 17000,
+    rpcUrls: [
+      { url: "https://ethereum-holesky-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "base-sepolia",
+    name: "Base Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Basescan Sepolia", baseUrl: "https://sepolia.basescan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 84532,
+    rpcUrls: [
+      { url: "https://base-sepolia-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "arbitrum-sepolia",
+    name: "Arbitrum Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Arbiscan Sepolia", baseUrl: "https://sepolia.arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 421614,
+    rpcUrls: [
+      { url: "https://arbitrum-sepolia-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "optimism-sepolia",
+    name: "Optimism Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Etherscan Optimism Sepolia", baseUrl: "https://sepolia-optimism.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 11155420,
+    rpcUrls: [
+      { url: "https://optimism-sepolia-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "polygon-amoy",
+    name: "Polygon Amoy",
+    symbol: "POL",
+    family: "evm",
+    explorers: [
+      { name: "Polygonscan Amoy", baseUrl: "https://amoy.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 80002,
+    rpcUrls: [
+      { url: "https://polygon-amoy-bor-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "bsc-testnet",
+    name: "BSC Testnet",
+    symbol: "BNB",
+    family: "evm",
+    explorers: [
+      { name: "BscScan Testnet", baseUrl: "https://testnet.bscscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 97,
+    rpcUrls: [
+      { url: "https://bsc-testnet-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+  {
+    id: "avalanche-fuji",
+    name: "Avalanche Fuji",
+    symbol: "AVAX",
+    family: "evm",
+    explorers: [
+      { name: "Snowscan Fuji", baseUrl: "https://testnet.snowscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    etherscanChainId: 43113,
+    rpcUrls: [
+      { url: "https://avalanche-fuji-c-chain-rpc.publicnode.com", provider: "public" },
+    ],
+  },
+
+  // --- Bitcoin Testnet ---
+  {
+    id: "bitcoin-testnet",
+    name: "Bitcoin Testnet",
+    symbol: "BTC",
+    family: "bitcoin-testnet",
+    explorers: [
+      { name: "mempool.space Testnet", baseUrl: "https://mempool.space/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://mempool.space/testnet/api", provider: "public" },
+    ],
+  },
+
+  // --- Solana Testnets ---
+  {
+    id: "solana-testnet",
+    name: "Solana Testnet",
+    symbol: "SOL",
+    family: "solana",
+    explorers: [
+      { name: "Solana Explorer Testnet", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}?cluster=testnet", txPath: "/tx/{query}?cluster=testnet" },
+    ],
+    rpcUrls: [
+      { url: "https://api.testnet.solana.com", provider: "public" },
+    ],
+  },
+  {
+    id: "solana-devnet",
+    name: "Solana Devnet",
+    symbol: "SOL",
+    family: "solana",
+    explorers: [
+      { name: "Solana Explorer Devnet", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}?cluster=devnet", txPath: "/tx/{query}?cluster=devnet" },
+    ],
+    rpcUrls: [
+      { url: "https://api.devnet.solana.com", provider: "public" },
+    ],
+  },
+
+  // --- Cardano Testnet ---
+  {
+    id: "cardano-preprod",
+    name: "Cardano Preprod",
+    symbol: "ADA",
+    family: "cardano",
+    explorers: [
+      { name: "Cardanoscan Preprod", baseUrl: "https://preprod.cardanoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://preprod.koios.rest/api/v1", provider: "public" },
+    ],
+  },
+
+  // --- Move Testnets ---
+  {
+    id: "sui-testnet",
+    name: "Sui Testnet",
+    symbol: "SUI",
+    family: "sui",
+    explorers: [
+      { name: "SuiVision Testnet", baseUrl: "https://testnet.suivision.xyz", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://fullnode.testnet.sui.io", provider: "public" },
+    ],
+  },
+  {
+    id: "aptos-testnet",
+    name: "Aptos Testnet",
+    symbol: "APT",
+    family: "aptos",
+    explorers: [
+      { name: "Aptos Explorer Testnet", baseUrl: "https://explorer.aptoslabs.com", addressPath: "/account/{query}?network=testnet", txPath: "/txn/{query}?network=testnet" },
+    ],
+    rpcUrls: [
+      { url: "https://fullnode.testnet.aptoslabs.com/v1", provider: "public" },
+    ],
+  },
+
+  // --- NEAR Testnet ---
+  {
+    id: "near-testnet",
+    name: "NEAR Testnet",
+    symbol: "NEAR",
+    family: "near",
+    explorers: [
+      { name: "NearBlocks Testnet", baseUrl: "https://testnet.nearblocks.io", addressPath: "/address/{query}", txPath: "/txns/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rpc.testnet.near.org", provider: "public" },
     ],
   },
 ];

@@ -808,6 +808,7 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
         found = await verifyEvm(chain, inputType, input, env);
         break;
       case "bitcoin":
+      case "bitcoin-testnet":
         found = await tryEndpoints(rpcUrls, (url) =>
           isTx ? verifyBitcoinTx(url, input) : verifyBitcoinAddr(url, input),
         );

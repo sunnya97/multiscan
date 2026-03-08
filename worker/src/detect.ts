@@ -112,6 +112,18 @@ function getMatches(input: string): Match[] {
     return matches;
   }
 
+  // Bitcoin Testnet: legacy (m/n + base58, 25-34 chars)
+  const btcTestnetLegacyRegex = new RegExp(`^[mn]${BASE58_CHAR}{24,33}$`);
+  if (btcTestnetLegacyRegex.test(trimmed)) {
+    matches.push({ chainId: "bitcoin-testnet", inputType: "address" });
+    return matches;
+  }
+  // Bitcoin Testnet: bech32 (tb1...)
+  if (/^tb1[a-zA-HJ-NP-Za-km-z0-9]{25,62}$/.test(trimmed)) {
+    matches.push({ chainId: "bitcoin-testnet", inputType: "address" });
+    return matches;
+  }
+
   // Dogecoin address: D + base58, 25-34 chars (legacy), A/9 for P2SH
   const dogeAddrRegex = new RegExp(`^[DA9]${BASE58_CHAR}{24,33}$`);
   if (dogeAddrRegex.test(trimmed)) {
@@ -182,6 +194,11 @@ function getMatches(input: string): Match[] {
     matches.push({ chainId: "cardano", inputType: "address" });
     return matches;
   }
+  // Cardano Testnet: addr_test1 + bech32
+  if (/^addr_test1[a-z0-9]{50,}$/.test(trimmed)) {
+    matches.push({ chainId: "cardano-preprod", inputType: "address" });
+    return matches;
+  }
   const cardanoByronRegex = new RegExp(`^(Ae2|DdzFF)${BASE58_CHAR}{50,}$`);
   if (cardanoByronRegex.test(trimmed)) {
     matches.push({ chainId: "cardano", inputType: "address" });
@@ -216,6 +233,11 @@ function getMatches(input: string): Match[] {
   // NEAR named address: *.near
   if (/^[a-z0-9_-]+\.near$/.test(trimmed)) {
     matches.push({ chainId: "near", inputType: "address" });
+    return matches;
+  }
+  // NEAR Testnet named address: *.testnet
+  if (/^[a-z0-9_-]+\.testnet$/.test(trimmed)) {
+    matches.push({ chainId: "near-testnet", inputType: "address" });
     return matches;
   }
 
@@ -271,6 +293,7 @@ function getMatches(input: string): Match[] {
   // 64 hex chars (no 0x prefix) — could be Bitcoin tx, Cosmos txs, Tron tx, TON tx, Polkadot tx, NEAR implicit addr, UTXO txs
   if (/^[0-9a-fA-F]{64}$/.test(trimmed)) {
     matches.push({ chainId: "bitcoin", inputType: "transaction" });
+    matches.push({ chainId: "bitcoin-testnet", inputType: "transaction" });
     matches.push({ chainId: "dogecoin", inputType: "transaction" });
     matches.push({ chainId: "litecoin", inputType: "transaction" });
     matches.push({ chainId: "bitcoin-cash", inputType: "transaction" });
