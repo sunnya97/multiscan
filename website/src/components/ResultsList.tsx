@@ -126,6 +126,7 @@ interface ResultsListProps {
   hasInput: boolean;
   isLoading: boolean;
   selectedIndex: number;
+  onSuggest?: () => void;
 }
 
 function truncateAddress(addr: string): string {
@@ -143,6 +144,7 @@ export default function ResultsList({
   hasInput,
   isLoading,
   selectedIndex,
+  onSuggest,
 }: ResultsListProps) {
   const inputType = results[0]?.inputType;
   const isAddress = inputType === "address";
@@ -236,6 +238,11 @@ export default function ResultsList({
               );
             })}
           </div>
+          {onSuggest && (
+            <button className="suggest-link" onClick={onSuggest}>
+              Missing a network? Suggest one
+            </button>
+          )}
         </div>
       </div>
     );

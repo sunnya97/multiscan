@@ -3,6 +3,7 @@ import { fetchLookup } from "./api";
 import { LookupResult } from "./types";
 import SearchBar from "./components/SearchBar";
 import ResultsList from "./components/ResultsList";
+import SuggestNetwork from "./components/SuggestNetwork";
 
 export default function App() {
   const [searchText, setSearchText] = useState("");
@@ -16,6 +17,7 @@ export default function App() {
   const [isDetecting, setIsDetecting] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showSuggestModal, setShowSuggestModal] = useState(false);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const cancelPhase2Ref = useRef<(() => void) | undefined>(undefined);
@@ -226,6 +228,7 @@ export default function App() {
           hasInput={trimmedSearch.length > 0}
           isLoading={isLoading}
           selectedIndex={selectedIndex}
+          onSuggest={() => setShowSuggestModal(true)}
         />
         {displayResults.length > 0 && (
           <div className="keyboard-hints">
@@ -246,6 +249,9 @@ export default function App() {
           <span>Open source</span>
         </footer>
       </div>
+      {showSuggestModal && (
+        <SuggestNetwork onClose={() => setShowSuggestModal(false)} />
+      )}
       {toastMessage && (
         <div className="toast" key={toastMessage}>
           {toastMessage}

@@ -1,6 +1,7 @@
 import { CHAINS, Env } from "./chains";
 import { detect } from "./detect";
 import { resolveNameService } from "./resolve";
+import { checkExistingSuggestion, createSuggestion } from "./suggest";
 import { VerifiedResult, detectTokens, getCoinGeckoUrl, verifyResults } from "./verify";
 
 function corsHeaders(): HeadersInit {
@@ -25,8 +26,39 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders() });
     }
 
-    // Only accept POST /api/lookup
     const url = new URL(request.url);
+
+    // POST /api/suggest/check — check for existing network suggestions
+    if (url.pathname === "/api/suggest/check" && request.method === "POST") {
+      try {
+        const body = (await request.json()) as { networkName?: string };
+        const networkName = (body.networkName ?? "").trim();
+        if (!networkName) {
+          return jsonResponse({ error: "Missing networkName" }, 400);
+        }
+        const result = await checkExistingSuggestion(networkName, env);
+        return jsonResponse(result);
+      } catch {
+        return jsonResponse({ error: "Failed to check suggestions" }, 500);
+      }
+    }
+
+    // POST /api/suggest/create — create a new suggestion or upvote existing
+    if (url.pathname === "/api/suggest/create" && request.method === "POST") {
+      try {
+        const body = (await request.json()) as { networkName?: string; description?: string };
+        const networkName = (body.networkName ?? "").trim();
+        if (!networkName) {
+          return jsonResponse({ error: "Missing networkName" }, 400);
+        }
+        const result = await createSuggestion(networkName, body.description, env);
+        return jsonResponse(result);
+      } catch {
+        return jsonResponse({ error: "Failed to create suggestion" }, 500);
+      }
+    }
+
+    // Only accept POST /api/lookup
     if (url.pathname !== "/api/lookup" || request.method !== "POST") {
       return jsonResponse({ error: "POST /api/lookup expected" }, 404);
     }

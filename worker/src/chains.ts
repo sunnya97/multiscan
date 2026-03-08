@@ -60,6 +60,7 @@ export interface Env {
   ETHERSCAN_API_KEY?: string;
   ALCHEMY_API_KEY?: string;
   HELIUS_API_KEY?: string;
+  GITHUB_TOKEN?: string;
 }
 
 /** Replace {key} placeholder with the actual secret value. Returns null if key is required but missing. */
