@@ -2692,4 +2692,474 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [],
   },
+
+  // --- Additional EVM Testnets ---
+  {
+    id: "gnosis-chiado",
+    name: "Gnosis Chiado",
+    symbol: "xDAI",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Blockscout Chiado", baseUrl: "https://gnosis-chiado.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://gnosis-chiado.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "blast-sepolia",
+    name: "Blast Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Blastscan Sepolia", baseUrl: "https://sepolia.blastscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://blast-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "world-chain-sepolia",
+    name: "World Chain Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Worldscan Sepolia", baseUrl: "https://sepolia.worldscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://worldchain-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "zora-sepolia",
+    name: "Zora Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Zora Sepolia Explorer", baseUrl: "https://sepolia.explorer.zora.energy", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://zora-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "unichain-sepolia",
+    name: "Unichain Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Uniscan Sepolia", baseUrl: "https://sepolia.uniscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://unichain-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "celo-sepolia",
+    name: "Celo Sepolia",
+    symbol: "CELO",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Celoscan Sepolia", baseUrl: "https://sepolia.celoscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://celo-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "apechain-curtis",
+    name: "ApeChain Curtis",
+    symbol: "APE",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Apescan Curtis", baseUrl: "https://curtis.apescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://apechain-curtis.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "polygon-zkevm-cardona",
+    name: "Polygon zkEVM Cardona",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Polygon zkEVM Cardona Scan", baseUrl: "https://cardona-zkevm.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://polygonzkevm-cardona.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "opbnb-testnet",
+    name: "opBNB Testnet",
+    symbol: "BNB",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "opBNBscan Testnet", baseUrl: "https://testnet.opbnbscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://opbnb-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "sonic-testnet",
+    name: "Sonic Testnet",
+    symbol: "S",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Sonicscan Testnet", baseUrl: "https://testnet.sonicscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://sonic-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "abstract-testnet",
+    name: "Abstract Testnet",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Abscan Testnet", baseUrl: "https://testnet.abscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://abstract-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "soneium-minato",
+    name: "Soneium Minato",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Soneium Minato Explorer", baseUrl: "https://soneium-minato.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://soneium-minato.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "mode-sepolia",
+    name: "Mode Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Modescan Sepolia", baseUrl: "https://sepolia.modescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://mode-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "boba-sepolia",
+    name: "Boba Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Bobascan Sepolia", baseUrl: "https://sepolia.bobascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://boba-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "bob-sepolia",
+    name: "BOB Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "BOB Sepolia Explorer", baseUrl: "https://testnet-explorer.gobob.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://bob-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "zetachain-testnet",
+    name: "ZetaChain Testnet",
+    symbol: "ZETA",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "ZetaChain Testnet Explorer", baseUrl: "https://athens.explorer.zetachain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://zetachain-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "frax-sepolia",
+    name: "Fraxtal Sepolia",
+    symbol: "frxETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Fraxscan Sepolia", baseUrl: "https://sepolia.fraxscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://frax-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "rootstock-testnet",
+    name: "Rootstock Testnet",
+    symbol: "RBTC",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Rootstock Testnet Explorer", baseUrl: "https://rootstock-testnet.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://rootstock-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "flow-testnet",
+    name: "Flow EVM Testnet",
+    symbol: "FLOW",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Flowscan EVM Testnet", baseUrl: "https://evm-testnet.flowscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://flow-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "ink-sepolia",
+    name: "Ink Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Ink Sepolia Explorer", baseUrl: "https://explorer-sepolia.inkonchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://ink-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "shape-sepolia",
+    name: "Shape Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Shapescan Sepolia", baseUrl: "https://sepolia.shapescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://shape-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "superseed-sepolia",
+    name: "Superseed Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Superseed Sepolia Explorer", baseUrl: "https://sepolia-explorer.superseed.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://superseed-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "polynomial-sepolia",
+    name: "Polynomial Sepolia",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Polynomialscan Sepolia", baseUrl: "https://sepolia.polynomialscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://polynomial-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "story-testnet",
+    name: "Story Aeneid",
+    symbol: "IP",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Storyscan Aeneid", baseUrl: "https://aeneid.storyscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://story-aeneid.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "lens-sepolia",
+    name: "Lens Sepolia",
+    symbol: "GHO",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Lens Sepolia Explorer", baseUrl: "https://explorer.sepolia.lens.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://lens-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "anime-sepolia",
+    name: "Anime Sepolia",
+    symbol: "ANIME",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Anime Sepolia Explorer", baseUrl: "https://sepolia.explorer.anime.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://anime-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "citrea-testnet",
+    name: "Citrea Testnet",
+    symbol: "cBTC",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Citrea Testnet Explorer", baseUrl: "https://explorer.testnet.citrea.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://citrea-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "botanix-testnet",
+    name: "Botanix Testnet",
+    symbol: "BTC",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Botanixscan Testnet", baseUrl: "https://testnet.botanixscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://botanix-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "crossfi-testnet",
+    name: "CrossFi Testnet",
+    symbol: "XFI",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "XFIscan Testnet", baseUrl: "https://testnet.xfiscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://crossfi-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "galactica-testnet",
+    name: "Galactica Cassiopeia",
+    symbol: "GNET",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Galactica Testnet Explorer", baseUrl: "https://testnet.explorer.galactica.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://galactica-cassiopeia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "humanity-testnet",
+    name: "Humanity Testnet",
+    symbol: "RWT",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Humanity Testnet Explorer", baseUrl: "https://humanity-testnet.explorer.alchemy.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://humanity-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "stable-testnet",
+    name: "Stable Testnet",
+    symbol: "USDT",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Stablescan Testnet", baseUrl: "https://testnet.stablescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://stable-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "settlus-testnet",
+    name: "Settlus Testnet",
+    symbol: "SETL",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Settlus Testnet Explorer", baseUrl: "https://testnet.settlus.network", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://settlus-septestnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "plasma-testnet",
+    name: "Plasma Testnet",
+    symbol: "PLASMA",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "Plasma Testnet Scan", baseUrl: "https://testnet.plasmascan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://plasma-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "megaeth-testnet",
+    name: "MegaETH Testnet",
+    symbol: "ETH",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "MegaETH Testnet Explorer", baseUrl: "https://testnet.megaeth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://megaeth-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "adi-testnet",
+    name: "ADI Testnet",
+    symbol: "ADI",
+    family: "evm",
+    isTestnet: true,
+    explorers: [
+      { name: "ADI Testnet Explorer", baseUrl: "https://explorer.testnet.adifoundation.ai", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://adi-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
 ];
