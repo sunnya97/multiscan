@@ -43,6 +43,7 @@ const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Nano" },
   { type: "chain", name: "Chia" },
   { type: "chain", name: "Nockchain" },
+  { type: "chain", name: "Stacks" },
   { type: "chain", name: "Dash" },
   { type: "chain", name: "Urbit" },
   { type: "name", name: ".eth" },

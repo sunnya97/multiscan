@@ -121,6 +121,7 @@ export const CHAIN_LOGO: Record<string, string> = {
   Nano: L("nano"),
   Chia: L("chia"),
   Nockchain: L("nockchain"),
+  Stacks: L("stacks"),
   Dash: L("dash"),
   Urbit: L("urbit"),
   "Dash Testnet": L("dash"),
