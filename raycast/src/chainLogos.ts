@@ -119,6 +119,7 @@ const CHAIN_LOGO_SLUG: Record<string, string> = {
   Nano: "nano",
   Chia: "chia",
   Nockchain: "nockchain",
+  Stacks: "stacks",
   Dash: "dash",
   Urbit: "urbit",
   "Dash Testnet": "dash",

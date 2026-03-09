@@ -778,6 +778,26 @@ async function verifyStarknetTx(rpcUrl: string, txHash: string): Promise<boolean
   return json.result != null && !json.error;
 }
 
+// --- Stacks ---
+
+async function verifyStacksAddr(apiUrl: string, address: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/extended/v1/address/${address}/balances`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { stx?: { total_sent?: string; total_received?: string } };
+  return (json.stx?.total_sent !== "0" || json.stx?.total_received !== "0");
+}
+
+async function verifyStacksTx(apiUrl: string, txId: string): Promise<boolean> {
+  const response = await fetch(`${apiUrl}/extended/v1/tx/${txId}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) return false;
+  const json = (await response.json()) as { tx_id?: string };
+  return json.tx_id != null;
+}
+
 // --- Nockchain ---
 
 async function verifyNockchainAddr(rpcUrl: string, address: string, apiKey: string): Promise<boolean> {
@@ -929,6 +949,11 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "chia":
       case "iota":
         return "unverified";
+      case "stacks":
+        found = await tryEndpoints(rpcUrls, (url) =>
+          isTx ? verifyStacksTx(url, input) : verifyStacksAddr(url, input),
+        );
+        break;
       case "nockchain":
         if (!env.NOCKBLOCKS_API_KEY) return "unverified";
         found = isTx

@@ -64,6 +64,8 @@ function getMatches(input: string): Match[] {
     matches.push({ chainId: "bittensor", inputType: "transaction" });
     // Starknet address or transaction
     matches.push({ chainId: "starknet", inputType: "address" }, { chainId: "starknet", inputType: "transaction" });
+    // Stacks transaction
+    matches.push({ chainId: "stacks", inputType: "transaction" });
     return matches;
   }
 
@@ -351,6 +353,12 @@ function getMatches(input: string): Match[] {
       { chainId: "multiversx", inputType: "transaction" },
       { chainId: "kaspa", inputType: "transaction" },
     );
+    return matches;
+  }
+
+  // Stacks address: SP + 33-39 Crockford Base32 chars (mainnet)
+  if (/^SP[0-9A-HJKMNP-TV-Z]{33,39}$/.test(trimmed)) {
+    matches.push({ chainId: "stacks", inputType: "address" });
     return matches;
   }
 

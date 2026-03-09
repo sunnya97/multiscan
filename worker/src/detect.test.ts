@@ -57,10 +57,10 @@ describe("EVM address detection", () => {
 describe("0x + 64 hex detection", () => {
   const hash = "0x" + "a".repeat(64);
 
-  it("returns EVM tx + Sui/Aptos/Movement/IOTA addr/tx + Bittensor tx + Starknet addr/tx", () => {
+  it("returns EVM tx + Sui/Aptos/Movement/IOTA addr/tx + Bittensor tx + Starknet addr/tx + Stacks tx", () => {
     const results = detect(hash, CHAINS);
-    // EVM chains + 2 Sui + 2 Aptos + 2 Movement + 2 IOTA + 1 Bittensor + 2 Starknet = EVM_CHAINS.length + 11
-    expect(results).toHaveLength(EVM_CHAINS.length + 11);
+    // EVM chains + 2 Sui + 2 Aptos + 2 Movement + 2 IOTA + 1 Bittensor + 2 Starknet + 1 Stacks = EVM_CHAINS.length + 12
+    expect(results).toHaveLength(EVM_CHAINS.length + 12);
   });
 
   it("includes all EVM chains as transactions", () => {
@@ -1139,6 +1139,33 @@ describe("Chia detection", () => {
     const results = detect(addr, CHAINS);
     const chia = results.find((r) => r.chain.id === "chia");
     expect(chia).toBeUndefined();
+  });
+});
+
+// --- Stacks detection ---
+
+describe("Stacks address detection", () => {
+  it("detects SP address", () => {
+    const addr = "SP1HEJ1XHBJZJFNA2AECYQXQGZD8EQE4F30D6H5CR";
+    const results = detect(addr, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("stacks");
+    expect(results[0].inputType).toBe("address");
+  });
+
+  it("rejects ST (testnet) address", () => {
+    const addr = "ST1HEJ1XHBJZJFNA2AECYQXQGZD8EQE4F3DCV3WA";
+    const results = detect(addr, CHAINS);
+    const stacks = results.find((r) => r.chain.id === "stacks");
+    expect(stacks).toBeUndefined();
+  });
+
+  it("detects Stacks tx in 0x+64hex", () => {
+    const hash = "0x" + "a".repeat(64);
+    const results = detect(hash, CHAINS);
+    const stacks = results.find((r) => r.chain.id === "stacks");
+    expect(stacks).toBeDefined();
+    expect(stacks!.inputType).toBe("transaction");
   });
 });
 

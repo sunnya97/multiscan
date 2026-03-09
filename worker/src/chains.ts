@@ -33,6 +33,7 @@ export type FormatFamily =
   | "chia"
   | "iota"
   | "nockchain"
+  | "stacks"
   | "bitcoin-testnet";
 
 export type InputType = "address" | "transaction" | "denom" | "validator";
@@ -1158,6 +1159,19 @@ export const CHAINS: Chain[] = [
     ],
     rpcUrls: [
       { url: "https://nockblocks.com/rpc/v1", provider: "public" },
+    ],
+  },
+
+  {
+    id: "stacks",
+    name: "Stacks",
+    symbol: "STX",
+    family: "stacks",
+    explorers: [
+      { name: "Hiro Explorer", baseUrl: "https://explorer.hiro.so", addressPath: "/address/{query}?chain=mainnet", txPath: "/txid/{query}?chain=mainnet" },
+    ],
+    rpcUrls: [
+      { url: "https://api.mainnet.hiro.so", provider: "public" },
     ],
   },
 
