@@ -24,6 +24,9 @@ function isValidUrbitName(name: string): boolean {
   return false;
 }
 
+// Build EVM chain ID list from CHAINS data
+const EVM_CHAIN_IDS = CHAINS.filter((c) => c.family === "evm" && !c.isTestnet).map((c) => c.id);
+
 // Build Cosmos lookup tables from CHAINS data
 const COSMOS_CHAINS_LIST = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix);
 const BECH32_PREFIX_TO_CHAIN = new Map(COSMOS_CHAINS_LIST.map((c) => [c.bech32Prefix!, c.id]));
@@ -37,62 +40,18 @@ function getMatches(input: string): Match[] {
 
   // 0x + 40 hex chars = EVM address (42 chars total)
   if (/^0x[0-9a-fA-F]{40}$/i.test(trimmed)) {
-    matches.push(
-      { chainId: "ethereum", inputType: "address" },
-      { chainId: "base", inputType: "address" },
-      { chainId: "arbitrum", inputType: "address" },
-      { chainId: "optimism", inputType: "address" },
-      { chainId: "polygon", inputType: "address" },
-      { chainId: "bsc", inputType: "address" },
-      { chainId: "avalanche", inputType: "address" },
-      { chainId: "fantom", inputType: "address" },
-      { chainId: "zksync", inputType: "address" },
-      { chainId: "linea", inputType: "address" },
-      { chainId: "scroll", inputType: "address" },
-      { chainId: "mantle", inputType: "address" },
-      { chainId: "ethereum-classic", inputType: "address" },
-      { chainId: "hyperliquid-evm", inputType: "address" },
-      { chainId: "hyperliquid-core", inputType: "address" },
-      { chainId: "berachain", inputType: "address" },
-      { chainId: "ronin", inputType: "address" },
-      { chainId: "flare", inputType: "address" },
-      { chainId: "oasis-sapphire", inputType: "address" },
-      { chainId: "core", inputType: "address" },
-      { chainId: "monad", inputType: "address" },
-      { chainId: "megaeth", inputType: "address" },
-      { chainId: "plasma", inputType: "address" },
-    );
+    for (const id of EVM_CHAIN_IDS) {
+      matches.push({ chainId: id, inputType: "address" });
+    }
     return matches;
   }
 
   // 0x + 64 hex chars (66 chars total) = EVM tx hash + Sui addr/tx + Aptos addr/tx
   if (/^0x[0-9a-fA-F]{64}$/i.test(trimmed)) {
     // EVM transaction
-    matches.push(
-      { chainId: "ethereum", inputType: "transaction" },
-      { chainId: "base", inputType: "transaction" },
-      { chainId: "arbitrum", inputType: "transaction" },
-      { chainId: "optimism", inputType: "transaction" },
-      { chainId: "polygon", inputType: "transaction" },
-      { chainId: "bsc", inputType: "transaction" },
-      { chainId: "avalanche", inputType: "transaction" },
-      { chainId: "fantom", inputType: "transaction" },
-      { chainId: "zksync", inputType: "transaction" },
-      { chainId: "linea", inputType: "transaction" },
-      { chainId: "scroll", inputType: "transaction" },
-      { chainId: "mantle", inputType: "transaction" },
-      { chainId: "ethereum-classic", inputType: "transaction" },
-      { chainId: "hyperliquid-evm", inputType: "transaction" },
-      { chainId: "hyperliquid-core", inputType: "transaction" },
-      { chainId: "berachain", inputType: "transaction" },
-      { chainId: "ronin", inputType: "transaction" },
-      { chainId: "flare", inputType: "transaction" },
-      { chainId: "oasis-sapphire", inputType: "transaction" },
-      { chainId: "core", inputType: "transaction" },
-      { chainId: "monad", inputType: "transaction" },
-      { chainId: "megaeth", inputType: "transaction" },
-      { chainId: "plasma", inputType: "transaction" },
-    );
+    for (const id of EVM_CHAIN_IDS) {
+      matches.push({ chainId: id, inputType: "transaction" });
+    }
     // Sui address or transaction (both are 0x + 64 hex)
     matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });
     // Aptos address or transaction
