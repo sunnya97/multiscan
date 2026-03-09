@@ -323,6 +323,7 @@ export const CHAINS: Chain[] = [
       { name: "Hypurrscan", baseUrl: "https://hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [
+      { url: "https://hyperliquid-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://rpc.hyperliquid.xyz/evm", provider: "public" },
     ],
   },
@@ -348,6 +349,7 @@ export const CHAINS: Chain[] = [
       { name: "Berascan", baseUrl: "https://berascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     rpcUrls: [
+      { url: "https://berachain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://rpc.berachain.com", provider: "public" },
     ],
   },
@@ -360,6 +362,7 @@ export const CHAINS: Chain[] = [
       { name: "Ronin Explorer", baseUrl: "https://app.roninchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [
+      { url: "https://ronin-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://api.roninchain.com/rpc", provider: "public" },
     ],
   },
@@ -408,6 +411,7 @@ export const CHAINS: Chain[] = [
       { name: "MonadScan", baseUrl: "https://monadscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     rpcUrls: [
+      { url: "https://monad-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://rpc.monad.xyz", provider: "public" },
     ],
   },
@@ -420,6 +424,7 @@ export const CHAINS: Chain[] = [
       { name: "MegaETH Explorer", baseUrl: "https://megaeth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
     ],
     rpcUrls: [
+      { url: "https://megaeth-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://rpc.megaeth.com", provider: "public" },
     ],
   },
@@ -432,7 +437,564 @@ export const CHAINS: Chain[] = [
       { name: "Plasma Scan", baseUrl: "https://plasmascan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
     ],
     rpcUrls: [
+      { url: "https://plasma-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
       { url: "https://rpc.plasma.to", provider: "public" },
+    ],
+  },
+
+  // --- Additional EVM Chains (Alchemy-supported) ---
+  {
+    id: "gnosis",
+    name: "Gnosis",
+    symbol: "xDAI",
+    family: "evm",
+    explorers: [
+      { name: "Gnosisscan", baseUrl: "https://gnosisscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "xdai",
+    rpcUrls: [
+      { url: "https://gnosis-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.gnosischain.com", provider: "public" },
+    ],
+  },
+  {
+    id: "blast",
+    name: "Blast",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Blastscan", baseUrl: "https://blastscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "blast",
+    rpcUrls: [
+      { url: "https://blast-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.blast.io", provider: "public" },
+    ],
+  },
+  {
+    id: "world-chain",
+    name: "World Chain",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Worldscan", baseUrl: "https://worldscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://worldchain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "zora",
+    name: "Zora",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Zora Explorer", baseUrl: "https://explorer.zora.energy", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "zora",
+    rpcUrls: [
+      { url: "https://zora-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.zora.energy", provider: "public" },
+    ],
+  },
+  {
+    id: "unichain",
+    name: "Unichain",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Uniscan", baseUrl: "https://uniscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://unichain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.unichain.org", provider: "public" },
+    ],
+  },
+  {
+    id: "celo",
+    name: "Celo",
+    symbol: "CELO",
+    family: "evm",
+    explorers: [
+      { name: "Celoscan", baseUrl: "https://celoscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "celo",
+    rpcUrls: [
+      { url: "https://celo-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://forno.celo.org", provider: "public" },
+    ],
+  },
+  {
+    id: "metis",
+    name: "Metis",
+    symbol: "METIS",
+    family: "evm",
+    explorers: [
+      { name: "Metis Explorer", baseUrl: "https://andromeda-explorer.metis.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "metis-andromeda",
+    rpcUrls: [
+      { url: "https://metis-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://andromeda.metis.io/?owner=1088", provider: "public" },
+    ],
+  },
+  {
+    id: "moonbeam",
+    name: "Moonbeam",
+    symbol: "GLMR",
+    family: "evm",
+    explorers: [
+      { name: "Moonscan", baseUrl: "https://moonscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "moonbeam",
+    rpcUrls: [
+      { url: "https://moonbeam-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.api.moonbeam.network", provider: "public" },
+    ],
+  },
+  {
+    id: "apechain",
+    name: "ApeChain",
+    symbol: "APE",
+    family: "evm",
+    explorers: [
+      { name: "Apescan", baseUrl: "https://apescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://apechain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.apechain.com/http", provider: "public" },
+    ],
+  },
+  {
+    id: "arbitrum-nova",
+    name: "Arbitrum Nova",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Arbiscan Nova", baseUrl: "https://nova.arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "arbitrum-nova",
+    rpcUrls: [
+      { url: "https://arbnova-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://nova.arbitrum.io/rpc", provider: "public" },
+    ],
+  },
+  {
+    id: "polygon-zkevm",
+    name: "Polygon zkEVM",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Polygon zkEVM Scan", baseUrl: "https://zkevm.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "polygon-zkevm",
+    rpcUrls: [
+      { url: "https://polygonzkevm-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://zkevm-rpc.com", provider: "public" },
+    ],
+  },
+  {
+    id: "opbnb",
+    name: "opBNB",
+    symbol: "BNB",
+    family: "evm",
+    explorers: [
+      { name: "opBNBscan", baseUrl: "https://opbnbscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "opbnb",
+    rpcUrls: [
+      { url: "https://opbnb-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://opbnb-mainnet-rpc.bnbchain.org", provider: "public" },
+    ],
+  },
+  {
+    id: "sonic",
+    name: "Sonic",
+    symbol: "S",
+    family: "evm",
+    explorers: [
+      { name: "Sonicscan", baseUrl: "https://sonicscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "sonic",
+    rpcUrls: [
+      { url: "https://sonic-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.soniclabs.com", provider: "public" },
+    ],
+  },
+  {
+    id: "abstract",
+    name: "Abstract",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Abscan", baseUrl: "https://abscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://abstract-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://api.abstractions.zone", provider: "public" },
+    ],
+  },
+  {
+    id: "soneium",
+    name: "Soneium",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Soneium Explorer", baseUrl: "https://soneium.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://soneium-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.soneium.org", provider: "public" },
+    ],
+  },
+  {
+    id: "mode",
+    name: "Mode",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Modescan", baseUrl: "https://modescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "mode",
+    rpcUrls: [
+      { url: "https://mode-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.mode.network", provider: "public" },
+    ],
+  },
+  {
+    id: "boba",
+    name: "Boba",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Bobascan", baseUrl: "https://bobascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "boba",
+    rpcUrls: [
+      { url: "https://boba-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.boba.network", provider: "public" },
+    ],
+  },
+  {
+    id: "bob",
+    name: "BOB",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "BOB Explorer", baseUrl: "https://explorer.gobob.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://bob-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.gobob.xyz", provider: "public" },
+    ],
+  },
+  {
+    id: "zetachain",
+    name: "ZetaChain",
+    symbol: "ZETA",
+    family: "evm",
+    explorers: [
+      { name: "ZetaChain Explorer", baseUrl: "https://explorer.zetachain.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "zetachain",
+    rpcUrls: [
+      { url: "https://zetachain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://zetachain-evm.blockpi.network/v1/rpc/public", provider: "public" },
+    ],
+  },
+  {
+    id: "frax",
+    name: "Fraxtal",
+    symbol: "frxETH",
+    family: "evm",
+    explorers: [
+      { name: "Fraxscan", baseUrl: "https://fraxscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "fraxtal",
+    rpcUrls: [
+      { url: "https://frax-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.frax.com", provider: "public" },
+    ],
+  },
+  {
+    id: "rootstock",
+    name: "Rootstock",
+    symbol: "RBTC",
+    family: "evm",
+    explorers: [
+      { name: "Rootstock Explorer", baseUrl: "https://rootstock.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "rootstock",
+    rpcUrls: [
+      { url: "https://rootstock-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://public-node.rsk.co", provider: "public" },
+    ],
+  },
+  {
+    id: "flow-evm",
+    name: "Flow EVM",
+    symbol: "FLOW",
+    family: "evm",
+    explorers: [
+      { name: "Flowscan EVM", baseUrl: "https://evm.flowscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://flow-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.evm.nodes.onflow.org", provider: "public" },
+    ],
+  },
+  {
+    id: "astar",
+    name: "Astar",
+    symbol: "ASTR",
+    family: "evm",
+    explorers: [
+      { name: "Astar Explorer", baseUrl: "https://astar.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    coingeckoPlatformId: "astar",
+    rpcUrls: [
+      { url: "https://astar-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://evm.astar.network", provider: "public" },
+    ],
+  },
+  {
+    id: "ink",
+    name: "Ink",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Ink Explorer", baseUrl: "https://explorer.inkonchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://ink-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc-gel.inkonchain.com", provider: "public" },
+    ],
+  },
+  {
+    id: "degen",
+    name: "Degen",
+    symbol: "DEGEN",
+    family: "evm",
+    explorers: [
+      { name: "Degen Explorer", baseUrl: "https://explorer.degen.tips", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://degen-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.degen.tips", provider: "public" },
+    ],
+  },
+  {
+    id: "shape",
+    name: "Shape",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Shapescan", baseUrl: "https://shapescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://shape-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.shape.network", provider: "public" },
+    ],
+  },
+  {
+    id: "superseed",
+    name: "Superseed",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Superseed Explorer", baseUrl: "https://explorer.superseed.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://superseed-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.superseed.xyz", provider: "public" },
+    ],
+  },
+  {
+    id: "polynomial",
+    name: "Polynomial",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Polynomialscan", baseUrl: "https://polynomialscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://polynomial-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.polynomial.fi", provider: "public" },
+    ],
+  },
+  {
+    id: "story",
+    name: "Story",
+    symbol: "IP",
+    family: "evm",
+    explorers: [
+      { name: "Storyscan", baseUrl: "https://www.storyscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://story-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://mainnet.storyrpc.io", provider: "public" },
+    ],
+  },
+  {
+    id: "lens",
+    name: "Lens",
+    symbol: "GHO",
+    family: "evm",
+    explorers: [
+      { name: "Lens Explorer", baseUrl: "https://explorer.lens.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://lens-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.lens.xyz", provider: "public" },
+    ],
+  },
+  {
+    id: "anime",
+    name: "Anime",
+    symbol: "ANIME",
+    family: "evm",
+    explorers: [
+      { name: "Anime Explorer", baseUrl: "https://explorer.anime.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://anime-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.anime.xyz", provider: "public" },
+    ],
+  },
+  {
+    id: "citrea",
+    name: "Citrea",
+    symbol: "cBTC",
+    family: "evm",
+    explorers: [
+      { name: "Citrea Explorer", baseUrl: "https://explorer.mainnet.citrea.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://citrea-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.citrea.xyz", provider: "public" },
+    ],
+  },
+  {
+    id: "botanix",
+    name: "Botanix",
+    symbol: "BTC",
+    family: "evm",
+    explorers: [
+      { name: "Botanixscan", baseUrl: "https://botanixscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://botanix-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.botanixlabs.dev", provider: "public" },
+    ],
+  },
+  {
+    id: "crossfi",
+    name: "CrossFi",
+    symbol: "XFI",
+    family: "evm",
+    explorers: [
+      { name: "XFIscan", baseUrl: "https://xfiscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://crossfi-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "galactica",
+    name: "Galactica",
+    symbol: "GNET",
+    family: "evm",
+    explorers: [
+      { name: "Galactica Explorer", baseUrl: "https://explorer.galactica.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://galactica-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://evm-rpc-http.galactica.com", provider: "public" },
+    ],
+  },
+  {
+    id: "humanity",
+    name: "Humanity",
+    symbol: "RWT",
+    family: "evm",
+    explorers: [
+      { name: "Humanity Explorer", baseUrl: "https://humanity-mainnet.explorer.alchemy.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://humanity-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      { url: "https://rpc.humanity.org", provider: "public" },
+    ],
+  },
+  {
+    id: "stable",
+    name: "Stable",
+    symbol: "USDT",
+    family: "evm",
+    explorers: [
+      { name: "Stablescan", baseUrl: "https://stablescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://stable-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "mythos",
+    name: "Mythos",
+    symbol: "MYTH",
+    family: "evm",
+    explorers: [
+      { name: "Mythos Explorer", baseUrl: "https://mythos-mainnet.explorer.alchemy.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://mythos-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "settlus",
+    name: "Settlus",
+    symbol: "SETL",
+    family: "evm",
+    explorers: [
+      { name: "Settlus Explorer", baseUrl: "https://mainnet.settlus.network", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://settlus-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "syndicate",
+    name: "Syndicate",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      { name: "Syndicate Explorer", baseUrl: "https://explorer.syndicate.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://synd-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "world-mobile",
+    name: "World Mobile Chain",
+    symbol: "WMT",
+    family: "evm",
+    explorers: [
+      { name: "World Mobile Explorer", baseUrl: "https://explorer.worldmobile.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://worldmobilechain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+    ],
+  },
+  {
+    id: "adi",
+    name: "ADI",
+    symbol: "ADI",
+    family: "evm",
+    explorers: [
+      { name: "ADI Explorer", baseUrl: "https://explorer-bls.adifoundation.ai", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+    ],
+    rpcUrls: [
+      { url: "https://adi-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
     ],
   },
 

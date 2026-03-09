@@ -12,12 +12,7 @@ function inputTypes(results: DetectionResult[]): string[] {
   return [...new Set(results.map((r) => r.inputType))];
 }
 
-const EVM_CHAINS = [
-  "ethereum", "base", "arbitrum", "optimism", "polygon",
-  "bsc", "avalanche", "fantom", "zksync", "linea", "scroll", "mantle",
-  "ethereum-classic", "hyperliquid-evm", "hyperliquid-core",
-  "berachain", "ronin", "flare", "oasis-sapphire", "core", "monad", "megaeth", "plasma",
-];
+const EVM_CHAINS = CHAINS.filter((c) => c.family === "evm" && !c.isTestnet).map((c) => c.id);
 
 const COSMOS_CHAIN_IDS = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix).map((c) => c.id);
 
