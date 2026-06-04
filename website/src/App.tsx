@@ -7,8 +7,12 @@ import SuggestNetwork from "./components/SuggestNetwork";
 
 export default function App() {
   const [searchText, setSearchText] = useState("");
-  const [detectResults, setDetectResults] = useState<LookupResult[] | null>(null);
-  const [verifiedResults, setVerifiedResults] = useState<LookupResult[] | null>(null);
+  const [detectResults, setDetectResults] = useState<LookupResult[] | null>(
+    null,
+  );
+  const [verifiedResults, setVerifiedResults] = useState<LookupResult[] | null>(
+    null,
+  );
   const [verifyingInput, setVerifyingInput] = useState("");
   const [resolvedName, setResolvedName] = useState<string | null>(null);
   const [resolvedAddress, setResolvedAddress] = useState<string | null>(null);
@@ -81,7 +85,9 @@ export default function App() {
           setVerifyingInput(trimmed);
 
           let cancelled = false;
-          cancelPhase2Ref.current = () => { cancelled = true; };
+          cancelPhase2Ref.current = () => {
+            cancelled = true;
+          };
 
           const phase2Input = resp.resolvedAddress ?? trimmed;
           const verifyResp = await fetchLookup(phase2Input, true);
@@ -148,7 +154,9 @@ export default function App() {
       // ArrowDown / ArrowUp — navigate results
       if (e.key === "ArrowDown" && displayResults.length > 0) {
         e.preventDefault();
-        setSelectedIndex((prev) => Math.min(prev + 1, displayResults.length - 1));
+        setSelectedIndex((prev) =>
+          Math.min(prev + 1, displayResults.length - 1),
+        );
         return;
       }
       if (e.key === "ArrowUp" && displayResults.length > 0) {
@@ -168,7 +176,12 @@ export default function App() {
       }
 
       // Cmd/Ctrl+Shift+C — copy raw input/address
-      if (e.key === "c" && metaOrCtrl && e.shiftKey && displayResults.length > 0) {
+      if (
+        e.key === "c" &&
+        metaOrCtrl &&
+        e.shiftKey &&
+        displayResults.length > 0
+      ) {
         e.preventDefault();
         const text = resolvedAddress || trimmedSearch;
         navigator.clipboard.writeText(text);
@@ -177,7 +190,12 @@ export default function App() {
       }
 
       // Cmd/Ctrl+C — copy explorer URL (only when no text selected in input)
-      if (e.key === "c" && metaOrCtrl && !e.shiftKey && displayResults.length > 0) {
+      if (
+        e.key === "c" &&
+        metaOrCtrl &&
+        !e.shiftKey &&
+        displayResults.length > 0
+      ) {
         const selection = window.getSelection()?.toString() ?? "";
         if (selection.length > 0) return; // let native copy work
         e.preventDefault();
@@ -208,7 +226,15 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [displayResults, selectedIndex, trimmedSearch, resolvedAddress, handleSearch, showToast, showSuggestModal]);
+  }, [
+    displayResults,
+    selectedIndex,
+    trimmedSearch,
+    resolvedAddress,
+    handleSearch,
+    showToast,
+    showSuggestModal,
+  ]);
 
   return (
     <div className="app">
@@ -217,9 +243,16 @@ export default function App() {
           <h1 className="header__title">
             <span className="header__multi">Multi</span>scan
           </h1>
-          <p className="header__sub">Universal crypto address &amp; transaction scanner</p>
+          <p className="header__sub">
+            Universal crypto address &amp; transaction scanner
+          </p>
         </header>
-        <SearchBar ref={inputRef} value={searchText} onChange={handleSearch} isLoading={isLoading} />
+        <SearchBar
+          ref={inputRef}
+          value={searchText}
+          onChange={handleSearch}
+          isLoading={isLoading}
+        />
         <ResultsList
           results={displayResults}
           coinGeckoUrl={coinGeckoUrl}
@@ -238,21 +271,37 @@ export default function App() {
         />
         {displayResults.length > 0 && (
           <div className="keyboard-hints">
-            <span className="keyboard-hints__item"><kbd>{"↑↓"}</kbd> Navigate</span>
+            <span className="keyboard-hints__item">
+              <kbd>{"↑↓"}</kbd> Navigate
+            </span>
             <span className="keyboard-hints__sep">&middot;</span>
-            <span className="keyboard-hints__item"><kbd>{"↵"}</kbd> Open</span>
+            <span className="keyboard-hints__item">
+              <kbd>{"↵"}</kbd> Open
+            </span>
             <span className="keyboard-hints__sep">&middot;</span>
-            <span className="keyboard-hints__item"><kbd>{"⌘C"}</kbd> Copy URL</span>
+            <span className="keyboard-hints__item">
+              <kbd>{"⌘C"}</kbd> Copy URL
+            </span>
             <span className="keyboard-hints__sep">&middot;</span>
-            <span className="keyboard-hints__item"><kbd>{"⌘⇧C"}</kbd> Copy Input</span>
+            <span className="keyboard-hints__item">
+              <kbd>{"⌘⇧C"}</kbd> Copy Input
+            </span>
             <span className="keyboard-hints__sep">&middot;</span>
-            <span className="keyboard-hints__item"><kbd>Esc</kbd> Clear</span>
+            <span className="keyboard-hints__item">
+              <kbd>Esc</kbd> Clear
+            </span>
           </div>
         )}
         <footer className="footer">
           <span>Multiscan</span>
           <span className="footer__sep">&middot;</span>
-          <a href="https://github.com/sunnya97/multiscan" target="_blank" rel="noopener noreferrer">Open source</a>
+          <a
+            href="https://github.com/sunnya97/multiscan"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open source
+          </a>
         </footer>
       </div>
       {showSuggestModal && (

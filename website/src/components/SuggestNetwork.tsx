@@ -101,7 +101,11 @@ export default function SuggestNetwork({ onClose }: SuggestNetworkProps) {
             {result.created ? (
               <p>
                 Suggestion created!{" "}
-                <a href={result.issueUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={result.issueUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   View issue #{result.issueNumber}
                 </a>
               </p>

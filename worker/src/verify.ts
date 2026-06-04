@@ -19,7 +19,10 @@ const REQUEST_TIMEOUT_MS = 6000;
 
 // --- Endpoint failover ---
 
-async function tryEndpoints(rpcUrls: string[], verifyFn: (url: string) => Promise<boolean>): Promise<boolean> {
+async function tryEndpoints(
+  rpcUrls: string[],
+  verifyFn: (url: string) => Promise<boolean>,
+): Promise<boolean> {
   for (const url of rpcUrls) {
     try {
       return await verifyFn(url);
@@ -39,27 +42,61 @@ async function etherscanV2Call(
   params: Record<string, string>,
   apiKey: string,
 ): Promise<unknown> {
-  const qs = new URLSearchParams({ chainid: String(chainId), module, action, apikey: apiKey, ...params });
+  const qs = new URLSearchParams({
+    chainid: String(chainId),
+    module,
+    action,
+    apikey: apiKey,
+    ...params,
+  });
   const response = await fetch(`https://api.etherscan.io/v2/api?${qs}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
-  const json = (await response.json()) as { status?: string; message?: string; result?: unknown };
+  const json = (await response.json()) as {
+    status?: string;
+    message?: string;
+    result?: unknown;
+  };
   // Etherscan returns status "0" for errors (e.g. unsupported chain on free plan)
   if (json.status === "0") throw new Error(`Etherscan error: ${json.message}`);
   return json.result;
 }
 
-async function verifyEvmTxEtherscan(chainId: number, txHash: string, apiKey: string): Promise<boolean> {
-  const result = await etherscanV2Call(chainId, "proxy", "eth_getTransactionReceipt", { txhash: txHash }, apiKey);
+async function verifyEvmTxEtherscan(
+  chainId: number,
+  txHash: string,
+  apiKey: string,
+): Promise<boolean> {
+  const result = await etherscanV2Call(
+    chainId,
+    "proxy",
+    "eth_getTransactionReceipt",
+    { txhash: txHash },
+    apiKey,
+  );
   return result != null;
 }
 
-async function verifyEvmAddrEtherscan(chainId: number, address: string, apiKey: string): Promise<boolean> {
+async function verifyEvmAddrEtherscan(
+  chainId: number,
+  address: string,
+  apiKey: string,
+): Promise<boolean> {
   const [balance, nonce] = await Promise.all([
-    etherscanV2Call(chainId, "proxy", "eth_getBalance", { address, tag: "latest" }, apiKey) as Promise<string | null>,
-    etherscanV2Call(chainId, "proxy", "eth_getTransactionCount", { address, tag: "latest" }, apiKey) as Promise<
-      string | null
-    >,
+    etherscanV2Call(
+      chainId,
+      "proxy",
+      "eth_getBalance",
+      { address, tag: "latest" },
+      apiKey,
+    ) as Promise<string | null>,
+    etherscanV2Call(
+      chainId,
+      "proxy",
+      "eth_getTransactionCount",
+      { address, tag: "latest" },
+      apiKey,
+    ) as Promise<string | null>,
   ]);
   const hasBalance = balance != null && balance !== "0x0" && balance !== "0x";
   const hasNonce = nonce != null && nonce !== "0x0" && nonce !== "0x";
@@ -68,7 +105,11 @@ async function verifyEvmAddrEtherscan(chainId: number, address: string, apiKey: 
 
 // --- Direct JSON-RPC helpers ---
 
-async function evmRpcCall(rpcUrl: string, method: string, params: unknown[]): Promise<unknown> {
+async function evmRpcCall(
+  rpcUrl: string,
+  method: string,
+  params: unknown[],
+): Promise<unknown> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -79,15 +120,28 @@ async function evmRpcCall(rpcUrl: string, method: string, params: unknown[]): Pr
   return json.result;
 }
 
-async function verifyEvmTxRpc(rpcUrl: string, txHash: string): Promise<boolean> {
-  const result = await evmRpcCall(rpcUrl, "eth_getTransactionReceipt", [txHash]);
+async function verifyEvmTxRpc(
+  rpcUrl: string,
+  txHash: string,
+): Promise<boolean> {
+  const result = await evmRpcCall(rpcUrl, "eth_getTransactionReceipt", [
+    txHash,
+  ]);
   return result != null;
 }
 
-async function verifyEvmAddrRpc(rpcUrl: string, address: string): Promise<boolean> {
+async function verifyEvmAddrRpc(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   const [balance, nonce] = await Promise.all([
-    evmRpcCall(rpcUrl, "eth_getBalance", [address, "latest"]) as Promise<string | null>,
-    evmRpcCall(rpcUrl, "eth_getTransactionCount", [address, "latest"]) as Promise<string | null>,
+    evmRpcCall(rpcUrl, "eth_getBalance", [address, "latest"]) as Promise<
+      string | null
+    >,
+    evmRpcCall(rpcUrl, "eth_getTransactionCount", [
+      address,
+      "latest",
+    ]) as Promise<string | null>,
   ]);
   const hasBalance = balance != null && balance !== "0x0" && balance !== "0x";
   const hasNonce = nonce != null && nonce !== "0x0" && nonce !== "0x";
@@ -96,14 +150,20 @@ async function verifyEvmAddrRpc(rpcUrl: string, address: string): Promise<boolea
 
 // --- Bitcoin ---
 
-async function verifyBitcoinTx(apiUrl: string, txHash: string): Promise<boolean> {
+async function verifyBitcoinTx(
+  apiUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/tx/${txHash}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   return response.ok;
 }
 
-async function verifyBitcoinAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyBitcoinAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/address/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -119,14 +179,20 @@ async function verifyBitcoinAddr(apiUrl: string, address: string): Promise<boole
 
 // --- Cosmos ---
 
-async function verifyCosmosTx(restUrl: string, txHash: string): Promise<boolean> {
+async function verifyCosmosTx(
+  restUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${restUrl}/cosmos/tx/v1beta1/txs/${txHash}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   return response.ok;
 }
 
-async function verifyCosmosAddr(restUrl: string, address: string): Promise<boolean> {
+async function verifyCosmosAddr(
+  restUrl: string,
+  address: string,
+): Promise<boolean> {
   // Check if account exists (has sequence > 0 or has balances)
   const [acctRes, balRes] = await Promise.all([
     fetch(`${restUrl}/cosmos/auth/v1beta1/accounts/${address}`, {
@@ -142,14 +208,22 @@ async function verifyCosmosAddr(restUrl: string, address: string): Promise<boole
   }
   if (balRes.ok) {
     const bal = (await balRes.json()) as { balances?: { amount?: string }[] };
-    if (bal.balances && bal.balances.length > 0 && bal.balances.some((b) => b.amount !== "0")) return true;
+    if (
+      bal.balances &&
+      bal.balances.length > 0 &&
+      bal.balances.some((b) => b.amount !== "0")
+    )
+      return true;
   }
   return false;
 }
 
 // --- Cosmos denom ---
 
-async function verifyCosmosDenom(restUrl: string, denom: string): Promise<boolean> {
+async function verifyCosmosDenom(
+  restUrl: string,
+  denom: string,
+): Promise<boolean> {
   const response = await fetch(
     `${restUrl}/cosmos/bank/v1beta1/supply/by_denom?denom=${encodeURIComponent(denom)}`,
     { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) },
@@ -172,7 +246,10 @@ async function verifyTronTx(apiUrl: string, txHash: string): Promise<boolean> {
   return !!json.txID;
 }
 
-async function verifyTronAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyTronAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/wallet/getaccount`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -180,13 +257,20 @@ async function verifyTronAddr(apiUrl: string, address: string): Promise<boolean>
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   if (!response.ok) return false;
-  const json = (await response.json()) as { address?: string; balance?: number };
+  const json = (await response.json()) as {
+    address?: string;
+    balance?: number;
+  };
   return !!json.address;
 }
 
 // --- Solana ---
 
-async function solanaRpcCall(rpcUrl: string, method: string, params: unknown[]): Promise<unknown> {
+async function solanaRpcCall(
+  rpcUrl: string,
+  method: string,
+  params: unknown[],
+): Promise<unknown> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -198,13 +282,25 @@ async function solanaRpcCall(rpcUrl: string, method: string, params: unknown[]):
   return json.result;
 }
 
-async function verifySolanaTx(rpcUrl: string, signature: string): Promise<boolean> {
-  const result = await solanaRpcCall(rpcUrl, "getTransaction", [signature, { encoding: "json", maxSupportedTransactionVersion: 0 }]);
+async function verifySolanaTx(
+  rpcUrl: string,
+  signature: string,
+): Promise<boolean> {
+  const result = await solanaRpcCall(rpcUrl, "getTransaction", [
+    signature,
+    { encoding: "json", maxSupportedTransactionVersion: 0 },
+  ]);
   return result != null;
 }
 
-async function verifySolanaAddr(rpcUrl: string, address: string): Promise<boolean> {
-  const result = (await solanaRpcCall(rpcUrl, "getAccountInfo", [address, { encoding: "base64" }])) as {
+async function verifySolanaAddr(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
+  const result = (await solanaRpcCall(rpcUrl, "getAccountInfo", [
+    address,
+    { encoding: "base64" },
+  ])) as {
     value?: { lamports?: number } | null;
   } | null;
   return result?.value != null;
@@ -212,7 +308,11 @@ async function verifySolanaAddr(rpcUrl: string, address: string): Promise<boolea
 
 // --- Sui ---
 
-async function suiRpcCall(rpcUrl: string, method: string, params: unknown[]): Promise<unknown> {
+async function suiRpcCall(
+  rpcUrl: string,
+  method: string,
+  params: unknown[],
+): Promise<unknown> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -225,11 +325,17 @@ async function suiRpcCall(rpcUrl: string, method: string, params: unknown[]): Pr
 }
 
 async function verifySuiTx(rpcUrl: string, digest: string): Promise<boolean> {
-  const result = await suiRpcCall(rpcUrl, "sui_getTransactionBlock", [digest, { showInput: false }]);
+  const result = await suiRpcCall(rpcUrl, "sui_getTransactionBlock", [
+    digest,
+    { showInput: false },
+  ]);
   return result != null;
 }
 
-async function verifySuiAddr(rpcUrl: string, address: string): Promise<boolean> {
+async function verifySuiAddr(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   const result = (await suiRpcCall(rpcUrl, "suix_getBalance", [address])) as {
     totalBalance?: string;
   } | null;
@@ -245,7 +351,10 @@ async function verifyAptosTx(apiUrl: string, txHash: string): Promise<boolean> {
   return response.ok;
 }
 
-async function verifyAptosAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyAptosAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/accounts/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -263,12 +372,21 @@ async function verifyTonTx(apiUrl: string, txHash: string): Promise<boolean> {
   return false;
 }
 
-async function verifyTonAddr(apiUrl: string, address: string): Promise<boolean> {
-  const response = await fetch(`${apiUrl}/getAddressInformation?address=${encodeURIComponent(address)}`, {
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-  });
+async function verifyTonAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
+  const response = await fetch(
+    `${apiUrl}/getAddressInformation?address=${encodeURIComponent(address)}`,
+    {
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    },
+  );
   if (!response.ok) return false;
-  const json = (await response.json()) as { ok?: boolean; result?: { balance?: string; state?: string } };
+  const json = (await response.json()) as {
+    ok?: boolean;
+    result?: { balance?: string; state?: string };
+  };
   if (!json.ok) return false;
   const state = json.result?.state;
   return state === "active" || state === "frozen";
@@ -276,31 +394,52 @@ async function verifyTonAddr(apiUrl: string, address: string): Promise<boolean> 
 
 // --- Polkadot ---
 
-async function verifyPolkadotTx(rpcUrl: string, _txHash: string): Promise<boolean> {
+async function verifyPolkadotTx(
+  rpcUrl: string,
+  _txHash: string,
+): Promise<boolean> {
   // Substrate RPCs don't support tx lookup by hash without an indexer
   return false;
 }
 
-async function verifyPolkadotAddr(rpcUrl: string, address: string): Promise<boolean> {
+async function verifyPolkadotAddr(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   // Use Substrate RPC system.account to check if an account has balance/nonce
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "system_account", params: [address] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "system_account",
+      params: [address],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   // This won't work with the simple publicnode HTTP endpoint, so fall back to unverified
   if (!response.ok) return false;
-  const json = (await response.json()) as { result?: { nonce?: number; data?: { free?: string } }; error?: unknown };
+  const json = (await response.json()) as {
+    result?: { nonce?: number; data?: { free?: string } };
+    error?: unknown;
+  };
   if (json.error || !json.result) return false;
   const nonce = json.result.nonce ?? 0;
   const free = json.result.data?.free ?? "0";
-  return nonce > 0 || (free !== "0" && free !== "0x0000000000000000000000000000000000");
+  return (
+    nonce > 0 ||
+    (free !== "0" && free !== "0x0000000000000000000000000000000000")
+  );
 }
 
 // --- NEAR ---
 
-async function nearRpcCall(rpcUrl: string, method: string, params: Record<string, unknown>): Promise<unknown> {
+async function nearRpcCall(
+  rpcUrl: string,
+  method: string,
+  params: Record<string, unknown>,
+): Promise<unknown> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -314,11 +453,17 @@ async function nearRpcCall(rpcUrl: string, method: string, params: Record<string
 
 async function verifyNearTx(rpcUrl: string, txHash: string): Promise<boolean> {
   // NEAR tx query requires sender_id which we don't have — use EXPERIMENTAL_tx_status
-  const result = await nearRpcCall(rpcUrl, "EXPERIMENTAL_tx_status", { tx_hash: txHash, wait_until: "NONE" });
+  const result = await nearRpcCall(rpcUrl, "EXPERIMENTAL_tx_status", {
+    tx_hash: txHash,
+    wait_until: "NONE",
+  });
   return result != null;
 }
 
-async function verifyNearAddr(rpcUrl: string, accountId: string): Promise<boolean> {
+async function verifyNearAddr(
+  rpcUrl: string,
+  accountId: string,
+): Promise<boolean> {
   const result = (await nearRpcCall(rpcUrl, "query", {
     request_type: "view_account",
     finality: "final",
@@ -414,14 +559,22 @@ async function verifyEvmAddrsBatch(
 const SPL_TOKEN_PROGRAM = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 const TOKEN_2022_PROGRAM = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
 
-async function detectEvmTokenAlchemy(alchemyUrl: string, address: string): Promise<boolean> {
-  const result = (await evmRpcCall(alchemyUrl, "alchemy_getTokenMetadata", [address])) as {
+async function detectEvmTokenAlchemy(
+  alchemyUrl: string,
+  address: string,
+): Promise<boolean> {
+  const result = (await evmRpcCall(alchemyUrl, "alchemy_getTokenMetadata", [
+    address,
+  ])) as {
     decimals?: number | null;
   } | null;
   return result?.decimals != null;
 }
 
-async function detectEvmTokenFallback(rpcUrl: string, address: string): Promise<boolean> {
+async function detectEvmTokenFallback(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   // Call decimals() selector on the address
   const result = (await evmRpcCall(rpcUrl, "eth_call", [
     { to: address, data: "0x313ce567" },
@@ -430,7 +583,10 @@ async function detectEvmTokenFallback(rpcUrl: string, address: string): Promise<
   return result != null && result !== "0x" && result !== "0x0";
 }
 
-async function detectSolanaToken(rpcUrl: string, address: string): Promise<boolean> {
+async function detectSolanaToken(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   const result = (await solanaRpcCall(rpcUrl, "getAccountInfo", [
     address,
     { encoding: "jsonParsed" },
@@ -496,7 +652,9 @@ export async function getCoinGeckoUrl(
 
   const withPlatform = detections
     .filter((d) => d.chain.coingeckoPlatformId)
-    .sort((a, b) => (a.chain.id === "ethereum" ? -1 : b.chain.id === "ethereum" ? 1 : 0));
+    .sort((a, b) =>
+      a.chain.id === "ethereum" ? -1 : b.chain.id === "ethereum" ? 1 : 0,
+    );
 
   for (const detection of withPlatform) {
     try {
@@ -504,7 +662,10 @@ export async function getCoinGeckoUrl(
       const resp = await fetch(
         `https://api.coingecko.com/api/v3/coins/${platformId}/contract/${address.toLowerCase()}`,
         {
-          headers: { "Accept": "application/json", "User-Agent": "crypto-lookup-worker/1.0" },
+          headers: {
+            Accept: "application/json",
+            "User-Agent": "crypto-lookup-worker/1.0",
+          },
           signal: AbortSignal.timeout(4000),
         },
       );
@@ -521,25 +682,37 @@ export async function getCoinGeckoUrl(
 
 // --- BlockCypher (Dogecoin, Litecoin) ---
 
-async function verifyBlockCypherTx(apiUrl: string, txHash: string): Promise<boolean> {
+async function verifyBlockCypherTx(
+  apiUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/txs/${txHash}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   return response.ok;
 }
 
-async function verifyBlockCypherAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyBlockCypherAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/addrs/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   if (!response.ok) return false;
-  const json = (await response.json()) as { n_tx?: number; total_received?: number };
+  const json = (await response.json()) as {
+    n_tx?: number;
+    total_received?: number;
+  };
   return (json.n_tx ?? 0) > 0;
 }
 
 // --- Blockchair (Bitcoin Cash, ZCash) ---
 
-async function verifyBlockchairTx(apiUrl: string, txHash: string): Promise<boolean> {
+async function verifyBlockchairTx(
+  apiUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/dashboards/transaction/${txHash}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -548,12 +721,17 @@ async function verifyBlockchairTx(apiUrl: string, txHash: string): Promise<boole
   return json.data != null && Object.keys(json.data).length > 0;
 }
 
-async function verifyBlockchairAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyBlockchairAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/dashboards/address/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   if (!response.ok) return false;
-  const json = (await response.json()) as { data?: Record<string, { address?: { transaction_count?: number } }> };
+  const json = (await response.json()) as {
+    data?: Record<string, { address?: { transaction_count?: number } }>;
+  };
   if (!json.data) return false;
   const addrData = Object.values(json.data)[0];
   return (addrData?.address?.transaction_count ?? 0) > 0;
@@ -561,14 +739,20 @@ async function verifyBlockchairAddr(apiUrl: string, address: string): Promise<bo
 
 // --- XRP Ledger ---
 
-async function xrpRpcCall(rpcUrl: string, method: string, params: unknown[]): Promise<unknown> {
+async function xrpRpcCall(
+  rpcUrl: string,
+  method: string,
+  params: unknown[],
+): Promise<unknown> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ method, params }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
-  const json = (await response.json()) as { result?: { status?: string; [key: string]: unknown } };
+  const json = (await response.json()) as {
+    result?: { status?: string; [key: string]: unknown };
+  };
   if (!json.result || json.result.status === "error") return null;
   return json.result;
 }
@@ -578,8 +762,13 @@ async function verifyXrpTx(rpcUrl: string, txHash: string): Promise<boolean> {
   return result != null;
 }
 
-async function verifyXrpAddr(rpcUrl: string, address: string): Promise<boolean> {
-  const result = (await xrpRpcCall(rpcUrl, "account_info", [{ account: address }])) as {
+async function verifyXrpAddr(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
+  const result = (await xrpRpcCall(rpcUrl, "account_info", [
+    { account: address },
+  ])) as {
     account_data?: { Sequence?: number };
   } | null;
   return result?.account_data != null;
@@ -587,14 +776,20 @@ async function verifyXrpAddr(rpcUrl: string, address: string): Promise<boolean> 
 
 // --- Stellar ---
 
-async function verifyStellarTx(apiUrl: string, txHash: string): Promise<boolean> {
+async function verifyStellarTx(
+  apiUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/transactions/${txHash}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   return response.ok;
 }
 
-async function verifyStellarAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyStellarAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/accounts/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -603,16 +798,25 @@ async function verifyStellarAddr(apiUrl: string, address: string): Promise<boole
 
 // --- Cardano ---
 
-async function verifyCardanoAddr(apiUrl: string, address: string): Promise<boolean> {
-  const response = await fetch(`${apiUrl}/address_info?_address=${encodeURIComponent(address)}`, {
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-  });
+async function verifyCardanoAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
+  const response = await fetch(
+    `${apiUrl}/address_info?_address=${encodeURIComponent(address)}`,
+    {
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    },
+  );
   if (!response.ok) return false;
   const json = (await response.json()) as Array<{ balance?: string }>;
   return Array.isArray(json) && json.length > 0;
 }
 
-async function verifyCardanoTx(apiUrl: string, txHash: string): Promise<boolean> {
+async function verifyCardanoTx(
+  apiUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/tx_info`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -626,7 +830,10 @@ async function verifyCardanoTx(apiUrl: string, txHash: string): Promise<boolean>
 
 // --- Lightning Network ---
 
-async function verifyLightningNode(apiUrl: string, pubkey: string): Promise<boolean> {
+async function verifyLightningNode(
+  apiUrl: string,
+  pubkey: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/nodes/${pubkey}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -635,7 +842,10 @@ async function verifyLightningNode(apiUrl: string, pubkey: string): Promise<bool
 
 // --- Hyperliquid Core ---
 
-async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyHyperliquidCoreAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   // Check perps and spot balances in parallel
   const [perpsRes, spotRes] = await Promise.all([
     fetch(apiUrl, {
@@ -653,13 +863,17 @@ async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promi
   ]);
 
   if (perpsRes.ok) {
-    const json = (await perpsRes.json()) as { marginSummary?: { accountValue?: string } };
+    const json = (await perpsRes.json()) as {
+      marginSummary?: { accountValue?: string };
+    };
     const val = json.marginSummary?.accountValue;
     if (val != null && val !== "0" && val !== "0.0") return true;
   }
 
   if (spotRes.ok) {
-    const json = (await spotRes.json()) as { balances?: Array<{ total?: string }> };
+    const json = (await spotRes.json()) as {
+      balances?: Array<{ total?: string }>;
+    };
     if (Array.isArray(json.balances) && json.balances.length > 0) return true;
   }
 
@@ -668,11 +882,19 @@ async function verifyHyperliquidCoreAddr(apiUrl: string, address: string): Promi
 
 // --- Filecoin ---
 
-async function verifyFilecoinAddr(rpcUrl: string, address: string): Promise<boolean> {
+async function verifyFilecoinAddr(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "Filecoin.StateGetActor", params: [address, null] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "Filecoin.StateGetActor",
+      params: [address, null],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   const json = (await response.json()) as { result?: unknown; error?: unknown };
@@ -683,7 +905,12 @@ async function verifyFilecoinTx(rpcUrl: string, cid: string): Promise<boolean> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "Filecoin.ChainGetMessage", params: [{ "/": cid }] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "Filecoin.ChainGetMessage",
+      params: [{ "/": cid }],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   const json = (await response.json()) as { result?: unknown; error?: unknown };
@@ -692,7 +919,10 @@ async function verifyFilecoinTx(rpcUrl: string, cid: string): Promise<boolean> {
 
 // --- Hedera ---
 
-async function verifyHederaAddr(apiUrl: string, accountId: string): Promise<boolean> {
+async function verifyHederaAddr(
+  apiUrl: string,
+  accountId: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/api/v1/accounts/${accountId}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -708,7 +938,10 @@ async function verifyHederaTx(apiUrl: string, txId: string): Promise<boolean> {
 
 // --- Kaspa ---
 
-async function verifyKaspaAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyKaspaAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/addresses/${address}/balance`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -724,14 +957,20 @@ async function verifyKaspaTx(apiUrl: string, txHash: string): Promise<boolean> {
 
 // --- Algorand ---
 
-async function verifyAlgorandAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyAlgorandAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/v2/accounts/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   return response.ok;
 }
 
-async function verifyAlgorandTx(apiUrl: string, txId: string): Promise<boolean> {
+async function verifyAlgorandTx(
+  apiUrl: string,
+  txId: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/v2/transactions/${txId}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -740,14 +979,20 @@ async function verifyAlgorandTx(apiUrl: string, txId: string): Promise<boolean> 
 
 // --- MultiversX ---
 
-async function verifyMultiversXAddr(apiUrl: string, address: string): Promise<boolean> {
+async function verifyMultiversXAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/accounts/${address}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   return response.ok;
 }
 
-async function verifyMultiversXTx(apiUrl: string, txHash: string): Promise<boolean> {
+async function verifyMultiversXTx(
+  apiUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(`${apiUrl}/transactions/${txHash}`, {
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
@@ -756,22 +1001,38 @@ async function verifyMultiversXTx(apiUrl: string, txHash: string): Promise<boole
 
 // --- Starknet ---
 
-async function verifyStarknetAddr(rpcUrl: string, address: string): Promise<boolean> {
+async function verifyStarknetAddr(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "starknet_getNonce", params: ["latest", address] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "starknet_getNonce",
+      params: ["latest", address],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   const json = (await response.json()) as { result?: unknown; error?: unknown };
   return json.result != null && !json.error;
 }
 
-async function verifyStarknetTx(rpcUrl: string, txHash: string): Promise<boolean> {
+async function verifyStarknetTx(
+  rpcUrl: string,
+  txHash: string,
+): Promise<boolean> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "starknet_getTransactionByHash", params: [txHash] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "starknet_getTransactionByHash",
+      params: [txHash],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   const json = (await response.json()) as { result?: unknown; error?: unknown };
@@ -780,13 +1041,21 @@ async function verifyStarknetTx(rpcUrl: string, txHash: string): Promise<boolean
 
 // --- Stacks ---
 
-async function verifyStacksAddr(apiUrl: string, address: string): Promise<boolean> {
-  const response = await fetch(`${apiUrl}/extended/v1/address/${address}/balances`, {
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-  });
+async function verifyStacksAddr(
+  apiUrl: string,
+  address: string,
+): Promise<boolean> {
+  const response = await fetch(
+    `${apiUrl}/extended/v1/address/${address}/balances`,
+    {
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    },
+  );
   if (!response.ok) return false;
-  const json = (await response.json()) as { stx?: { total_sent?: string; total_received?: string } };
-  return (json.stx?.total_sent !== "0" || json.stx?.total_received !== "0");
+  const json = (await response.json()) as {
+    stx?: { total_sent?: string; total_received?: string };
+  };
+  return json.stx?.total_sent !== "0" || json.stx?.total_received !== "0";
 }
 
 async function verifyStacksTx(apiUrl: string, txId: string): Promise<boolean> {
@@ -800,23 +1069,43 @@ async function verifyStacksTx(apiUrl: string, txId: string): Promise<boolean> {
 
 // --- Nockchain ---
 
-async function verifyNockchainAddr(rpcUrl: string, address: string, apiKey: string): Promise<boolean> {
+async function verifyNockchainAddr(
+  rpcUrl: string,
+  address: string,
+  apiKey: string,
+): Promise<boolean> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": apiKey },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getTransactionsByAddress", params: [{ address }] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "getTransactionsByAddress",
+      params: [{ address }],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   if (!response.ok) return false;
-  const json = (await response.json()) as { result?: { totalTransactions?: number } };
+  const json = (await response.json()) as {
+    result?: { totalTransactions?: number };
+  };
   return (json.result?.totalTransactions ?? 0) > 0;
 }
 
-async function verifyNockchainTx(rpcUrl: string, txId: string, apiKey: string): Promise<boolean> {
+async function verifyNockchainTx(
+  rpcUrl: string,
+  txId: string,
+  apiKey: string,
+): Promise<boolean> {
   const response = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": apiKey },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getTransactionByTxid", params: [{ transactionId: txId }] }),
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "getTransactionByTxid",
+      params: [{ transactionId: txId }],
+    }),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   if (!response.ok) return false;
@@ -826,14 +1115,27 @@ async function verifyNockchainTx(rpcUrl: string, txId: string, apiKey: string): 
 
 // --- Main verification ---
 
-async function verifyEvm(chain: Chain, inputType: string, input: string, env: Env): Promise<boolean> {
+async function verifyEvm(
+  chain: Chain,
+  inputType: string,
+  input: string,
+  env: Env,
+): Promise<boolean> {
   // Try Etherscan V2 first
   if (chain.etherscanChainId && env.ETHERSCAN_API_KEY) {
     try {
       if (inputType === "transaction") {
-        return await verifyEvmTxEtherscan(chain.etherscanChainId, input, env.ETHERSCAN_API_KEY);
+        return await verifyEvmTxEtherscan(
+          chain.etherscanChainId,
+          input,
+          env.ETHERSCAN_API_KEY,
+        );
       } else {
-        return await verifyEvmAddrEtherscan(chain.etherscanChainId, input, env.ETHERSCAN_API_KEY);
+        return await verifyEvmAddrEtherscan(
+          chain.etherscanChainId,
+          input,
+          env.ETHERSCAN_API_KEY,
+        );
       }
     } catch {
       // Etherscan failed (unsupported chain, rate limit, etc.) — fall through to RPC
@@ -853,7 +1155,11 @@ async function verifyEvm(chain: Chain, inputType: string, input: string, env: En
   });
 }
 
-async function verifySingle(result: DetectionResult, input: string, env: Env): Promise<VerificationStatus> {
+async function verifySingle(
+  result: DetectionResult,
+  input: string,
+  env: Env,
+): Promise<VerificationStatus> {
   const { chain, inputType } = result;
   const isTx = inputType === "transaction";
   const rpcUrls = getResolvedRpcUrls(chain, env);
@@ -868,7 +1174,9 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "evm":
         // HyperCore uses a custom API, not standard EVM RPC
         if (chain.id === "hyperliquid-core" && inputType === "address") {
-          found = await tryEndpoints(rpcUrls, (url) => verifyHyperliquidCoreAddr(url, input));
+          found = await tryEndpoints(rpcUrls, (url) =>
+            verifyHyperliquidCoreAddr(url, input),
+          );
           break;
         }
         found = await verifyEvm(chain, inputType, input, env);
@@ -883,7 +1191,9 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
         found = await tryEndpoints(rpcUrls, (url) =>
           inputType === "denom"
             ? verifyCosmosDenom(url, input)
-            : isTx ? verifyCosmosTx(url, input) : verifyCosmosAddr(url, input),
+            : isTx
+              ? verifyCosmosTx(url, input)
+              : verifyCosmosAddr(url, input),
         );
         break;
       case "tron":
@@ -924,18 +1234,24 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
       case "dogecoin":
       case "litecoin":
         found = await tryEndpoints(rpcUrls, (url) =>
-          isTx ? verifyBlockCypherTx(url, input) : verifyBlockCypherAddr(url, input),
+          isTx
+            ? verifyBlockCypherTx(url, input)
+            : verifyBlockCypherAddr(url, input),
         );
         break;
       case "bitcoincash":
       case "zcash":
         found = await tryEndpoints(rpcUrls, (url) =>
-          isTx ? verifyBlockchairTx(url, input) : verifyBlockchairAddr(url, input),
+          isTx
+            ? verifyBlockchairTx(url, input)
+            : verifyBlockchairAddr(url, input),
         );
         break;
       case "lightning":
         if (inputType === "address") {
-          found = await tryEndpoints(rpcUrls, (url) => verifyLightningNode(url, input));
+          found = await tryEndpoints(rpcUrls, (url) =>
+            verifyLightningNode(url, input),
+          );
           break;
         }
         return "unverified";
@@ -958,7 +1274,11 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
         if (!env.NOCKBLOCKS_API_KEY) return "unverified";
         found = isTx
           ? await verifyNockchainTx(rpcUrls[0], input, env.NOCKBLOCKS_API_KEY)
-          : await verifyNockchainAddr(rpcUrls[0], input, env.NOCKBLOCKS_API_KEY);
+          : await verifyNockchainAddr(
+              rpcUrls[0],
+              input,
+              env.NOCKBLOCKS_API_KEY,
+            );
         break;
       case "xrp":
         found = await tryEndpoints(rpcUrls, (url) =>
@@ -997,7 +1317,9 @@ async function verifySingle(result: DetectionResult, input: string, env: Env): P
         break;
       case "multiversx":
         found = await tryEndpoints(rpcUrls, (url) =>
-          isTx ? verifyMultiversXTx(url, input) : verifyMultiversXAddr(url, input),
+          isTx
+            ? verifyMultiversXTx(url, input)
+            : verifyMultiversXAddr(url, input),
         );
         break;
       case "starknet":
@@ -1031,9 +1353,10 @@ export async function verifyResults(
   );
 
   // Batch-verify EVM addresses via Portfolio API
-  const batchStatuses = evmAddrDetections.length > 0
-    ? await verifyEvmAddrsBatch(trimmed, evmAddrDetections, env)
-    : new Map<string, VerificationStatus>();
+  const batchStatuses =
+    evmAddrDetections.length > 0
+      ? await verifyEvmAddrsBatch(trimmed, evmAddrDetections, env)
+      : new Map<string, VerificationStatus>();
 
   // For EVM addresses not covered by batch (Fantom, API failure), fall back to verifySingle
   const evmFallbacks = evmAddrDetections.filter(
@@ -1058,7 +1381,10 @@ export async function verifyResults(
     family: r.chain.family,
     inputType: r.inputType,
     explorerUrls: r.explorerUrls,
-    status: batchStatuses.get(r.chain.id) ?? singleStatuses.get(r.chain.id) ?? "unverified",
+    status:
+      batchStatuses.get(r.chain.id) ??
+      singleStatuses.get(r.chain.id) ??
+      "unverified",
     ...(r.chain.isTestnet && { isTestnet: true }),
   }));
 }

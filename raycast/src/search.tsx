@@ -1,4 +1,13 @@
-import { Action, ActionPanel, Clipboard, Color, Icon, LaunchProps, List, getPreferenceValues } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Clipboard,
+  Color,
+  Icon,
+  LaunchProps,
+  List,
+  getPreferenceValues,
+} from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useEffect, useMemo, useState } from "react";
 import { getExplorerOverrides } from "./chains";
@@ -15,7 +24,6 @@ interface DisplayResult {
   isToken?: boolean;
   isTestnet?: boolean;
 }
-
 
 function applyExplorerOverride(
   result: LookupResult,
@@ -35,7 +43,9 @@ function applyExplorerOverride(
       if (basePath && relativePath.startsWith(basePath)) {
         relativePath = relativePath.slice(basePath.length);
       }
-    } catch { /* invalid override URL, use full pathname */ }
+    } catch {
+      /* invalid override URL, use full pathname */
+    }
     const cleanBase = overrideBaseUrl.replace(/\/+$/, "");
     const overriddenUrl = `${cleanBase}${relativePath}${originalUrl.hash}`;
     explorerUrls = [
@@ -67,7 +77,11 @@ function truncateAddress(addr: string): string {
   return `${addr.slice(0, 8)}...${addr.slice(-6)}`;
 }
 
-async function fetchWorker(input: string, workerUrl: string, verify: boolean): Promise<WorkerResponse> {
+async function fetchWorker(
+  input: string,
+  workerUrl: string,
+  verify: boolean,
+): Promise<WorkerResponse> {
   const response = await fetch(`${workerUrl}/lookup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -83,7 +97,9 @@ async function fetchWorker(input: string, workerUrl: string, verify: boolean): P
 
 export default function SearchCommand(props: LaunchProps) {
   const [searchText, setSearchText] = useState(props.fallbackText ?? "");
-  const [verifiedResults, setVerifiedResults] = useState<LookupResult[] | null>(null);
+  const [verifiedResults, setVerifiedResults] = useState<LookupResult[] | null>(
+    null,
+  );
   const [verifyingInput, setVerifyingInput] = useState("");
   const [resolvedName, setResolvedName] = useState<string | null>(null);
   const [resolvedAddress, setResolvedAddress] = useState<string | null>(null);
@@ -115,10 +131,7 @@ export default function SearchCommand(props: LaunchProps) {
   const explorerOverrides = useMemo(() => getExplorerOverrides(), []);
 
   // Phase 1: instant detection (verify=false)
-  const {
-    data: detectResponse,
-    isLoading: isDetecting,
-  } = usePromise(
+  const { data: detectResponse, isLoading: isDetecting } = usePromise(
     async (input: string) => {
       if (!input.trim()) return null;
       const resp = await fetchWorker(input.trim(), workerUrl, false);
@@ -153,7 +166,11 @@ export default function SearchCommand(props: LaunchProps) {
   const trimmedSearch = searchText.trim();
   const phase2Input = resolvedAddress ?? trimmedSearch;
   useEffect(() => {
-    if (!detectResults || detectResults.length <= 1 || trimmedSearch !== verifyingInput) {
+    if (
+      !detectResults ||
+      detectResults.length <= 1 ||
+      trimmedSearch !== verifyingInput
+    ) {
       // Clear stale verified results when input changes
       if (trimmedSearch !== verifyingInput) {
         setVerifiedResults(null);
@@ -171,18 +188,28 @@ export default function SearchCommand(props: LaunchProps) {
         setCoinGeckoUrl(resp.coinGeckoUrl ?? null);
       }
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [detectResults, trimmedSearch]);
 
   // Use verified results when available, otherwise detection results
-  const lookupResults = (verifiedResults && verifyingInput === trimmedSearch) ? verifiedResults : detectResults;
-  const isVerifying = !!detectResults && detectResults.length > 1 && (!verifiedResults || verifyingInput !== trimmedSearch);
+  const lookupResults =
+    verifiedResults && verifyingInput === trimmedSearch
+      ? verifiedResults
+      : detectResults;
+  const isVerifying =
+    !!detectResults &&
+    detectResults.length > 1 &&
+    (!verifiedResults || verifyingInput !== trimmedSearch);
   const isLoading = isDetecting || isVerifying;
 
   // Apply local explorer overrides — hide results while verifying to avoid flash of unverified list
   const displayResults: DisplayResult[] = useMemo(() => {
     if (!lookupResults || lookupResults.length === 0 || isVerifying) return [];
-    return lookupResults.map((r) => applyExplorerOverride(r, explorerOverrides));
+    return lookupResults.map((r) =>
+      applyExplorerOverride(r, explorerOverrides),
+    );
   }, [lookupResults, explorerOverrides, isVerifying]);
 
   // Determine section grouping
@@ -190,16 +217,26 @@ export default function SearchCommand(props: LaunchProps) {
   const isAddress = inputType === "address";
 
   const foundResults = displayResults.filter((r) => r.status === "found");
-  const unverifiedResults = displayResults.filter((r) => r.status === "unverified");
+  const unverifiedResults = displayResults.filter(
+    (r) => r.status === "unverified",
+  );
 
   // For addresses: if all results are unverified (no activity anywhere), show as "All Matching"
-  const addressFallback = isAddress && displayResults.length > 1 && foundResults.length === 0 && unverifiedResults.length === displayResults.length;
+  const addressFallback =
+    isAddress &&
+    displayResults.length > 1 &&
+    foundResults.length === 0 &&
+    unverifiedResults.length === displayResults.length;
 
   const sectioned = useMemo(() => {
     if (addressFallback) {
       return { allMatching: displayResults, verified: [], unverified: [] };
     }
-    return { allMatching: [], verified: foundResults, unverified: unverifiedResults };
+    return {
+      allMatching: [],
+      verified: foundResults,
+      unverified: unverifiedResults,
+    };
   }, [addressFallback, displayResults, foundResults, unverifiedResults]);
 
   // The address to show in copy actions — resolved address or raw input
@@ -248,7 +285,10 @@ export default function SearchCommand(props: LaunchProps) {
             accessories={[{ tag: { value: "Resolved", color: Color.Purple } }]}
             actions={
               <ActionPanel>
-                <Action.CopyToClipboard title="Copy Resolved Address" content={resolvedAddress} />
+                <Action.CopyToClipboard
+                  title="Copy Resolved Address"
+                  content={resolvedAddress}
+                />
                 <Action.CopyToClipboard
                   title="Copy Name"
                   content={resolvedName}
@@ -263,7 +303,12 @@ export default function SearchCommand(props: LaunchProps) {
       {sectioned.allMatching.length > 0 && (
         <List.Section title="No activity found — potential matches">
           {sectioned.allMatching.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} coinGeckoUrl={coinGeckoUrl} />
+            <ResultItem
+              key={`${result.chainId}-${result.inputType}`}
+              result={result}
+              query={copyAddress}
+              coinGeckoUrl={coinGeckoUrl}
+            />
           ))}
         </List.Section>
       )}
@@ -271,15 +316,29 @@ export default function SearchCommand(props: LaunchProps) {
       {sectioned.verified.length > 0 && (
         <List.Section title="Verified">
           {sectioned.verified.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} coinGeckoUrl={coinGeckoUrl} />
+            <ResultItem
+              key={`${result.chainId}-${result.inputType}`}
+              result={result}
+              query={copyAddress}
+              coinGeckoUrl={coinGeckoUrl}
+            />
           ))}
         </List.Section>
       )}
 
       {sectioned.unverified.length > 0 && (
-        <List.Section title={sectioned.verified.length > 0 ? "Other Chains" : "Detected Chains"}>
+        <List.Section
+          title={
+            sectioned.verified.length > 0 ? "Other Chains" : "Detected Chains"
+          }
+        >
           {sectioned.unverified.map((result) => (
-            <ResultItem key={`${result.chainId}-${result.inputType}`} result={result} query={copyAddress} coinGeckoUrl={coinGeckoUrl} />
+            <ResultItem
+              key={`${result.chainId}-${result.inputType}`}
+              result={result}
+              query={copyAddress}
+              coinGeckoUrl={coinGeckoUrl}
+            />
           ))}
         </List.Section>
       )}
@@ -287,14 +346,40 @@ export default function SearchCommand(props: LaunchProps) {
   );
 }
 
-function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; query: string; coinGeckoUrl?: string | null }) {
-  const { chainId, chainName, symbol, inputType, explorerUrls, status, isToken, isTestnet } = result;
-  const typeLabel = inputType === "address" ? "Address" : inputType === "validator" ? "Validator" : inputType === "denom" ? "Denom" : "Transaction";
-  const tagColor = inputType === "address" || inputType === "validator" ? Color.Blue : Color.Green;
+function ResultItem({
+  result,
+  query,
+  coinGeckoUrl,
+}: {
+  result: DisplayResult;
+  query: string;
+  coinGeckoUrl?: string | null;
+}) {
+  const {
+    chainId,
+    chainName,
+    symbol,
+    inputType,
+    explorerUrls,
+    status,
+    isToken,
+    isTestnet,
+  } = result;
+  const typeLabel =
+    inputType === "address"
+      ? "Address"
+      : inputType === "validator"
+        ? "Validator"
+        : inputType === "denom"
+          ? "Denom"
+          : "Transaction";
+  const tagColor =
+    inputType === "address" || inputType === "validator"
+      ? Color.Blue
+      : Color.Green;
 
   const primaryUrl = explorerUrls[0]?.url ?? "";
   const additionalExplorers = explorerUrls.slice(1);
-
 
   const logoUrl = getChainLogoUrl(chainName);
 
@@ -305,7 +390,10 @@ function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; qu
   }
 
   if (status === "found") {
-    accessories.push({ icon: { source: Icon.Checkmark, tintColor: Color.Green }, tooltip: "Verified on-chain" });
+    accessories.push({
+      icon: { source: Icon.Checkmark, tintColor: Color.Green },
+      tooltip: "Verified on-chain",
+    });
   }
 
   if (isToken) {
@@ -324,14 +412,28 @@ function ResultItem({ result, query, coinGeckoUrl }: { result: DisplayResult; qu
       accessories={accessories}
       actions={
         <ActionPanel>
-          <Action.OpenInBrowser title={`Open in ${explorerUrls[0]?.name ?? "Explorer"}`} url={primaryUrl} />
+          <Action.OpenInBrowser
+            title={`Open in ${explorerUrls[0]?.name ?? "Explorer"}`}
+            url={primaryUrl}
+          />
           {isToken && coinGeckoUrl && (
-            <Action.OpenInBrowser title="Open in CoinGecko" url={coinGeckoUrl} />
+            <Action.OpenInBrowser
+              title="Open in CoinGecko"
+              url={coinGeckoUrl}
+            />
           )}
           {additionalExplorers.map((explorer) => (
-            <Action.OpenInBrowser key={explorer.name} title={`Open in ${explorer.name}`} url={explorer.url} />
+            <Action.OpenInBrowser
+              key={explorer.name}
+              title={`Open in ${explorer.name}`}
+              url={explorer.url}
+            />
           ))}
-          <Action.CopyToClipboard title="Copy Explorer URL" content={primaryUrl} shortcut={{ modifiers: ["cmd"], key: "c" }} />
+          <Action.CopyToClipboard
+            title="Copy Explorer URL"
+            content={primaryUrl}
+            shortcut={{ modifiers: ["cmd"], key: "c" }}
+          />
           <Action.CopyToClipboard
             title="Copy Input"
             content={query.trim()}

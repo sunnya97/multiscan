@@ -2,7 +2,12 @@ import { CHAINS, Env } from "./chains";
 import { detect } from "./detect";
 import { resolveNameService } from "./resolve";
 import { checkExistingSuggestion, createSuggestion } from "./suggest";
-import { VerifiedResult, detectTokens, getCoinGeckoUrl, verifyResults } from "./verify";
+import {
+  VerifiedResult,
+  detectTokens,
+  getCoinGeckoUrl,
+  verifyResults,
+} from "./verify";
 
 function corsHeaders(): HeadersInit {
   return {
@@ -46,12 +51,19 @@ export default {
     // POST /api/suggest/create — create a new suggestion or upvote existing
     if (url.pathname === "/api/suggest/create" && request.method === "POST") {
       try {
-        const body = (await request.json()) as { networkName?: string; description?: string };
+        const body = (await request.json()) as {
+          networkName?: string;
+          description?: string;
+        };
         const networkName = (body.networkName ?? "").trim();
         if (!networkName) {
           return jsonResponse({ error: "Missing networkName" }, 400);
         }
-        const result = await createSuggestion(networkName, body.description, env);
+        const result = await createSuggestion(
+          networkName,
+          body.description,
+          env,
+        );
         return jsonResponse(result);
       } catch {
         return jsonResponse({ error: "Failed to create suggestion" }, 500);
@@ -66,7 +78,10 @@ export default {
     let input: string;
     let verify = true;
     try {
-      const body = (await request.json()) as { input?: string; verify?: boolean };
+      const body = (await request.json()) as {
+        input?: string;
+        verify?: boolean;
+      };
       input = (body.input ?? "").trim();
       if (body.verify === false) verify = false;
     } catch {
@@ -103,31 +118,42 @@ export default {
         status: "unverified" as const,
         ...(d.chain.isTestnet && { isTestnet: true }),
       }));
-      return jsonResponse({ results, ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress } });
+      return jsonResponse({
+        results,
+        ...(resolution && {
+          resolvedName: resolution.resolvedName,
+          resolvedAddress: resolution.resolvedAddress,
+        }),
+      });
     }
 
     // Single match: skip verification but still detect tokens + CoinGecko URL
     // Multiple matches: verify + detect tokens + CoinGecko URL all in parallel
-    const [verified, tokenChainIds, coinGeckoUrl] = detections.length === 1
-      ? await Promise.all([
-          Promise.resolve(detections.map((d): VerifiedResult => ({
-            chainId: d.chain.id,
-            chainName: d.chain.name,
-            symbol: d.chain.symbol,
-            family: d.chain.family,
-            inputType: d.inputType,
-            explorerUrls: d.explorerUrls,
-            status: "unverified" as const,
-            ...(d.chain.isTestnet && { isTestnet: true }),
-          }))),
-          detectTokens(lookupInput, detections, env),
-          getCoinGeckoUrl(lookupInput, detections),
-        ])
-      : await Promise.all([
-          verifyResults(lookupInput, detections, env),
-          detectTokens(lookupInput, detections, env),
-          getCoinGeckoUrl(lookupInput, detections),
-        ]);
+    const [verified, tokenChainIds, coinGeckoUrl] =
+      detections.length === 1
+        ? await Promise.all([
+            Promise.resolve(
+              detections.map(
+                (d): VerifiedResult => ({
+                  chainId: d.chain.id,
+                  chainName: d.chain.name,
+                  symbol: d.chain.symbol,
+                  family: d.chain.family,
+                  inputType: d.inputType,
+                  explorerUrls: d.explorerUrls,
+                  status: "unverified" as const,
+                  ...(d.chain.isTestnet && { isTestnet: true }),
+                }),
+              ),
+            ),
+            detectTokens(lookupInput, detections, env),
+            getCoinGeckoUrl(lookupInput, detections),
+          ])
+        : await Promise.all([
+            verifyResults(lookupInput, detections, env),
+            detectTokens(lookupInput, detections, env),
+            getCoinGeckoUrl(lookupInput, detections),
+          ]);
 
     // Filter results
     const inputType = detections[0].inputType;
@@ -147,7 +173,10 @@ export default {
         results = verified.filter((r) => r.status !== "not_found");
       } else {
         // No activity anywhere — return all as unverified fallback
-        results = verified.map((r) => ({ ...r, status: "unverified" as const }));
+        results = verified.map((r) => ({
+          ...r,
+          status: "unverified" as const,
+        }));
       }
     } else {
       results = verified;
@@ -165,14 +194,18 @@ export default {
           isToken: true,
           explorerUrls: chain.explorers.map((explorer) => {
             const path = explorer.tokenPath ?? explorer.addressPath;
-            return { name: explorer.name, url: `${explorer.baseUrl}${path.replace("{query}", lookupInput)}` };
+            return {
+              name: explorer.name,
+              url: `${explorer.baseUrl}${path.replace("{query}", lookupInput)}`,
+            };
           }),
         };
       });
     }
 
     // Denom results are always tokens — set isToken and rewrite explorer URLs to denomPath
-    const isDenom = detections.length > 0 && detections[0].inputType === "denom";
+    const isDenom =
+      detections.length > 0 && detections[0].inputType === "denom";
     if (isDenom) {
       const chainMap = new Map(CHAINS.map((c) => [c.id, c]));
       results = results.map((r) => {
@@ -194,8 +227,11 @@ export default {
 
     return jsonResponse({
       results,
-      ...resolution && { resolvedName: resolution.resolvedName, resolvedAddress: resolution.resolvedAddress },
-      ...coinGeckoUrl && { coinGeckoUrl },
+      ...(resolution && {
+        resolvedName: resolution.resolvedName,
+        resolvedAddress: resolution.resolvedAddress,
+      }),
+      ...(coinGeckoUrl && { coinGeckoUrl }),
     });
   },
 };

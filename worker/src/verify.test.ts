@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { verifyResults, detectTokens, getCoinGeckoUrl, type VerifiedResult } from "./verify";
+import {
+  verifyResults,
+  detectTokens,
+  getCoinGeckoUrl,
+  type VerifiedResult,
+} from "./verify";
 import { detect, type DetectionResult } from "./detect";
 import { CHAINS, type Env } from "./chains";
 
@@ -26,27 +31,46 @@ afterEach(() => {
 });
 
 /** Route fetch by URL substring and optionally by request body content */
-function routeFetch(routes: Array<{ match: string | ((url: string, body?: string) => boolean); response: Response | (() => Response) }>) {
-  mockFetch.mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
-    const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
-    const body = typeof init?.body === "string" ? init.body : undefined;
-    for (const route of routes) {
-      if (typeof route.match === "string") {
-        if (url.includes(route.match)) {
-          return typeof route.response === "function" ? route.response() : route.response;
+function routeFetch(
+  routes: Array<{
+    match: string | ((url: string, body?: string) => boolean);
+    response: Response | (() => Response);
+  }>,
+) {
+  mockFetch.mockImplementation(
+    async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url =
+        typeof input === "string"
+          ? input
+          : input instanceof URL
+            ? input.toString()
+            : input.url;
+      const body = typeof init?.body === "string" ? init.body : undefined;
+      for (const route of routes) {
+        if (typeof route.match === "string") {
+          if (url.includes(route.match)) {
+            return typeof route.response === "function"
+              ? route.response()
+              : route.response;
+          }
+        } else if (route.match(url, body)) {
+          return typeof route.response === "function"
+            ? route.response()
+            : route.response;
         }
-      } else if (route.match(url, body)) {
-        return typeof route.response === "function" ? route.response() : route.response;
       }
-    }
-    return new Response("Not found", { status: 404 });
-  });
+      return new Response("Not found", { status: 404 });
+    },
+  );
 }
 
 // --- EVM verification ---
 
 describe("EVM verification", () => {
-  const env: Env = { ALCHEMY_API_KEY: "test-key", ETHERSCAN_API_KEY: "eth-key" };
+  const env: Env = {
+    ALCHEMY_API_KEY: "test-key",
+    ETHERSCAN_API_KEY: "eth-key",
+  };
   const addr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 
   it("uses Portfolio API for batch EVM address verification (found)", async () => {
@@ -56,7 +80,12 @@ describe("EVM verification", () => {
         response: jsonResponse({
           data: {
             tokens: [
-              { address: addr, network: "eth-mainnet", tokenAddress: null, tokenBalance: "100" },
+              {
+                address: addr,
+                network: "eth-mainnet",
+                tokenAddress: null,
+                tokenBalance: "100",
+              },
             ],
           },
         }),
@@ -97,15 +126,19 @@ describe("EVM verification", () => {
   it("falls back to RPC for EVM chains without Alchemy (Fantom)", async () => {
     // Portfolio API returns nothing for Fantom (no alchemyNetwork)
     routeFetch([
-      { match: "api.g.alchemy.com/data/v1", response: () => jsonResponse({ data: { tokens: [] } }) },
+      {
+        match: "api.g.alchemy.com/data/v1",
+        response: () => jsonResponse({ data: { tokens: [] } }),
+      },
       {
         // Fantom falls back to RPC since it has no etherscanChainId
         match: "rpcapi.fantom.network",
-        response: () => jsonResponse({
-          jsonrpc: "2.0",
-          id: 1,
-          result: "0x1", // has balance
-        }),
+        response: () =>
+          jsonResponse({
+            jsonrpc: "2.0",
+            id: 1,
+            result: "0x1", // has balance
+          }),
       },
     ]);
 
@@ -125,7 +158,9 @@ describe("EVM verification", () => {
       },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "ethereum");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "ethereum",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -139,7 +174,9 @@ describe("EVM verification", () => {
       },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "ethereum");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "ethereum",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -152,12 +189,19 @@ describe("EVM verification", () => {
         response: jsonResponse({ status: "0", message: "NOTOK" }),
       },
       {
-        match: (url) => url.includes("alchemy.com/v2") || url.includes("publicnode"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { blockHash: "0x..." } }),
+        match: (url) =>
+          url.includes("alchemy.com/v2") || url.includes("publicnode"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { blockHash: "0x..." },
+        }),
       },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "ethereum");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "ethereum",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -171,10 +215,15 @@ describe("Bitcoin verification", () => {
   it("tx found → ok response", async () => {
     const txHash = "a".repeat(64);
     routeFetch([
-      { match: "mempool.space/api/tx/", response: new Response("tx data", { status: 200 }) },
+      {
+        match: "mempool.space/api/tx/",
+        response: new Response("tx data", { status: 200 }),
+      },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "bitcoin");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "bitcoin",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -182,10 +231,15 @@ describe("Bitcoin verification", () => {
   it("tx not found → 404", async () => {
     const txHash = "a".repeat(64);
     routeFetch([
-      { match: "mempool.space/api/tx/", response: new Response("", { status: 404 }) },
+      {
+        match: "mempool.space/api/tx/",
+        response: new Response("", { status: 404 }),
+      },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "bitcoin");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "bitcoin",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -195,7 +249,10 @@ describe("Bitcoin verification", () => {
     routeFetch([
       {
         match: "mempool.space/api/address/",
-        response: jsonResponse({ chain_stats: { tx_count: 5 }, mempool_stats: { tx_count: 0 } }),
+        response: jsonResponse({
+          chain_stats: { tx_count: 5 },
+          mempool_stats: { tx_count: 0 },
+        }),
       },
     ]);
 
@@ -219,14 +276,23 @@ describe("Cosmos verification", () => {
         response: new Response("{}", { status: 200 }),
       },
       // All others 404
-      { match: (url) => url.includes("/cosmos/tx"), response: new Response("", { status: 404 }) },
+      {
+        match: (url) => url.includes("/cosmos/tx"),
+        response: new Response("", { status: 404 }),
+      },
       // Address/balance checks for non-tx matches
-      { match: (url) => url.includes("/cosmos/auth") || url.includes("/cosmos/bank"), response: new Response("{}", { status: 404 }) },
+      {
+        match: (url) =>
+          url.includes("/cosmos/auth") || url.includes("/cosmos/bank"),
+        response: new Response("{}", { status: 404 }),
+      },
       // Other RPCs
       { match: (url) => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "cosmos");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "cosmos",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -276,7 +342,9 @@ describe("Cosmos verification", () => {
       },
     ]);
 
-    const detections = detect(denom, CHAINS).filter((d) => d.chain.id === "cosmos");
+    const detections = detect(denom, CHAINS).filter(
+      (d) => d.chain.id === "cosmos",
+    );
     const results = await verifyResults(denom, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -298,7 +366,9 @@ describe("Tron verification", () => {
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "tron");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "tron",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -327,8 +397,13 @@ describe("Solana verification", () => {
     const sig = "5" + "A".repeat(84);
     routeFetch([
       {
-        match: (url, body) => url.includes("mainnet-beta") && !!body?.includes("getTransaction"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { slot: 123 } }),
+        match: (url, body) =>
+          url.includes("mainnet-beta") && !!body?.includes("getTransaction"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { slot: 123 },
+        }),
       },
     ]);
 
@@ -342,7 +417,11 @@ describe("Solana verification", () => {
     routeFetch([
       {
         match: (url, body) => !!body?.includes("getAccountInfo"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { value: { lamports: 1000 } } }),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { value: { lamports: 1000 } },
+        }),
       },
     ]);
 
@@ -356,7 +435,11 @@ describe("Solana verification", () => {
     routeFetch([
       {
         match: (url, body) => !!body?.includes("getAccountInfo"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { value: null } }),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { value: null },
+        }),
       },
     ]);
 
@@ -375,14 +458,21 @@ describe("Sui verification", () => {
   it("tx found via sui_getTransactionBlock", async () => {
     routeFetch([
       {
-        match: (url, body) => url.includes("sui") && !!body?.includes("sui_getTransactionBlock"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { digest: hash } }),
+        match: (url, body) =>
+          url.includes("sui") && !!body?.includes("sui_getTransactionBlock"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { digest: hash },
+        }),
       },
       // Other chains
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(hash, CHAINS).filter((d) => d.chain.id === "sui" && d.inputType === "transaction");
+    const detections = detect(hash, CHAINS).filter(
+      (d) => d.chain.id === "sui" && d.inputType === "transaction",
+    );
     const results = await verifyResults(hash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -390,12 +480,19 @@ describe("Sui verification", () => {
   it("address with balance via suix_getBalance", async () => {
     routeFetch([
       {
-        match: (url, body) => url.includes("sui") && !!body?.includes("suix_getBalance"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { totalBalance: "1000" } }),
+        match: (url, body) =>
+          url.includes("sui") && !!body?.includes("suix_getBalance"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { totalBalance: "1000" },
+        }),
       },
     ]);
 
-    const detections = detect(hash, CHAINS).filter((d) => d.chain.id === "sui" && d.inputType === "address");
+    const detections = detect(hash, CHAINS).filter(
+      (d) => d.chain.id === "sui" && d.inputType === "address",
+    );
     const results = await verifyResults(hash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -403,12 +500,19 @@ describe("Sui verification", () => {
   it("address with zero balance → not_found", async () => {
     routeFetch([
       {
-        match: (url, body) => url.includes("sui") && !!body?.includes("suix_getBalance"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { totalBalance: "0" } }),
+        match: (url, body) =>
+          url.includes("sui") && !!body?.includes("suix_getBalance"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { totalBalance: "0" },
+        }),
       },
     ]);
 
-    const detections = detect(hash, CHAINS).filter((d) => d.chain.id === "sui" && d.inputType === "address");
+    const detections = detect(hash, CHAINS).filter(
+      (d) => d.chain.id === "sui" && d.inputType === "address",
+    );
     const results = await verifyResults(hash, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -429,7 +533,9 @@ describe("Aptos verification", () => {
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(hash, CHAINS).filter((d) => d.chain.id === "aptos" && d.inputType === "transaction");
+    const detections = detect(hash, CHAINS).filter(
+      (d) => d.chain.id === "aptos" && d.inputType === "transaction",
+    );
     const results = await verifyResults(hash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -437,12 +543,15 @@ describe("Aptos verification", () => {
   it("address with sequence_number > 0 → found", async () => {
     routeFetch([
       {
-        match: (url) => url.includes("/accounts/") && !url.includes("transactions"),
+        match: (url) =>
+          url.includes("/accounts/") && !url.includes("transactions"),
         response: jsonResponse({ sequence_number: "5" }),
       },
     ]);
 
-    const detections = detect(hash, CHAINS).filter((d) => d.chain.id === "aptos" && d.inputType === "address");
+    const detections = detect(hash, CHAINS).filter(
+      (d) => d.chain.id === "aptos" && d.inputType === "address",
+    );
     const results = await verifyResults(hash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -450,12 +559,15 @@ describe("Aptos verification", () => {
   it("address with sequence_number 0 → not_found", async () => {
     routeFetch([
       {
-        match: (url) => url.includes("/accounts/") && !url.includes("transactions"),
+        match: (url) =>
+          url.includes("/accounts/") && !url.includes("transactions"),
         response: jsonResponse({ sequence_number: "0" }),
       },
     ]);
 
-    const detections = detect(hash, CHAINS).filter((d) => d.chain.id === "aptos" && d.inputType === "address");
+    const detections = detect(hash, CHAINS).filter(
+      (d) => d.chain.id === "aptos" && d.inputType === "address",
+    );
     const results = await verifyResults(hash, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -472,7 +584,9 @@ describe("TON verification", () => {
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "ton");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "ton",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -482,7 +596,10 @@ describe("TON verification", () => {
     routeFetch([
       {
         match: "getAddressInformation",
-        response: jsonResponse({ ok: true, result: { balance: "1000", state: "active" } }),
+        response: jsonResponse({
+          ok: true,
+          result: { balance: "1000", state: "active" },
+        }),
       },
     ]);
 
@@ -496,7 +613,10 @@ describe("TON verification", () => {
     routeFetch([
       {
         match: "getAddressInformation",
-        response: jsonResponse({ ok: true, result: { balance: "0", state: "uninitialized" } }),
+        response: jsonResponse({
+          ok: true,
+          result: { balance: "0", state: "uninitialized" },
+        }),
       },
     ]);
 
@@ -517,7 +637,9 @@ describe("Polkadot verification", () => {
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "polkadot");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "polkadot",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -527,7 +649,11 @@ describe("Polkadot verification", () => {
     routeFetch([
       {
         match: (url, body) => !!body?.includes("system_account"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { nonce: 5, data: { free: "0" } } }),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { nonce: 5, data: { free: "0" } },
+        }),
       },
     ]);
 
@@ -546,18 +672,26 @@ describe("NEAR verification", () => {
     const txHash = "a".repeat(64);
     routeFetch([
       {
-        match: (url, body) => url.includes("near.org") && !!body?.includes("EXPERIMENTAL_tx_status"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { status: {} } }),
+        match: (url, body) =>
+          url.includes("near.org") &&
+          !!body?.includes("EXPERIMENTAL_tx_status"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { status: {} },
+        }),
       },
     ]);
 
     // 64-hex is detected as NEAR address, so manually construct a tx detection
     const nearChain = CHAINS.find((c) => c.id === "near")!;
-    const detections: DetectionResult[] = [{
-      chain: nearChain,
-      inputType: "transaction",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: nearChain,
+        inputType: "transaction",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -566,8 +700,13 @@ describe("NEAR verification", () => {
     const addr = "alice.near";
     routeFetch([
       {
-        match: (url, body) => url.includes("near.org") && !!body?.includes("view_account"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { amount: "1000" } }),
+        match: (url, body) =>
+          url.includes("near.org") && !!body?.includes("view_account"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { amount: "1000" },
+        }),
       },
     ]);
 
@@ -583,11 +722,13 @@ describe("Monero verification", () => {
   it("always returns unverified (privacy chain)", async () => {
     const addr = "4" + "A".repeat(94);
     const moneroChain = CHAINS.find((c) => c.id === "monero")!;
-    const detections: DetectionResult[] = [{
-      chain: moneroChain,
-      inputType: "address",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: moneroChain,
+        inputType: "address",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(addr, detections, {});
     expect(results[0].status).toBe("unverified");
   });
@@ -602,18 +743,21 @@ describe("XRP verification", () => {
     const txHash = "a".repeat(64);
     routeFetch([
       {
-        match: (url, body) => url.includes("ripple.com") && !!body?.includes('"tx"'),
+        match: (url, body) =>
+          url.includes("ripple.com") && !!body?.includes('"tx"'),
         response: jsonResponse({ result: { status: "success", hash: txHash } }),
       },
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
     const xrpChain = CHAINS.find((c) => c.id === "xrp")!;
-    const detections: DetectionResult[] = [{
-      chain: xrpChain,
-      inputType: "transaction",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: xrpChain,
+        inputType: "transaction",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -622,7 +766,8 @@ describe("XRP verification", () => {
     const addr = "rN7n3473SaZBCG4dFL83w7p1W9cgPJxtfR";
     routeFetch([
       {
-        match: (url, body) => url.includes("ripple.com") && !!body?.includes("account_info"),
+        match: (url, body) =>
+          url.includes("ripple.com") && !!body?.includes("account_info"),
         response: jsonResponse({ result: { account_data: { Sequence: 5 } } }),
       },
     ]);
@@ -649,11 +794,13 @@ describe("Stellar verification", () => {
     ]);
 
     const stellarChain = CHAINS.find((c) => c.id === "stellar")!;
-    const detections: DetectionResult[] = [{
-      chain: stellarChain,
-      inputType: "transaction",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: stellarChain,
+        inputType: "transaction",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -693,11 +840,13 @@ describe("Bittensor verification", () => {
   it("always returns unverified (no free API)", async () => {
     const addr = "5" + "F".repeat(47);
     const taoChain = CHAINS.find((c) => c.id === "bittensor")!;
-    const detections: DetectionResult[] = [{
-      chain: taoChain,
-      inputType: "address",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: taoChain,
+        inputType: "address",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(addr, detections, {});
     expect(results[0].status).toBe("unverified");
   });
@@ -740,18 +889,21 @@ describe("Cardano verification", () => {
     const txHash = "a".repeat(64);
     routeFetch([
       {
-        match: (url, body) => url.includes("koios.rest") && !!body?.includes("_tx_hashes"),
+        match: (url, body) =>
+          url.includes("koios.rest") && !!body?.includes("_tx_hashes"),
         response: jsonResponse([{ tx_hash: txHash }]),
       },
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
     const cardanoChain = CHAINS.find((c) => c.id === "cardano")!;
-    const detections: DetectionResult[] = [{
-      chain: cardanoChain,
-      inputType: "transaction",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: cardanoChain,
+        inputType: "transaction",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -765,11 +917,16 @@ describe("Dogecoin verification", () => {
   it("tx found via BlockCypher", async () => {
     const txHash = "a".repeat(64);
     routeFetch([
-      { match: "blockcypher.com/v1/doge/main/txs/", response: new Response("{}", { status: 200 }) },
+      {
+        match: "blockcypher.com/v1/doge/main/txs/",
+        response: new Response("{}", { status: 200 }),
+      },
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "dogecoin");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "dogecoin",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -777,7 +934,10 @@ describe("Dogecoin verification", () => {
   it("address with n_tx > 0 → found", async () => {
     const addr = "DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L";
     routeFetch([
-      { match: "blockcypher.com/v1/doge/main/addrs/", response: jsonResponse({ n_tx: 5 }) },
+      {
+        match: "blockcypher.com/v1/doge/main/addrs/",
+        response: jsonResponse({ n_tx: 5 }),
+      },
     ]);
 
     const detections = detect(addr, CHAINS);
@@ -794,11 +954,16 @@ describe("Litecoin verification", () => {
   it("tx found via BlockCypher", async () => {
     const txHash = "a".repeat(64);
     routeFetch([
-      { match: "blockcypher.com/v1/ltc/main/txs/", response: new Response("{}", { status: 200 }) },
+      {
+        match: "blockcypher.com/v1/ltc/main/txs/",
+        response: new Response("{}", { status: 200 }),
+      },
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "litecoin");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "litecoin",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -806,7 +971,10 @@ describe("Litecoin verification", () => {
   it("address with n_tx > 0 → found", async () => {
     const addr = "LaMT348PWRnrqeeWArpwQPbuanpXDZGEUz";
     routeFetch([
-      { match: "blockcypher.com/v1/ltc/main/addrs/", response: jsonResponse({ n_tx: 3 }) },
+      {
+        match: "blockcypher.com/v1/ltc/main/addrs/",
+        response: jsonResponse({ n_tx: 3 }),
+      },
     ]);
 
     const detections = detect(addr, CHAINS);
@@ -830,7 +998,9 @@ describe("Bitcoin Cash verification", () => {
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "bitcoin-cash");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "bitcoin-cash",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -840,7 +1010,9 @@ describe("Bitcoin Cash verification", () => {
     routeFetch([
       {
         match: "blockchair.com/bitcoin-cash/dashboards/address/",
-        response: jsonResponse({ data: { [addr]: { address: { transaction_count: 10 } } } }),
+        response: jsonResponse({
+          data: { [addr]: { address: { transaction_count: 10 } } },
+        }),
       },
     ]);
 
@@ -865,7 +1037,9 @@ describe("ZCash verification", () => {
       { match: () => true, response: new Response("", { status: 404 }) },
     ]);
 
-    const detections = detect(txHash, CHAINS).filter((d) => d.chain.id === "zcash");
+    const detections = detect(txHash, CHAINS).filter(
+      (d) => d.chain.id === "zcash",
+    );
     const results = await verifyResults(txHash, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -875,7 +1049,9 @@ describe("ZCash verification", () => {
     routeFetch([
       {
         match: "blockchair.com/zcash/dashboards/address/",
-        response: jsonResponse({ data: { [addr]: { address: { transaction_count: 2 } } } }),
+        response: jsonResponse({
+          data: { [addr]: { address: { transaction_count: 2 } } },
+        }),
       },
     ]);
 
@@ -894,17 +1070,21 @@ describe("Hyperliquid Core verification", () => {
   it("address found via clearinghouseState", async () => {
     routeFetch([
       {
-        match: (url, body) => url.includes("hyperliquid.xyz/info") && !!body?.includes("clearinghouseState"),
+        match: (url, body) =>
+          url.includes("hyperliquid.xyz/info") &&
+          !!body?.includes("clearinghouseState"),
         response: jsonResponse({ marginSummary: { accountValue: "1000.0" } }),
       },
     ]);
 
     const coreChain = CHAINS.find((c) => c.id === "hyperliquid-core")!;
-    const detections: DetectionResult[] = [{
-      chain: coreChain,
-      inputType: "address",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: coreChain,
+        inputType: "address",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(addr, detections, env);
     expect(results[0].status).toBe("found");
   });
@@ -912,17 +1092,21 @@ describe("Hyperliquid Core verification", () => {
   it("address with zero account value → not_found", async () => {
     routeFetch([
       {
-        match: (url, body) => url.includes("hyperliquid.xyz/info") && !!body?.includes("clearinghouseState"),
+        match: (url, body) =>
+          url.includes("hyperliquid.xyz/info") &&
+          !!body?.includes("clearinghouseState"),
         response: jsonResponse({ marginSummary: { accountValue: "0.0" } }),
       },
     ]);
 
     const coreChain = CHAINS.find((c) => c.id === "hyperliquid-core")!;
-    const detections: DetectionResult[] = [{
-      chain: coreChain,
-      inputType: "address",
-      explorerUrls: [],
-    }];
+    const detections: DetectionResult[] = [
+      {
+        chain: coreChain,
+        inputType: "address",
+        explorerUrls: [],
+      },
+    ];
     const results = await verifyResults(addr, detections, env);
     expect(results[0].status).toBe("not_found");
   });
@@ -937,12 +1121,21 @@ describe("tryEndpoints failover", () => {
     let callCount = 0;
 
     mockFetch.mockImplementation(async (input: RequestInfo | URL) => {
-      const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
+      const url =
+        typeof input === "string"
+          ? input
+          : input instanceof URL
+            ? input.toString()
+            : input.url;
       callCount++;
       if (url.includes("helius")) throw new Error("Connection refused");
       if (url.includes("alchemy")) throw new Error("Connection refused");
       // Public endpoint succeeds
-      return jsonResponse({ jsonrpc: "2.0", id: 1, result: { value: { lamports: 1000 } } });
+      return jsonResponse({
+        jsonrpc: "2.0",
+        id: 1,
+        result: { value: { lamports: 1000 } },
+      });
     });
 
     const detections = detect(addr, CHAINS);
@@ -971,16 +1164,27 @@ describe("detectTokens", () => {
     routeFetch([
       {
         match: (url, body) => !!body?.includes("alchemy_getTokenMetadata"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { decimals: 6, name: "USDC", symbol: "USDC" } }),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { decimals: 6, name: "USDC", symbol: "USDC" },
+        }),
       },
       {
         match: (url, body) => !!body?.includes("eth_call"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: "0x0000000000000000000000000000000000000000000000000000000000000006" }),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result:
+            "0x0000000000000000000000000000000000000000000000000000000000000006",
+        }),
       },
     ]);
 
     const detections = detect(addr, CHAINS);
-    const tokenChains = await detectTokens(addr, detections, { ALCHEMY_API_KEY: "key" });
+    const tokenChains = await detectTokens(addr, detections, {
+      ALCHEMY_API_KEY: "key",
+    });
     expect(tokenChains.has("ethereum")).toBe(true);
   });
 
@@ -989,13 +1193,23 @@ describe("detectTokens", () => {
     routeFetch([
       {
         // Fantom has no Alchemy, uses eth_call fallback
-        match: (url, body) => url.includes("fantom") && !!body?.includes("eth_call"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: "0x0000000000000000000000000000000000000000000000000000000000000012" }),
+        match: (url, body) =>
+          url.includes("fantom") && !!body?.includes("eth_call"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result:
+            "0x0000000000000000000000000000000000000000000000000000000000000012",
+        }),
       },
       {
         // Other Alchemy chains - no token metadata
         match: (url, body) => !!body?.includes("alchemy_getTokenMetadata"),
-        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: { decimals: null } }),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { decimals: null },
+        }),
       },
     ]);
 
@@ -1012,7 +1226,9 @@ describe("detectTokens", () => {
         response: jsonResponse({
           jsonrpc: "2.0",
           id: 1,
-          result: { value: { owner: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" } },
+          result: {
+            value: { owner: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+          },
         }),
       },
     ]);
@@ -1071,7 +1287,10 @@ describe("getCoinGeckoUrl", () => {
   it("returns null on 404", async () => {
     const addr = "0x" + "f".repeat(40);
     routeFetch([
-      { match: "api.coingecko.com", response: new Response("", { status: 404 }) },
+      {
+        match: "api.coingecko.com",
+        response: new Response("", { status: 404 }),
+      },
     ]);
 
     const detections = detect(addr, CHAINS);
@@ -1083,7 +1302,12 @@ describe("getCoinGeckoUrl", () => {
     const addr = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
     const calls: string[] = [];
     mockFetch.mockImplementation(async (input: RequestInfo | URL) => {
-      const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
+      const url =
+        typeof input === "string"
+          ? input
+          : input instanceof URL
+            ? input.toString()
+            : input.url;
       calls.push(url);
       return jsonResponse({ id: "usd-coin", web_slug: "usd-coin" });
     });

@@ -1,11 +1,22 @@
 import { describe, it, expect } from "vitest";
-import { CHAINS, resolveRpcUrl, getAlchemyRpcUrl, getResolvedRpcUrls, type RpcEndpoint, type Chain, type Env } from "./chains";
+import {
+  CHAINS,
+  resolveRpcUrl,
+  getAlchemyRpcUrl,
+  getResolvedRpcUrls,
+  type RpcEndpoint,
+  type Chain,
+  type Env,
+} from "./chains";
 
 // --- resolveRpcUrl ---
 
 describe("resolveRpcUrl", () => {
   it("returns raw URL when no key is needed", () => {
-    const ep: RpcEndpoint = { url: "https://rpc.example.com", provider: "public" };
+    const ep: RpcEndpoint = {
+      url: "https://rpc.example.com",
+      provider: "public",
+    };
     expect(resolveRpcUrl(ep, {})).toBe("https://rpc.example.com");
   });
 
@@ -90,23 +101,71 @@ describe("CHAINS data integrity", () => {
 
   it("every chain has at least one explorer", () => {
     for (const chain of CHAINS) {
-      expect(chain.explorers.length, `${chain.id} has no explorers`).toBeGreaterThanOrEqual(1);
+      expect(
+        chain.explorers.length,
+        `${chain.id} has no explorers`,
+      ).toBeGreaterThanOrEqual(1);
     }
   });
 
   it("every chain has at least one rpcUrl (except unverifiable chains)", () => {
-    const unverifiable = new Set(["monero", "bittensor", "litecoin-testnet", "kaspa-testnet", "dogecoin-testnet", "bitcoin-cash-testnet", "zcash-testnet", "dash", "dash-testnet", "lightning-testnet", "ethereum-classic-mordor", "hyperliquid-core-testnet", "osmosis-testnet", "celestia-testnet", "dydx-testnet", "injective-testnet", "axelar-testnet", "kava-testnet", "persistence-testnet", "archway-testnet", "noble-testnet", "neutron-testnet", "coreum-testnet", "mantra-testnet", "babylon-testnet", "urbit", "berachain-testnet", "ronin-testnet", "oasis-testnet", "core-testnet", "monad-testnet", "tezos", "aleo", "nano", "chia", "iota"]);
+    const unverifiable = new Set([
+      "monero",
+      "bittensor",
+      "litecoin-testnet",
+      "kaspa-testnet",
+      "dogecoin-testnet",
+      "bitcoin-cash-testnet",
+      "zcash-testnet",
+      "dash",
+      "dash-testnet",
+      "lightning-testnet",
+      "ethereum-classic-mordor",
+      "hyperliquid-core-testnet",
+      "osmosis-testnet",
+      "celestia-testnet",
+      "dydx-testnet",
+      "injective-testnet",
+      "axelar-testnet",
+      "kava-testnet",
+      "persistence-testnet",
+      "archway-testnet",
+      "noble-testnet",
+      "neutron-testnet",
+      "coreum-testnet",
+      "mantra-testnet",
+      "babylon-testnet",
+      "urbit",
+      "berachain-testnet",
+      "ronin-testnet",
+      "oasis-testnet",
+      "core-testnet",
+      "monad-testnet",
+      "tezos",
+      "aleo",
+      "nano",
+      "chia",
+      "iota",
+    ]);
     for (const chain of CHAINS) {
       if (unverifiable.has(chain.id)) continue;
-      expect(chain.rpcUrls.length, `${chain.id} has no rpcUrls`).toBeGreaterThanOrEqual(1);
+      expect(
+        chain.rpcUrls.length,
+        `${chain.id} has no rpcUrls`,
+      ).toBeGreaterThanOrEqual(1);
     }
   });
 
   it("cosmos chains have bech32Prefix", () => {
-    const cosmosChains = CHAINS.filter((c) => c.family === "cosmos" && !c.isTestnet);
+    const cosmosChains = CHAINS.filter(
+      (c) => c.family === "cosmos" && !c.isTestnet,
+    );
     expect(cosmosChains.length).toBeGreaterThan(0);
     for (const chain of cosmosChains) {
-      expect(chain.bech32Prefix, `${chain.id} missing bech32Prefix`).toBeTruthy();
+      expect(
+        chain.bech32Prefix,
+        `${chain.id} missing bech32Prefix`,
+      ).toBeTruthy();
     }
   });
 
@@ -117,7 +176,9 @@ describe("CHAINS data integrity", () => {
   });
 
   it("no duplicate bech32 prefixes", () => {
-    const prefixes = CHAINS.filter((c) => c.bech32Prefix).map((c) => c.bech32Prefix!);
+    const prefixes = CHAINS.filter((c) => c.bech32Prefix).map(
+      (c) => c.bech32Prefix!,
+    );
     const unique = new Set(prefixes);
     expect(unique.size).toBe(prefixes.length);
   });

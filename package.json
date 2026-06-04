@@ -1,7 +1,11 @@
 {
   "name": "multiscan",
   "private": true,
-  "workspaces": ["raycast", "worker", "website"],
+  "workspaces": [
+    "raycast",
+    "worker",
+    "website"
+  ],
   "scripts": {
     "dev:worker": "npm run dev --workspace=worker",
     "dev:website": "npm run dev --workspace=website",

@@ -9,10 +9,30 @@ interface ResultCardProps {
   isSelected?: boolean;
 }
 
-export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: ResultCardProps) {
-  const { chainName, symbol, inputType, explorerUrls, status, isToken, isTestnet } = result;
+export default function ResultCard({
+  result,
+  coinGeckoUrl,
+  index,
+  isSelected,
+}: ResultCardProps) {
+  const {
+    chainName,
+    symbol,
+    inputType,
+    explorerUrls,
+    status,
+    isToken,
+    isTestnet,
+  } = result;
   const isVerified = status === "found";
-  const typeLabel = inputType === "address" ? "ADDR" : inputType === "transaction" ? "TX" : inputType === "validator" ? "VALIDATOR" : "DENOM";
+  const typeLabel =
+    inputType === "address"
+      ? "ADDR"
+      : inputType === "transaction"
+        ? "TX"
+        : inputType === "validator"
+          ? "VALIDATOR"
+          : "DENOM";
   const cardRef = useRef<HTMLDivElement>(null);
   const [logoBroken, setLogoBroken] = useState(false);
   const logoSrc = CHAIN_LOGO[chainName];
@@ -46,20 +66,32 @@ export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: 
         </div>
         <div className="result-card__badges">
           {isTestnet && (
-            <span className="result-card__badge result-card__badge--testnet">TESTNET</span>
+            <span className="result-card__badge result-card__badge--testnet">
+              TESTNET
+            </span>
           )}
           {isVerified && (
             <span className="result-card__badge result-card__badge--verified">
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M2 5.5L4 7.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M2 5.5L4 7.5L8 3"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
               VERIFIED
             </span>
           )}
           {isToken ? (
-            <span className="result-card__badge result-card__badge--token">TOKEN</span>
+            <span className="result-card__badge result-card__badge--token">
+              TOKEN
+            </span>
           ) : (
-            <span className="result-card__badge result-card__badge--type">{typeLabel}</span>
+            <span className="result-card__badge result-card__badge--type">
+              {typeLabel}
+            </span>
           )}
         </div>
       </div>
@@ -74,7 +106,13 @@ export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: 
           >
             {explorer.name}
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M3 1H9V7M9 1L1 9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M3 1H9V7M9 1L1 9"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </a>
         ))}
@@ -87,7 +125,13 @@ export default function ResultCard({ result, coinGeckoUrl, index, isSelected }: 
           >
             CoinGecko
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M3 1H9V7M9 1L1 9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M3 1H9V7M9 1L1 9"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </a>
         )}
