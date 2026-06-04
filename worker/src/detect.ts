@@ -5,31 +5,53 @@ interface Match {
   inputType: InputType;
 }
 
-const BASE58_CHAR = "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]";
+const BASE58_CHAR =
+  "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]";
 
 // Urbit phoneme tables (256 suffixes, 256 prefixes)
-const URBIT_SUFFIXES = new Set("zod nec bud wes sev per sut let ful pen syt dur wep ser wyl sun ryp syx dyr nup heb peg lup dep dys put lug hec ryt tyv syd nex lun mep lut sep pes del sul ped tem led tul met wen byn hex feb pyl dul het mev rut tyl wyd tep bes dex sef wyc bur der nep pur rys reb den nut sub pet rul syn reg tyd sup sem wyn rec meg net sec mul nym tev web sum mut nyx rex teb fus hep ben mus wyx sym sel ruc dec wex syr wet dyl myn mes det bet bel tux tug myr pel syp ter meb set dut deg tex sur fel tud nux rux ren wyt nub med lyt dus neb rum tyn seg lyx pun res red fun rev ref mec ted rus bex leb dux ryn num pyx ryg ryx fep tyr tus tyc leg nem fer mer ten lus nus syl tec mex pub rym tuc fyl lep deb ber mug hut tun byl sud pem dev lur def bus bep run mel pex dyt byt typ lev myl wed duc fur fex nul luc len ner lex rup ned lec ryd lyd fen wel nyd hus rel rud nes hes fet des ret dun ler nyr seb hul ryl lud rem lys fyn wer ryc sug nys nyl lyn dyn dem lux fed sed bec mun lyr tes mud nyt byr sen weg fyr mur tel rep teg pec nel nev fes".split(" "));
-const URBIT_PREFIXES = new Set("doz mar bin wan sam lit sig hid fid lis sog dir wac sab wis sib rig sol dop mod fog lid hop dar dor lor hod fol rin tog sil mir hol pas lac rov liv dal sat lib tab han tic pid tor bol fos dot los dil for pil ram tir win tad bic dif roc wid bis das mid lop ril nar dap mol san loc nov sit nid tip sic rop wit nat pan min rit pod mot tam tol sav pos nap nop som fin fon ban mor wor sip ron nor bot wic soc wat dol mag pic dav bid bal tim tas mal lig siv tag pad sal div dac tan sid fab tar mon ran nis wol mis pal las dis map rab tob rol lat lon nod nav fig nom nib pag sop ral bil had doc rid moc pac rav rip fal tod til tin hap mic fan pat tac lab mog sim son pin lom ric tap fir has bos bat poc hac tid hav sap lin dib hos dab bit bar rac par lod dos bor toc hil mac tom dig fil fas mit hob har mig hin rad mas hal rag lag fad top mop hab nil nos mil fop fam dat nol din hat nac ris fot rib hoc nim lar fit wal rap sar nal mos lan don dan lad dov riv bac pol lap tal pit nam bon ros ton fod pon sov noc sor lav mat mip fip".split(" "));
+const URBIT_SUFFIXES = new Set(
+  "zod nec bud wes sev per sut let ful pen syt dur wep ser wyl sun ryp syx dyr nup heb peg lup dep dys put lug hec ryt tyv syd nex lun mep lut sep pes del sul ped tem led tul met wen byn hex feb pyl dul het mev rut tyl wyd tep bes dex sef wyc bur der nep pur rys reb den nut sub pet rul syn reg tyd sup sem wyn rec meg net sec mul nym tev web sum mut nyx rex teb fus hep ben mus wyx sym sel ruc dec wex syr wet dyl myn mes det bet bel tux tug myr pel syp ter meb set dut deg tex sur fel tud nux rux ren wyt nub med lyt dus neb rum tyn seg lyx pun res red fun rev ref mec ted rus bex leb dux ryn num pyx ryg ryx fep tyr tus tyc leg nem fer mer ten lus nus syl tec mex pub rym tuc fyl lep deb ber mug hut tun byl sud pem dev lur def bus bep run mel pex dyt byt typ lev myl wed duc fur fex nul luc len ner lex rup ned lec ryd lyd fen wel nyd hus rel rud nes hes fet des ret dun ler nyr seb hul ryl lud rem lys fyn wer ryc sug nys nyl lyn dyn dem lux fed sed bec mun lyr tes mud nyt byr sen weg fyr mur tel rep teg pec nel nev fes".split(
+    " ",
+  ),
+);
+const URBIT_PREFIXES = new Set(
+  "doz mar bin wan sam lit sig hid fid lis sog dir wac sab wis sib rig sol dop mod fog lid hop dar dor lor hod fol rin tog sil mir hol pas lac rov liv dal sat lib tab han tic pid tor bol fos dot los dil for pil ram tir win tad bic dif roc wid bis das mid lop ril nar dap mol san loc nov sit nid tip sic rop wit nat pan min rit pod mot tam tol sav pos nap nop som fin fon ban mor wor sip ron nor bot wic soc wat dol mag pic dav bid bal tim tas mal lig siv tag pad sal div dac tan sid fab tar mon ran nis wol mis pal las dis map rab tob rol lat lon nod nav fig nom nib pag sop ral bil had doc rid moc pac rav rip fal tod til tin hap mic fan pat tac lab mog sim son pin lom ric tap fir has bos bat poc hac tid hav sap lin dib hos dab bit bar rac par lod dos bor toc hil mac tom dig fil fas mit hob har mig hin rad mas hal rag lag fad top mop hab nil nos mil fop fam dat nol din hat nac ris fot rib hoc nim lar fit wal rap sar nal mos lan don dan lad dov riv bac pol lap tal pit nam bon ros ton fod pon sov noc sor lav mat mip fip".split(
+    " ",
+  ),
+);
 
 function isValidUrbitName(name: string): boolean {
   // Galaxy: single suffix (3 chars)
   if (name.length === 3) return URBIT_SUFFIXES.has(name);
   // Star: prefix + suffix (6 chars)
-  if (name.length === 6) return URBIT_PREFIXES.has(name.slice(0, 3)) && URBIT_SUFFIXES.has(name.slice(3));
+  if (name.length === 6)
+    return (
+      URBIT_PREFIXES.has(name.slice(0, 3)) && URBIT_SUFFIXES.has(name.slice(3))
+    );
   // Planet: prefix+suffix-prefix+suffix (13 chars with hyphen)
   if (name.length === 13 && name[6] === "-") {
-    return URBIT_PREFIXES.has(name.slice(0, 3)) && URBIT_SUFFIXES.has(name.slice(3, 6))
-      && URBIT_PREFIXES.has(name.slice(7, 10)) && URBIT_SUFFIXES.has(name.slice(10, 13));
+    return (
+      URBIT_PREFIXES.has(name.slice(0, 3)) &&
+      URBIT_SUFFIXES.has(name.slice(3, 6)) &&
+      URBIT_PREFIXES.has(name.slice(7, 10)) &&
+      URBIT_SUFFIXES.has(name.slice(10, 13))
+    );
   }
   return false;
 }
 
 // Build EVM chain ID list from CHAINS data
-const EVM_CHAIN_IDS = CHAINS.filter((c) => c.family === "evm" && !c.isTestnet).map((c) => c.id);
+const EVM_CHAIN_IDS = CHAINS.filter(
+  (c) => c.family === "evm" && !c.isTestnet,
+).map((c) => c.id);
 
 // Build Cosmos lookup tables from CHAINS data
-const COSMOS_CHAINS_LIST = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix);
-const BECH32_PREFIX_TO_CHAIN = new Map(COSMOS_CHAINS_LIST.map((c) => [c.bech32Prefix!, c.id]));
+const COSMOS_CHAINS_LIST = CHAINS.filter(
+  (c) => c.family === "cosmos" && c.bech32Prefix,
+);
+const BECH32_PREFIX_TO_CHAIN = new Map(
+  COSMOS_CHAINS_LIST.map((c) => [c.bech32Prefix!, c.id]),
+);
 const COSMOS_CHAIN_IDS = COSMOS_CHAINS_LIST.map((c) => c.id);
 
 function getMatches(input: string): Match[] {
@@ -53,17 +75,32 @@ function getMatches(input: string): Match[] {
       matches.push({ chainId: id, inputType: "transaction" });
     }
     // Sui address or transaction (both are 0x + 64 hex)
-    matches.push({ chainId: "sui", inputType: "address" }, { chainId: "sui", inputType: "transaction" });
+    matches.push(
+      { chainId: "sui", inputType: "address" },
+      { chainId: "sui", inputType: "transaction" },
+    );
     // Aptos address or transaction
-    matches.push({ chainId: "aptos", inputType: "address" }, { chainId: "aptos", inputType: "transaction" });
+    matches.push(
+      { chainId: "aptos", inputType: "address" },
+      { chainId: "aptos", inputType: "transaction" },
+    );
     // Movement address or transaction (Move-based, same format as Aptos)
-    matches.push({ chainId: "movement", inputType: "address" }, { chainId: "movement", inputType: "transaction" });
+    matches.push(
+      { chainId: "movement", inputType: "address" },
+      { chainId: "movement", inputType: "transaction" },
+    );
     // IOTA address or transaction (post-rebasing, same 0x+64hex format)
-    matches.push({ chainId: "iota", inputType: "address" }, { chainId: "iota", inputType: "transaction" });
+    matches.push(
+      { chainId: "iota", inputType: "address" },
+      { chainId: "iota", inputType: "transaction" },
+    );
     // Bittensor extrinsic hash
     matches.push({ chainId: "bittensor", inputType: "transaction" });
     // Starknet address or transaction
-    matches.push({ chainId: "starknet", inputType: "address" }, { chainId: "starknet", inputType: "transaction" });
+    matches.push(
+      { chainId: "starknet", inputType: "address" },
+      { chainId: "starknet", inputType: "transaction" },
+    );
     // Stacks transaction
     matches.push({ chainId: "stacks", inputType: "transaction" });
     return matches;
@@ -440,7 +477,11 @@ export interface DetectionResult {
   explorerUrls: ExplorerUrl[];
 }
 
-function buildExplorerUrls(chain: Chain, inputType: InputType, query: string): ExplorerUrl[] {
+function buildExplorerUrls(
+  chain: Chain,
+  inputType: InputType,
+  query: string,
+): ExplorerUrl[] {
   return chain.explorers
     .map((explorer) => {
       let pathTemplate: string;
@@ -451,7 +492,8 @@ function buildExplorerUrls(chain: Chain, inputType: InputType, query: string): E
         if (!explorer.validatorPath) return null;
         pathTemplate = explorer.validatorPath;
       } else {
-        pathTemplate = inputType === "address" ? explorer.addressPath : explorer.txPath;
+        pathTemplate =
+          inputType === "address" ? explorer.addressPath : explorer.txPath;
       }
       const path = pathTemplate.replace("{query}", encodeURIComponent(query));
       return { name: explorer.name, url: `${explorer.baseUrl}${path}` };

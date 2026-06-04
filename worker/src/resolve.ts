@@ -3,7 +3,14 @@ import { Chain, Env, getResolvedRpcUrls } from "./chains";
 
 // --- Name service detection ---
 
-export type NameService = "ens" | "sns" | "spaceid" | "icns" | "tondns" | "suins" | "aptosnames";
+export type NameService =
+  | "ens"
+  | "sns"
+  | "spaceid"
+  | "icns"
+  | "tondns"
+  | "suins"
+  | "aptosnames";
 
 export interface NameDetection {
   service: NameService;
@@ -55,7 +62,12 @@ function namehash(name: string): string {
 }
 
 function bytesToHex(bytes: Uint8Array): string {
-  return "0x" + Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+  return (
+    "0x" +
+    Array.from(bytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("")
+  );
 }
 
 // --- ENS resolver ---
@@ -64,7 +76,11 @@ const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 const RESOLVER_SELECTOR = "0x0178b8bf"; // resolver(bytes32)
 const ADDR_SELECTOR = "0x3b3b57de"; // addr(bytes32)
 
-async function ethCall(rpcUrl: string, to: string, data: string): Promise<string> {
+async function ethCall(
+  rpcUrl: string,
+  to: string,
+  data: string,
+): Promise<string> {
   const resp = await fetch(rpcUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -75,26 +91,41 @@ async function ethCall(rpcUrl: string, to: string, data: string): Promise<string
       params: [{ to, data }, "latest"],
     }),
   });
-  const json = (await resp.json()) as { result?: string; error?: { message: string } };
-  if (json.error || !json.result) throw new Error(json.error?.message ?? "No result");
+  const json = (await resp.json()) as {
+    result?: string;
+    error?: { message: string };
+  };
+  if (json.error || !json.result)
+    throw new Error(json.error?.message ?? "No result");
   return json.result;
 }
 
-async function resolveENS(name: string, rpcUrls: string[]): Promise<string | null> {
+async function resolveENS(
+  name: string,
+  rpcUrls: string[],
+): Promise<string | null> {
   const node = namehash(name);
   const nodeParam = node.slice(2).padStart(64, "0"); // strip 0x, pad to 32 bytes
 
   for (const rpcUrl of rpcUrls) {
     try {
       // Step 1: get resolver address from registry
-      const resolverResult = await ethCall(rpcUrl, ENS_REGISTRY, RESOLVER_SELECTOR + nodeParam);
+      const resolverResult = await ethCall(
+        rpcUrl,
+        ENS_REGISTRY,
+        RESOLVER_SELECTOR + nodeParam,
+      );
       const resolverAddr = "0x" + resolverResult.slice(-40);
 
       // Check resolver is not zero address
       if (resolverAddr === "0x" + "0".repeat(40)) return null;
 
       // Step 2: get address from resolver
-      const addrResult = await ethCall(rpcUrl, resolverAddr, ADDR_SELECTOR + nodeParam);
+      const addrResult = await ethCall(
+        rpcUrl,
+        resolverAddr,
+        ADDR_SELECTOR + nodeParam,
+      );
       const resolved = "0x" + addrResult.slice(-40);
 
       // Check resolved is not zero address
@@ -113,7 +144,9 @@ async function resolveENS(name: string, rpcUrls: string[]): Promise<string | nul
 async function resolveSNS(name: string): Promise<string | null> {
   // Strip .sol suffix for the API
   const label = name.replace(/\.sol$/i, "");
-  const resp = await fetch(`https://sns-sdk-proxy.bonfida.workers.dev/resolve/${label}`);
+  const resp = await fetch(
+    `https://sns-sdk-proxy.bonfida.workers.dev/resolve/${label}`,
+  );
   if (!resp.ok) return null;
   const json = (await resp.json()) as { result?: string; s: string };
   // The API returns { result: "base58address" } on success
@@ -126,7 +159,7 @@ async function resolveSNS(name: string): Promise<string | null> {
 
 async function resolveSpaceID(name: string): Promise<string | null> {
   const resp = await fetch(
-    `https://api.prd.space.id/v1/getAddress?tld=bnb&domain=${encodeURIComponent(name)}`
+    `https://api.prd.space.id/v1/getAddress?tld=bnb&domain=${encodeURIComponent(name)}`,
   );
   if (!resp.ok) return null;
   const json = (await resp.json()) as { code?: number; address?: string };
@@ -136,16 +169,23 @@ async function resolveSpaceID(name: string): Promise<string | null> {
 
 // --- ICNS resolver ---
 
-const ICNS_CONTRACT = "osmo1xk0s8xgktn9x5vwcgtjdceflgpasksjcll6yqzfzfj4lnq3rha4s3fwmma"; // ICNS resolver on Osmosis
+const ICNS_CONTRACT =
+  "osmo1xk0s8xgktn9x5vwcgtjdceflgpasksjcll6yqzfzfj4lnq3rha4s3fwmma"; // ICNS resolver on Osmosis
 
-async function resolveICNS(name: string, tld: string, rpcUrls: string[]): Promise<string | null> {
+async function resolveICNS(
+  name: string,
+  tld: string,
+  rpcUrls: string[],
+): Promise<string | null> {
   const label = name.replace(new RegExp(`\\.${tld}$`, "i"), "");
-  const query = btoa(JSON.stringify({ address: { name: label, bech32_prefix: tld } }));
+  const query = btoa(
+    JSON.stringify({ address: { name: label, bech32_prefix: tld } }),
+  );
 
   for (const lcdUrl of rpcUrls) {
     try {
       const resp = await fetch(
-        `${lcdUrl}/cosmwasm/wasm/v1/contract/${ICNS_CONTRACT}/smart/${query}`
+        `${lcdUrl}/cosmwasm/wasm/v1/contract/${ICNS_CONTRACT}/smart/${query}`,
       );
       if (!resp.ok) continue;
       const json = (await resp.json()) as { data?: { address?: string } };
@@ -161,7 +201,9 @@ async function resolveICNS(name: string, tld: string, rpcUrls: string[]): Promis
 // --- TON DNS resolver ---
 
 async function resolveTonDns(name: string): Promise<string | null> {
-  const resp = await fetch(`https://tonapi.io/v2/dns/${encodeURIComponent(name)}/resolve`);
+  const resp = await fetch(
+    `https://tonapi.io/v2/dns/${encodeURIComponent(name)}/resolve`,
+  );
   if (!resp.ok) return null;
   const json = (await resp.json()) as { wallet?: { address?: string } };
   const address = json.wallet?.address;
@@ -171,7 +213,10 @@ async function resolveTonDns(name: string): Promise<string | null> {
 
 // --- SuiNS resolver ---
 
-async function resolveSuiNS(name: string, rpcUrls: string[]): Promise<string | null> {
+async function resolveSuiNS(
+  name: string,
+  rpcUrls: string[],
+): Promise<string | null> {
   const label = name.replace(/\.sui$/i, "");
   for (const rpcUrl of rpcUrls) {
     try {
@@ -185,7 +230,10 @@ async function resolveSuiNS(name: string, rpcUrls: string[]): Promise<string | n
           params: [label],
         }),
       });
-      const json = (await resp.json()) as { result?: string | null; error?: { message: string } };
+      const json = (await resp.json()) as {
+        result?: string | null;
+        error?: { message: string };
+      };
       if (json.error || !json.result) return null;
       return json.result;
     } catch {
@@ -198,7 +246,9 @@ async function resolveSuiNS(name: string, rpcUrls: string[]): Promise<string | n
 // --- Aptos Names resolver ---
 
 async function resolveAptosNames(name: string): Promise<string | null> {
-  const resp = await fetch(`https://www.aptosnames.com/api/mainnet/v1/address/${encodeURIComponent(name)}`);
+  const resp = await fetch(
+    `https://www.aptosnames.com/api/mainnet/v1/address/${encodeURIComponent(name)}`,
+  );
   if (!resp.ok) return null;
   const json = (await resp.json()) as { address?: string };
   const address = json.address;

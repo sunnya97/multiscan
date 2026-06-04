@@ -108,14 +108,30 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Etherscan", baseUrl: "https://etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://eth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Etherscan",
+        baseUrl: "https://etherscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://eth.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 1,
     alchemyNetwork: "eth-mainnet",
     coingeckoPlatformId: "ethereum",
     rpcUrls: [
-      { url: "https://eth-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://eth-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://ethereum-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -125,14 +141,30 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Basescan", baseUrl: "https://basescan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://base.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Basescan",
+        baseUrl: "https://basescan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://base.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 8453,
     alchemyNetwork: "base-mainnet",
     coingeckoPlatformId: "base",
     rpcUrls: [
-      { url: "https://base-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://base-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://base-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -142,14 +174,30 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Arbiscan", baseUrl: "https://arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://arbitrum.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Arbiscan",
+        baseUrl: "https://arbiscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://arbitrum.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 42161,
     alchemyNetwork: "arb-mainnet",
     coingeckoPlatformId: "arbitrum-one",
     rpcUrls: [
-      { url: "https://arb-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://arb-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://arbitrum-one-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -159,14 +207,30 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Optimistic Etherscan", baseUrl: "https://optimistic.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://optimism.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Optimistic Etherscan",
+        baseUrl: "https://optimistic.etherscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://optimism.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 10,
     alchemyNetwork: "opt-mainnet",
     coingeckoPlatformId: "optimistic-ethereum",
     rpcUrls: [
-      { url: "https://opt-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://opt-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://optimism-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -176,14 +240,30 @@ export const CHAINS: Chain[] = [
     symbol: "POL",
     family: "evm",
     explorers: [
-      { name: "Polygonscan", baseUrl: "https://polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://polygon.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Polygonscan",
+        baseUrl: "https://polygonscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://polygon.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 137,
     alchemyNetwork: "polygon-mainnet",
     coingeckoPlatformId: "polygon-pos",
     rpcUrls: [
-      { url: "https://polygon-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://polygon-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://polygon-bor-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -193,14 +273,30 @@ export const CHAINS: Chain[] = [
     symbol: "BNB",
     family: "evm",
     explorers: [
-      { name: "BscScan", baseUrl: "https://bscscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://bsc.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "BscScan",
+        baseUrl: "https://bscscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://bsc.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 56,
     alchemyNetwork: "bnb-mainnet",
     coingeckoPlatformId: "binance-smart-chain",
     rpcUrls: [
-      { url: "https://bnb-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://bnb-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://bsc-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -210,15 +306,34 @@ export const CHAINS: Chain[] = [
     symbol: "AVAX",
     family: "evm",
     explorers: [
-      { name: "Snowscan", baseUrl: "https://snowscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://avalanche.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Snowscan",
+        baseUrl: "https://snowscan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://avalanche.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 43114,
     alchemyNetwork: "avax-mainnet",
     coingeckoPlatformId: "avalanche",
     rpcUrls: [
-      { url: "https://avax-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
-      { url: "https://avalanche-c-chain-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://avax-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
+      {
+        url: "https://avalanche-c-chain-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -227,12 +342,16 @@ export const CHAINS: Chain[] = [
     symbol: "FTM",
     family: "evm",
     explorers: [
-      { name: "FtmScan", baseUrl: "https://ftmscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "FtmScan",
+        baseUrl: "https://ftmscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "fantom",
-    rpcUrls: [
-      { url: "https://rpcapi.fantom.network", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rpcapi.fantom.network", provider: "public" }],
   },
   {
     id: "zksync",
@@ -240,13 +359,29 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "zkSync Explorer", baseUrl: "https://explorer.zksync.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://zksync.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "zkSync Explorer",
+        baseUrl: "https://explorer.zksync.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://zksync.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     alchemyNetwork: "zksync-mainnet",
     coingeckoPlatformId: "zksync",
     rpcUrls: [
-      { url: "https://zksync-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://zksync-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.era.zksync.io", provider: "public" },
     ],
   },
@@ -256,14 +391,30 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Lineascan", baseUrl: "https://lineascan.build", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://linea.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Lineascan",
+        baseUrl: "https://lineascan.build",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://linea.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 59144,
     alchemyNetwork: "linea-mainnet",
     coingeckoPlatformId: "linea",
     rpcUrls: [
-      { url: "https://linea-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://linea-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://linea-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -273,14 +424,30 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Scrollscan", baseUrl: "https://scrollscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://scroll.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Scrollscan",
+        baseUrl: "https://scrollscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://scroll.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 534352,
     alchemyNetwork: "scroll-mainnet",
     coingeckoPlatformId: "scroll",
     rpcUrls: [
-      { url: "https://scroll-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://scroll-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://scroll-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -290,14 +457,30 @@ export const CHAINS: Chain[] = [
     symbol: "MNT",
     family: "evm",
     explorers: [
-      { name: "Mantlescan", baseUrl: "https://mantlescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Blockscout", baseUrl: "https://mantle.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Mantlescan",
+        baseUrl: "https://mantlescan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Blockscout",
+        baseUrl: "https://mantle.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 5000,
     alchemyNetwork: "mantle-mainnet",
     coingeckoPlatformId: "mantle",
     rpcUrls: [
-      { url: "https://mantle-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://mantle-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mantle-rpc.publicnode.com", provider: "public" },
     ],
   },
@@ -308,7 +491,13 @@ export const CHAINS: Chain[] = [
     symbol: "ETC",
     family: "evm",
     explorers: [
-      { name: "Blockscout", baseUrl: "https://etc.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Blockscout",
+        baseUrl: "https://etc.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://etc.blockscout.com/api/eth-rpc", provider: "public" },
@@ -321,10 +510,19 @@ export const CHAINS: Chain[] = [
     symbol: "HYPE",
     family: "evm",
     explorers: [
-      { name: "Hypurrscan", baseUrl: "https://hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Hypurrscan",
+        baseUrl: "https://hypurrscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://hyperliquid-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://hyperliquid-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.hyperliquid.xyz/evm", provider: "public" },
     ],
   },
@@ -334,11 +532,14 @@ export const CHAINS: Chain[] = [
     symbol: "HYPE",
     family: "evm",
     explorers: [
-      { name: "Hypurrscan", baseUrl: "https://hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Hypurrscan",
+        baseUrl: "https://hypurrscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.hyperliquid.xyz/info", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.hyperliquid.xyz/info", provider: "public" }],
   },
 
   {
@@ -347,10 +548,20 @@ export const CHAINS: Chain[] = [
     symbol: "BERA",
     family: "evm",
     explorers: [
-      { name: "Berascan", baseUrl: "https://berascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Berascan",
+        baseUrl: "https://berascan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://berachain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://berachain-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.berachain.com", provider: "public" },
     ],
   },
@@ -360,10 +571,19 @@ export const CHAINS: Chain[] = [
     symbol: "RON",
     family: "evm",
     explorers: [
-      { name: "Ronin Explorer", baseUrl: "https://app.roninchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Ronin Explorer",
+        baseUrl: "https://app.roninchain.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://ronin-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://ronin-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://api.roninchain.com/rpc", provider: "public" },
     ],
   },
@@ -373,11 +593,15 @@ export const CHAINS: Chain[] = [
     symbol: "FLR",
     family: "evm",
     explorers: [
-      { name: "Flarescan", baseUrl: "https://mainnet.flarescan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Flarescan",
+        baseUrl: "https://mainnet.flarescan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://rpc.ankr.com/flare", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rpc.ankr.com/flare", provider: "public" }],
   },
   {
     id: "oasis-sapphire",
@@ -385,11 +609,14 @@ export const CHAINS: Chain[] = [
     symbol: "ROSE",
     family: "evm",
     explorers: [
-      { name: "Oasis Explorer", baseUrl: "https://explorer.oasis.io/mainnet/sapphire", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Oasis Explorer",
+        baseUrl: "https://explorer.oasis.io/mainnet/sapphire",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://sapphire.oasis.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://sapphire.oasis.io", provider: "public" }],
   },
   {
     id: "core",
@@ -397,11 +624,15 @@ export const CHAINS: Chain[] = [
     symbol: "CORE",
     family: "evm",
     explorers: [
-      { name: "Core Scan", baseUrl: "https://scan.coredao.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Core Scan",
+        baseUrl: "https://scan.coredao.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://rpc.coredao.org", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rpc.coredao.org", provider: "public" }],
   },
   {
     id: "monad",
@@ -409,10 +640,20 @@ export const CHAINS: Chain[] = [
     symbol: "MON",
     family: "evm",
     explorers: [
-      { name: "MonadScan", baseUrl: "https://monadscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "MonadScan",
+        baseUrl: "https://monadscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://monad-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://monad-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.monad.xyz", provider: "public" },
     ],
   },
@@ -422,10 +663,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "MegaETH Explorer", baseUrl: "https://megaeth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "MegaETH Explorer",
+        baseUrl: "https://megaeth.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://megaeth-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://megaeth-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.megaeth.com", provider: "public" },
     ],
   },
@@ -435,10 +686,19 @@ export const CHAINS: Chain[] = [
     symbol: "PLASMA",
     family: "evm",
     explorers: [
-      { name: "Plasma Scan", baseUrl: "https://plasmascan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Plasma Scan",
+        baseUrl: "https://plasmascan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://plasma-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://plasma-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.plasma.to", provider: "public" },
     ],
   },
@@ -450,11 +710,21 @@ export const CHAINS: Chain[] = [
     symbol: "xDAI",
     family: "evm",
     explorers: [
-      { name: "Gnosisscan", baseUrl: "https://gnosisscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Gnosisscan",
+        baseUrl: "https://gnosisscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "xdai",
     rpcUrls: [
-      { url: "https://gnosis-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://gnosis-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.gnosischain.com", provider: "public" },
     ],
   },
@@ -464,11 +734,21 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Blastscan", baseUrl: "https://blastscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Blastscan",
+        baseUrl: "https://blastscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "blast",
     rpcUrls: [
-      { url: "https://blast-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://blast-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.blast.io", provider: "public" },
     ],
   },
@@ -478,10 +758,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Worldscan", baseUrl: "https://worldscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Worldscan",
+        baseUrl: "https://worldscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://worldchain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://worldchain-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -490,11 +780,21 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Zora Explorer", baseUrl: "https://explorer.zora.energy", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Zora Explorer",
+        baseUrl: "https://explorer.zora.energy",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "zora",
     rpcUrls: [
-      { url: "https://zora-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://zora-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.zora.energy", provider: "public" },
     ],
   },
@@ -504,10 +804,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Uniscan", baseUrl: "https://uniscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Uniscan",
+        baseUrl: "https://uniscan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://unichain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://unichain-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.unichain.org", provider: "public" },
     ],
   },
@@ -517,11 +827,21 @@ export const CHAINS: Chain[] = [
     symbol: "CELO",
     family: "evm",
     explorers: [
-      { name: "Celoscan", baseUrl: "https://celoscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Celoscan",
+        baseUrl: "https://celoscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "celo",
     rpcUrls: [
-      { url: "https://celo-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://celo-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://forno.celo.org", provider: "public" },
     ],
   },
@@ -531,11 +851,21 @@ export const CHAINS: Chain[] = [
     symbol: "METIS",
     family: "evm",
     explorers: [
-      { name: "Metis Explorer", baseUrl: "https://andromeda-explorer.metis.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Metis Explorer",
+        baseUrl: "https://andromeda-explorer.metis.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "metis-andromeda",
     rpcUrls: [
-      { url: "https://metis-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://metis-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://andromeda.metis.io/?owner=1088", provider: "public" },
     ],
   },
@@ -545,11 +875,21 @@ export const CHAINS: Chain[] = [
     symbol: "GLMR",
     family: "evm",
     explorers: [
-      { name: "Moonscan", baseUrl: "https://moonscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Moonscan",
+        baseUrl: "https://moonscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "moonbeam",
     rpcUrls: [
-      { url: "https://moonbeam-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://moonbeam-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.api.moonbeam.network", provider: "public" },
     ],
   },
@@ -559,10 +899,20 @@ export const CHAINS: Chain[] = [
     symbol: "APE",
     family: "evm",
     explorers: [
-      { name: "Apescan", baseUrl: "https://apescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Apescan",
+        baseUrl: "https://apescan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://apechain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://apechain-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.apechain.com/http", provider: "public" },
     ],
   },
@@ -572,11 +922,21 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Arbiscan Nova", baseUrl: "https://nova.arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Arbiscan Nova",
+        baseUrl: "https://nova.arbiscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "arbitrum-nova",
     rpcUrls: [
-      { url: "https://arbnova-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://arbnova-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://nova.arbitrum.io/rpc", provider: "public" },
     ],
   },
@@ -586,11 +946,21 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Polygon zkEVM Scan", baseUrl: "https://zkevm.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Polygon zkEVM Scan",
+        baseUrl: "https://zkevm.polygonscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "polygon-zkevm",
     rpcUrls: [
-      { url: "https://polygonzkevm-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://polygonzkevm-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://zkevm-rpc.com", provider: "public" },
     ],
   },
@@ -600,11 +970,21 @@ export const CHAINS: Chain[] = [
     symbol: "BNB",
     family: "evm",
     explorers: [
-      { name: "opBNBscan", baseUrl: "https://opbnbscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "opBNBscan",
+        baseUrl: "https://opbnbscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "opbnb",
     rpcUrls: [
-      { url: "https://opbnb-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://opbnb-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://opbnb-mainnet-rpc.bnbchain.org", provider: "public" },
     ],
   },
@@ -614,11 +994,21 @@ export const CHAINS: Chain[] = [
     symbol: "S",
     family: "evm",
     explorers: [
-      { name: "Sonicscan", baseUrl: "https://sonicscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Sonicscan",
+        baseUrl: "https://sonicscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "sonic",
     rpcUrls: [
-      { url: "https://sonic-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://sonic-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.soniclabs.com", provider: "public" },
     ],
   },
@@ -628,10 +1018,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Abscan", baseUrl: "https://abscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Abscan",
+        baseUrl: "https://abscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://abstract-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://abstract-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://api.abstractions.zone", provider: "public" },
     ],
   },
@@ -641,10 +1041,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Soneium Explorer", baseUrl: "https://soneium.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Soneium Explorer",
+        baseUrl: "https://soneium.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://soneium-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://soneium-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.soneium.org", provider: "public" },
     ],
   },
@@ -654,11 +1064,21 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Modescan", baseUrl: "https://modescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Modescan",
+        baseUrl: "https://modescan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "mode",
     rpcUrls: [
-      { url: "https://mode-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://mode-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.mode.network", provider: "public" },
     ],
   },
@@ -668,11 +1088,21 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Bobascan", baseUrl: "https://bobascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Bobascan",
+        baseUrl: "https://bobascan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "boba",
     rpcUrls: [
-      { url: "https://boba-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://boba-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.boba.network", provider: "public" },
     ],
   },
@@ -682,10 +1112,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "BOB Explorer", baseUrl: "https://explorer.gobob.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "BOB Explorer",
+        baseUrl: "https://explorer.gobob.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://bob-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://bob-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.gobob.xyz", provider: "public" },
     ],
   },
@@ -695,12 +1135,25 @@ export const CHAINS: Chain[] = [
     symbol: "ZETA",
     family: "evm",
     explorers: [
-      { name: "ZetaChain Explorer", baseUrl: "https://explorer.zetachain.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "ZetaChain Explorer",
+        baseUrl: "https://explorer.zetachain.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "zetachain",
     rpcUrls: [
-      { url: "https://zetachain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
-      { url: "https://zetachain-evm.blockpi.network/v1/rpc/public", provider: "public" },
+      {
+        url: "https://zetachain-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
+      {
+        url: "https://zetachain-evm.blockpi.network/v1/rpc/public",
+        provider: "public",
+      },
     ],
   },
   {
@@ -709,11 +1162,21 @@ export const CHAINS: Chain[] = [
     symbol: "frxETH",
     family: "evm",
     explorers: [
-      { name: "Fraxscan", baseUrl: "https://fraxscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Fraxscan",
+        baseUrl: "https://fraxscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "fraxtal",
     rpcUrls: [
-      { url: "https://frax-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://frax-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.frax.com", provider: "public" },
     ],
   },
@@ -723,11 +1186,21 @@ export const CHAINS: Chain[] = [
     symbol: "RBTC",
     family: "evm",
     explorers: [
-      { name: "Rootstock Explorer", baseUrl: "https://rootstock.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Rootstock Explorer",
+        baseUrl: "https://rootstock.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "rootstock",
     rpcUrls: [
-      { url: "https://rootstock-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://rootstock-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://public-node.rsk.co", provider: "public" },
     ],
   },
@@ -737,10 +1210,20 @@ export const CHAINS: Chain[] = [
     symbol: "FLOW",
     family: "evm",
     explorers: [
-      { name: "Flowscan EVM", baseUrl: "https://evm.flowscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Flowscan EVM",
+        baseUrl: "https://evm.flowscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://flow-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://flow-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.evm.nodes.onflow.org", provider: "public" },
     ],
   },
@@ -750,11 +1233,21 @@ export const CHAINS: Chain[] = [
     symbol: "ASTR",
     family: "evm",
     explorers: [
-      { name: "Astar Explorer", baseUrl: "https://astar.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Astar Explorer",
+        baseUrl: "https://astar.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     coingeckoPlatformId: "astar",
     rpcUrls: [
-      { url: "https://astar-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://astar-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://evm.astar.network", provider: "public" },
     ],
   },
@@ -764,10 +1257,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Ink Explorer", baseUrl: "https://explorer.inkonchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Ink Explorer",
+        baseUrl: "https://explorer.inkonchain.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://ink-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://ink-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc-gel.inkonchain.com", provider: "public" },
     ],
   },
@@ -777,10 +1280,20 @@ export const CHAINS: Chain[] = [
     symbol: "DEGEN",
     family: "evm",
     explorers: [
-      { name: "Degen Explorer", baseUrl: "https://explorer.degen.tips", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Degen Explorer",
+        baseUrl: "https://explorer.degen.tips",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://degen-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://degen-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.degen.tips", provider: "public" },
     ],
   },
@@ -790,10 +1303,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Shapescan", baseUrl: "https://shapescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Shapescan",
+        baseUrl: "https://shapescan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://shape-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://shape-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.shape.network", provider: "public" },
     ],
   },
@@ -803,10 +1326,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Superseed Explorer", baseUrl: "https://explorer.superseed.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Superseed Explorer",
+        baseUrl: "https://explorer.superseed.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://superseed-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://superseed-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.superseed.xyz", provider: "public" },
     ],
   },
@@ -816,10 +1349,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Polynomialscan", baseUrl: "https://polynomialscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Polynomialscan",
+        baseUrl: "https://polynomialscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://polynomial-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://polynomial-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.polynomial.fi", provider: "public" },
     ],
   },
@@ -829,10 +1372,20 @@ export const CHAINS: Chain[] = [
     symbol: "IP",
     family: "evm",
     explorers: [
-      { name: "Storyscan", baseUrl: "https://www.storyscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Storyscan",
+        baseUrl: "https://www.storyscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://story-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://story-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://mainnet.storyrpc.io", provider: "public" },
     ],
   },
@@ -842,10 +1395,20 @@ export const CHAINS: Chain[] = [
     symbol: "GHO",
     family: "evm",
     explorers: [
-      { name: "Lens Explorer", baseUrl: "https://explorer.lens.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Lens Explorer",
+        baseUrl: "https://explorer.lens.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://lens-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://lens-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.lens.xyz", provider: "public" },
     ],
   },
@@ -855,10 +1418,20 @@ export const CHAINS: Chain[] = [
     symbol: "ANIME",
     family: "evm",
     explorers: [
-      { name: "Anime Explorer", baseUrl: "https://explorer.anime.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Anime Explorer",
+        baseUrl: "https://explorer.anime.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://anime-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://anime-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.anime.xyz", provider: "public" },
     ],
   },
@@ -868,10 +1441,20 @@ export const CHAINS: Chain[] = [
     symbol: "cBTC",
     family: "evm",
     explorers: [
-      { name: "Citrea Explorer", baseUrl: "https://explorer.mainnet.citrea.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Citrea Explorer",
+        baseUrl: "https://explorer.mainnet.citrea.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://citrea-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://citrea-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.citrea.xyz", provider: "public" },
     ],
   },
@@ -881,10 +1464,20 @@ export const CHAINS: Chain[] = [
     symbol: "BTC",
     family: "evm",
     explorers: [
-      { name: "Botanixscan", baseUrl: "https://botanixscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Botanixscan",
+        baseUrl: "https://botanixscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://botanix-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://botanix-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.botanixlabs.dev", provider: "public" },
     ],
   },
@@ -894,10 +1487,19 @@ export const CHAINS: Chain[] = [
     symbol: "XFI",
     family: "evm",
     explorers: [
-      { name: "XFIscan", baseUrl: "https://xfiscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "XFIscan",
+        baseUrl: "https://xfiscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://crossfi-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://crossfi-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -906,10 +1508,20 @@ export const CHAINS: Chain[] = [
     symbol: "GNET",
     family: "evm",
     explorers: [
-      { name: "Galactica Explorer", baseUrl: "https://explorer.galactica.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Galactica Explorer",
+        baseUrl: "https://explorer.galactica.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://galactica-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://galactica-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://evm-rpc-http.galactica.com", provider: "public" },
     ],
   },
@@ -919,10 +1531,20 @@ export const CHAINS: Chain[] = [
     symbol: "RWT",
     family: "evm",
     explorers: [
-      { name: "Humanity Explorer", baseUrl: "https://humanity-mainnet.explorer.alchemy.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Humanity Explorer",
+        baseUrl: "https://humanity-mainnet.explorer.alchemy.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://humanity-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://humanity-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://rpc.humanity.org", provider: "public" },
     ],
   },
@@ -932,10 +1554,20 @@ export const CHAINS: Chain[] = [
     symbol: "USDT",
     family: "evm",
     explorers: [
-      { name: "Stablescan", baseUrl: "https://stablescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Stablescan",
+        baseUrl: "https://stablescan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://stable-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://stable-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -944,10 +1576,20 @@ export const CHAINS: Chain[] = [
     symbol: "MYTH",
     family: "evm",
     explorers: [
-      { name: "Mythos Explorer", baseUrl: "https://mythos-mainnet.explorer.alchemy.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Mythos Explorer",
+        baseUrl: "https://mythos-mainnet.explorer.alchemy.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://mythos-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://mythos-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -956,10 +1598,20 @@ export const CHAINS: Chain[] = [
     symbol: "SETL",
     family: "evm",
     explorers: [
-      { name: "Settlus Explorer", baseUrl: "https://mainnet.settlus.network", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Settlus Explorer",
+        baseUrl: "https://mainnet.settlus.network",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://settlus-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://settlus-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -968,10 +1620,20 @@ export const CHAINS: Chain[] = [
     symbol: "ETH",
     family: "evm",
     explorers: [
-      { name: "Syndicate Explorer", baseUrl: "https://explorer.syndicate.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Syndicate Explorer",
+        baseUrl: "https://explorer.syndicate.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://synd-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://synd-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -980,10 +1642,20 @@ export const CHAINS: Chain[] = [
     symbol: "WMT",
     family: "evm",
     explorers: [
-      { name: "World Mobile Explorer", baseUrl: "https://explorer.worldmobile.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "World Mobile Explorer",
+        baseUrl: "https://explorer.worldmobile.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://worldmobilechain-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://worldmobilechain-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -992,10 +1664,20 @@ export const CHAINS: Chain[] = [
     symbol: "ADI",
     family: "evm",
     explorers: [
-      { name: "ADI Explorer", baseUrl: "https://explorer-bls.adifoundation.ai", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "ADI Explorer",
+        baseUrl: "https://explorer-bls.adifoundation.ai",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://adi-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://adi-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
 
@@ -1006,12 +1688,20 @@ export const CHAINS: Chain[] = [
     symbol: "BTC",
     family: "bitcoin",
     explorers: [
-      { name: "mempool.space", baseUrl: "https://mempool.space", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Blockstream", baseUrl: "https://blockstream.info", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "mempool.space",
+        baseUrl: "https://mempool.space",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "Blockstream",
+        baseUrl: "https://blockstream.info",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://mempool.space/api", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://mempool.space/api", provider: "public" }],
   },
   {
     id: "solana",
@@ -1019,14 +1709,38 @@ export const CHAINS: Chain[] = [
     symbol: "SOL",
     family: "solana",
     explorers: [
-      { name: "Solscan", baseUrl: "https://solscan.io", addressPath: "/account/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
-      { name: "Solana Explorer", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "SolanaFM", baseUrl: "https://solana.fm", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Solscan",
+        baseUrl: "https://solscan.io",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+      {
+        name: "Solana Explorer",
+        baseUrl: "https://explorer.solana.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "SolanaFM",
+        baseUrl: "https://solana.fm",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     coingeckoPlatformId: "solana",
     rpcUrls: [
-      { url: "https://mainnet.helius-rpc.com/?api-key={key}", provider: "helius", keyEnvVar: "HELIUS_API_KEY" },
-      { url: "https://solana-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://mainnet.helius-rpc.com/?api-key={key}",
+        provider: "helius",
+        keyEnvVar: "HELIUS_API_KEY",
+      },
+      {
+        url: "https://solana-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://api.mainnet-beta.solana.com", provider: "public" },
     ],
   },
@@ -1036,7 +1750,12 @@ export const CHAINS: Chain[] = [
     symbol: "DOGE",
     family: "dogecoin",
     explorers: [
-      { name: "Blockchair", baseUrl: "https://blockchair.com/dogecoin", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Blockchair",
+        baseUrl: "https://blockchair.com/dogecoin",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://api.blockcypher.com/v1/doge/main", provider: "public" },
@@ -1048,7 +1767,12 @@ export const CHAINS: Chain[] = [
     symbol: "LTC",
     family: "litecoin",
     explorers: [
-      { name: "Blockchair", baseUrl: "https://blockchair.com/litecoin", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Blockchair",
+        baseUrl: "https://blockchair.com/litecoin",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://api.blockcypher.com/v1/ltc/main", provider: "public" },
@@ -1060,7 +1784,12 @@ export const CHAINS: Chain[] = [
     symbol: "BCH",
     family: "bitcoincash",
     explorers: [
-      { name: "Blockchair", baseUrl: "https://blockchair.com/bitcoin-cash", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Blockchair",
+        baseUrl: "https://blockchair.com/bitcoin-cash",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://api.blockchair.com/bitcoin-cash", provider: "public" },
@@ -1072,11 +1801,14 @@ export const CHAINS: Chain[] = [
     symbol: "ZEC",
     family: "zcash",
     explorers: [
-      { name: "Blockchair", baseUrl: "https://blockchair.com/zcash", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Blockchair",
+        baseUrl: "https://blockchair.com/zcash",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.blockchair.com/zcash", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.blockchair.com/zcash", provider: "public" }],
   },
 
   {
@@ -1085,7 +1817,12 @@ export const CHAINS: Chain[] = [
     symbol: "DASH",
     family: "dash",
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dash/mainnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/dash/mainnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -1096,8 +1833,18 @@ export const CHAINS: Chain[] = [
     symbol: "URBIT",
     family: "urbit",
     explorers: [
-      { name: "Network Explorer", baseUrl: "https://network.urbit.org", addressPath: "/{query}", txPath: "" },
-      { name: "Urbit Live", baseUrl: "https://urbit.live", addressPath: "/{query}", txPath: "" },
+      {
+        name: "Network Explorer",
+        baseUrl: "https://network.urbit.org",
+        addressPath: "/{query}",
+        txPath: "",
+      },
+      {
+        name: "Urbit Live",
+        baseUrl: "https://urbit.live",
+        addressPath: "/{query}",
+        txPath: "",
+      },
     ],
     rpcUrls: [],
   },
@@ -1108,12 +1855,20 @@ export const CHAINS: Chain[] = [
     symbol: "XTZ",
     family: "tezos",
     explorers: [
-      { name: "TzKT", baseUrl: "https://tzkt.io", addressPath: "/{query}", txPath: "/{query}" },
-      { name: "TzStats", baseUrl: "https://tzstats.com", addressPath: "/{query}", txPath: "/{query}" },
+      {
+        name: "TzKT",
+        baseUrl: "https://tzkt.io",
+        addressPath: "/{query}",
+        txPath: "/{query}",
+      },
+      {
+        name: "TzStats",
+        baseUrl: "https://tzstats.com",
+        addressPath: "/{query}",
+        txPath: "/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://mainnet.api.tez.ie", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://mainnet.api.tez.ie", provider: "public" }],
   },
   {
     id: "aleo",
@@ -1121,8 +1876,18 @@ export const CHAINS: Chain[] = [
     symbol: "ALEO",
     family: "aleo",
     explorers: [
-      { name: "Aleo Explorer", baseUrl: "https://explorer.aleo.org", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
-      { name: "AleoScan", baseUrl: "https://aleoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Aleo Explorer",
+        baseUrl: "https://explorer.aleo.org",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
+      {
+        name: "AleoScan",
+        baseUrl: "https://aleoscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -1132,8 +1897,18 @@ export const CHAINS: Chain[] = [
     symbol: "XNO",
     family: "nano",
     explorers: [
-      { name: "NanoCrawler", baseUrl: "https://nanocrawler.cc", addressPath: "/explorer/account/{query}", txPath: "/explorer/block/{query}" },
-      { name: "Nanexplorer", baseUrl: "https://nanexplorer.com", addressPath: "/accounts/{query}", txPath: "/blocks/{query}" },
+      {
+        name: "NanoCrawler",
+        baseUrl: "https://nanocrawler.cc",
+        addressPath: "/explorer/account/{query}",
+        txPath: "/explorer/block/{query}",
+      },
+      {
+        name: "Nanexplorer",
+        baseUrl: "https://nanexplorer.com",
+        addressPath: "/accounts/{query}",
+        txPath: "/blocks/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -1143,8 +1918,18 @@ export const CHAINS: Chain[] = [
     symbol: "XCH",
     family: "chia",
     explorers: [
-      { name: "XCHscan", baseUrl: "https://xchscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "Spacescan", baseUrl: "https://www.spacescan.io", addressPath: "/address/{query}", txPath: "/coin/{query}" },
+      {
+        name: "XCHscan",
+        baseUrl: "https://xchscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "Spacescan",
+        baseUrl: "https://www.spacescan.io",
+        addressPath: "/address/{query}",
+        txPath: "/coin/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -1155,11 +1940,14 @@ export const CHAINS: Chain[] = [
     symbol: "NOCK",
     family: "nockchain",
     explorers: [
-      { name: "NockBlocks", baseUrl: "https://nockblocks.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "NockBlocks",
+        baseUrl: "https://nockblocks.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://nockblocks.com/rpc/v1", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://nockblocks.com/rpc/v1", provider: "public" }],
   },
 
   {
@@ -1168,11 +1956,14 @@ export const CHAINS: Chain[] = [
     symbol: "STX",
     family: "stacks",
     explorers: [
-      { name: "Hiro Explorer", baseUrl: "https://explorer.hiro.so", addressPath: "/address/{query}?chain=mainnet", txPath: "/txid/{query}?chain=mainnet" },
+      {
+        name: "Hiro Explorer",
+        baseUrl: "https://explorer.hiro.so",
+        addressPath: "/address/{query}?chain=mainnet",
+        txPath: "/txid/{query}?chain=mainnet",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.mainnet.hiro.so", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.mainnet.hiro.so", provider: "public" }],
   },
 
   // --- Cosmos Chains ---
@@ -1183,7 +1974,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "cosmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/cosmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/cosmos",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://cosmos-rest.publicnode.com", provider: "public" },
@@ -1196,7 +1994,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "osmo",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/osmosis",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://osmosis-rest.publicnode.com", provider: "public" },
@@ -1209,8 +2014,20 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "celestia",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
-      { name: "Celenium", baseUrl: "https://celenium.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/celestia",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
+      {
+        name: "Celenium",
+        baseUrl: "https://celenium.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://celestia-rest.publicnode.com", provider: "public" },
@@ -1223,11 +2040,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "dydx",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/dydx",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://dydx-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://dydx-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "injective",
@@ -1236,7 +2058,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "inj",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/injective",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://injective-rest.publicnode.com", provider: "public" },
@@ -1249,11 +2078,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "sei",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sei", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/sei",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://sei-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://sei-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "stride",
@@ -1262,7 +2096,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "stride",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/stride", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/stride",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://stride-rest.publicnode.com", provider: "public" },
@@ -1275,7 +2116,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "stars",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/stargaze", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/stargaze",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://stargaze-rest.publicnode.com", provider: "public" },
@@ -1288,11 +2136,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "akash",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/akash", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/akash",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://akash-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://akash-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "axelar",
@@ -1301,7 +2154,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "axelar",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/axelar",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://axelar-rest.publicnode.com", provider: "public" },
@@ -1314,11 +2174,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "kava",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/kava",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://kava-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://kava-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "juno",
@@ -1327,11 +2192,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "juno",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/juno", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/juno",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://juno-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://juno-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "evmos",
@@ -1340,11 +2210,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "evmos",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/evmos", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/evmos",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://evmos-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://evmos-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "secret",
@@ -1353,10 +2228,20 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "secret",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/secret", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/secret",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://rest.lavenderfive.com:443/secretnetwork", provider: "public" },
+      {
+        url: "https://rest.lavenderfive.com:443/secretnetwork",
+        provider: "public",
+      },
     ],
   },
   {
@@ -1366,11 +2251,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "band",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/band", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/band",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://laozi1.bandchain.org/api", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://laozi1.bandchain.org/api", provider: "public" }],
   },
   {
     id: "persistence",
@@ -1379,7 +2269,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "persistence",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/persistence",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://persistence-rest.publicnode.com", provider: "public" },
@@ -1392,11 +2289,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "fetch",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/fetchai", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/fetchai",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://fetch-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://fetch-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "regen",
@@ -1405,11 +2307,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "regen",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/regen", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/regen",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://regen-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://regen-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "sentinel",
@@ -1418,7 +2325,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "sent",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sentinel", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/sentinel",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://sentinel-rest.publicnode.com", provider: "public" },
@@ -1431,7 +2345,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "somm",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/sommelier", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/sommelier",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://api-sommelier.pupmos.network", provider: "public" },
@@ -1444,7 +2365,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "chihuahua",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/chihuahua", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/chihuahua",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://chihuahua-rest.publicnode.com", provider: "public" },
@@ -1457,11 +2385,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "archway",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/archway",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.mainnet.archway.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.mainnet.archway.io", provider: "public" }],
   },
   {
     id: "noble",
@@ -1470,11 +2403,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "noble",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/noble",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://noble-api.polkachu.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://noble-api.polkachu.com", provider: "public" }],
   },
   {
     id: "neutron",
@@ -1483,7 +2421,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "neutron",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/neutron",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://neutron-rest.publicnode.com", provider: "public" },
@@ -1496,7 +2441,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "core",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/coreum",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://coreum-rest.publicnode.com", provider: "public" },
@@ -1509,11 +2461,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "kyve",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kyve", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/kyve",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.kyve.network", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.kyve.network", provider: "public" }],
   },
   {
     id: "agoric",
@@ -1522,11 +2479,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "agoric",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/agoric", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/agoric",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://main.api.agoric.net:443", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://main.api.agoric.net:443", provider: "public" }],
   },
   {
     id: "omniflix",
@@ -1535,7 +2497,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "omniflix",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/omniflix", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/omniflix",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://api.omniflix.nodestake.org", provider: "public" },
@@ -1548,11 +2517,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "terra",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/terra", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/terra",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://terra-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://terra-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "gravity-bridge",
@@ -1561,11 +2535,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "gravity",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/gravity-bridge", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/gravity-bridge",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://gravitychain.io:1317", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://gravitychain.io:1317", provider: "public" }],
   },
   {
     id: "iris",
@@ -1574,11 +2553,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "iaa",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/iris", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/iris",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://iris-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://iris-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "crypto-org",
@@ -1587,11 +2571,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "cro",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/crypto-org", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/crypto-org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://rest.mainnet.crypto.org", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rest.mainnet.crypto.org", provider: "public" }],
   },
   {
     id: "dymension",
@@ -1600,7 +2589,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "dym",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dymension", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/dymension",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://dymension-rest.publicnode.com", provider: "public" },
@@ -1613,11 +2609,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "mantra",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/mantra",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.mantrachain.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.mantrachain.io", provider: "public" }],
   },
   {
     id: "babylon",
@@ -1626,7 +2627,14 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "bbn",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/babylon",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://babylon-rest.publicnode.com", provider: "public" },
@@ -1639,11 +2647,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "nolus",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/nolus", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/nolus",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://nolus-rest.publicnode.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://nolus-rest.publicnode.com", provider: "public" }],
   },
   {
     id: "pryzm",
@@ -1652,11 +2665,16 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "pryzm",
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/pryzm", addressPath: "/address/{query}", txPath: "/tx/{query}", denomPath: "/assets/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/pryzm",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        denomPath: "/assets/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.pryzm.zone", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.pryzm.zone", provider: "public" }],
   },
   {
     id: "thorchain",
@@ -1665,12 +2683,20 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     bech32Prefix: "thor",
     explorers: [
-      { name: "RuneScan", baseUrl: "https://runescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
-      { name: "ViewBlock", baseUrl: "https://viewblock.io/thorchain", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "RuneScan",
+        baseUrl: "https://runescan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "ViewBlock",
+        baseUrl: "https://viewblock.io/thorchain",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://thornode.ninerealms.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://thornode.ninerealms.com", provider: "public" }],
   },
   {
     id: "sui",
@@ -1678,11 +2704,25 @@ export const CHAINS: Chain[] = [
     symbol: "SUI",
     family: "sui",
     explorers: [
-      { name: "Suiscan", baseUrl: "https://suiscan.xyz", addressPath: "/account/{query}", txPath: "/tx/{query}" },
-      { name: "Sui Explorer", baseUrl: "https://suiexplorer.com", addressPath: "/address/{query}", txPath: "/txblock/{query}" },
+      {
+        name: "Suiscan",
+        baseUrl: "https://suiscan.xyz",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "Sui Explorer",
+        baseUrl: "https://suiexplorer.com",
+        addressPath: "/address/{query}",
+        txPath: "/txblock/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://sui-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://sui-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://fullnode.mainnet.sui.io", provider: "public" },
     ],
   },
@@ -1692,11 +2732,25 @@ export const CHAINS: Chain[] = [
     symbol: "APT",
     family: "aptos",
     explorers: [
-      { name: "Aptos Explorer", baseUrl: "https://explorer.aptoslabs.com", addressPath: "/account/{query}", txPath: "/txn/{query}" },
-      { name: "Apscan", baseUrl: "https://apscan.io", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Aptos Explorer",
+        baseUrl: "https://explorer.aptoslabs.com",
+        addressPath: "/account/{query}",
+        txPath: "/txn/{query}",
+      },
+      {
+        name: "Apscan",
+        baseUrl: "https://apscan.io",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://aptos-mainnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://aptos-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
       { url: "https://fullnode.mainnet.aptoslabs.com/v1", provider: "public" },
     ],
   },
@@ -1706,7 +2760,12 @@ export const CHAINS: Chain[] = [
     symbol: "MOVE",
     family: "aptos",
     explorers: [
-      { name: "Movement Explorer", baseUrl: "https://explorer.movementnetwork.xyz", addressPath: "/account/{query}?network=mainnet", txPath: "/txn/{query}?network=mainnet" },
+      {
+        name: "Movement Explorer",
+        baseUrl: "https://explorer.movementnetwork.xyz",
+        addressPath: "/account/{query}?network=mainnet",
+        txPath: "/txn/{query}?network=mainnet",
+      },
     ],
     rpcUrls: [
       { url: "https://mainnet.movementnetwork.xyz/v1", provider: "public" },
@@ -1718,11 +2777,14 @@ export const CHAINS: Chain[] = [
     symbol: "IOTA",
     family: "iota",
     explorers: [
-      { name: "IOTA Explorer", baseUrl: "https://explorer.iota.org", addressPath: "/address/{query}", txPath: "/txblock/{query}" },
+      {
+        name: "IOTA Explorer",
+        baseUrl: "https://explorer.iota.org",
+        addressPath: "/address/{query}",
+        txPath: "/txblock/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.mainnet.iota.cafe", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.mainnet.iota.cafe", provider: "public" }],
   },
   {
     id: "tron",
@@ -1730,11 +2792,14 @@ export const CHAINS: Chain[] = [
     symbol: "TRX",
     family: "tron",
     explorers: [
-      { name: "Tronscan", baseUrl: "https://tronscan.org", addressPath: "/#/address/{query}", txPath: "/#/transaction/{query}" },
+      {
+        name: "Tronscan",
+        baseUrl: "https://tronscan.org",
+        addressPath: "/#/address/{query}",
+        txPath: "/#/transaction/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.trongrid.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.trongrid.io", provider: "public" }],
   },
   {
     id: "ton",
@@ -1742,12 +2807,20 @@ export const CHAINS: Chain[] = [
     symbol: "TON",
     family: "ton",
     explorers: [
-      { name: "TON Viewer", baseUrl: "https://tonviewer.com", addressPath: "/{query}", txPath: "/transaction/{query}" },
-      { name: "Tonscan", baseUrl: "https://tonscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "TON Viewer",
+        baseUrl: "https://tonviewer.com",
+        addressPath: "/{query}",
+        txPath: "/transaction/{query}",
+      },
+      {
+        name: "Tonscan",
+        baseUrl: "https://tonscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://toncenter.com/api/v2", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://toncenter.com/api/v2", provider: "public" }],
   },
   {
     id: "polkadot",
@@ -1755,7 +2828,12 @@ export const CHAINS: Chain[] = [
     symbol: "DOT",
     family: "polkadot",
     explorers: [
-      { name: "Subscan", baseUrl: "https://polkadot.subscan.io", addressPath: "/account/{query}", txPath: "/extrinsic/{query}" },
+      {
+        name: "Subscan",
+        baseUrl: "https://polkadot.subscan.io",
+        addressPath: "/account/{query}",
+        txPath: "/extrinsic/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://polkadot-rpc.publicnode.com", provider: "public" },
@@ -1767,12 +2845,20 @@ export const CHAINS: Chain[] = [
     symbol: "NEAR",
     family: "near",
     explorers: [
-      { name: "NearBlocks", baseUrl: "https://nearblocks.io", addressPath: "/address/{query}", txPath: "/txns/{query}" },
-      { name: "NEAR Explorer", baseUrl: "https://explorer.near.org", addressPath: "/accounts/{query}", txPath: "/transactions/{query}" },
+      {
+        name: "NearBlocks",
+        baseUrl: "https://nearblocks.io",
+        addressPath: "/address/{query}",
+        txPath: "/txns/{query}",
+      },
+      {
+        name: "NEAR Explorer",
+        baseUrl: "https://explorer.near.org",
+        addressPath: "/accounts/{query}",
+        txPath: "/transactions/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://rpc.mainnet.near.org", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rpc.mainnet.near.org", provider: "public" }],
   },
   {
     id: "monero",
@@ -1780,7 +2866,12 @@ export const CHAINS: Chain[] = [
     symbol: "XMR",
     family: "monero",
     explorers: [
-      { name: "xmrchain.net", baseUrl: "https://xmrchain.net", addressPath: "/search?value={query}", txPath: "/tx/{query}" },
+      {
+        name: "xmrchain.net",
+        baseUrl: "https://xmrchain.net",
+        addressPath: "/search?value={query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -1790,11 +2881,14 @@ export const CHAINS: Chain[] = [
     symbol: "XRP",
     family: "xrp",
     explorers: [
-      { name: "XRPScan", baseUrl: "https://xrpscan.com", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "XRPScan",
+        baseUrl: "https://xrpscan.com",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://s1.ripple.com:51234/", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://s1.ripple.com:51234/", provider: "public" }],
   },
   {
     id: "stellar",
@@ -1802,11 +2896,14 @@ export const CHAINS: Chain[] = [
     symbol: "XLM",
     family: "stellar",
     explorers: [
-      { name: "StellarExpert", baseUrl: "https://stellar.expert/explorer/public", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "StellarExpert",
+        baseUrl: "https://stellar.expert/explorer/public",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://horizon.stellar.org", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://horizon.stellar.org", provider: "public" }],
   },
   {
     id: "bittensor",
@@ -1814,7 +2911,12 @@ export const CHAINS: Chain[] = [
     symbol: "TAO",
     family: "bittensor",
     explorers: [
-      { name: "Taostats", baseUrl: "https://taostats.io", addressPath: "/account/{query}", txPath: "/extrinsic/{query}" },
+      {
+        name: "Taostats",
+        baseUrl: "https://taostats.io",
+        addressPath: "/account/{query}",
+        txPath: "/extrinsic/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -1824,11 +2926,14 @@ export const CHAINS: Chain[] = [
     symbol: "ADA",
     family: "cardano",
     explorers: [
-      { name: "Cardanoscan", baseUrl: "https://cardanoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Cardanoscan",
+        baseUrl: "https://cardanoscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.koios.rest/api/v1", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.koios.rest/api/v1", provider: "public" }],
   },
   {
     id: "lightning",
@@ -1836,8 +2941,18 @@ export const CHAINS: Chain[] = [
     symbol: "BTC",
     family: "lightning",
     explorers: [
-      { name: "mempool.space", baseUrl: "https://mempool.space", addressPath: "/lightning/node/{query}", txPath: "" },
-      { name: "Amboss", baseUrl: "https://amboss.space", addressPath: "/node/{query}", txPath: "" },
+      {
+        name: "mempool.space",
+        baseUrl: "https://mempool.space",
+        addressPath: "/lightning/node/{query}",
+        txPath: "",
+      },
+      {
+        name: "Amboss",
+        baseUrl: "https://amboss.space",
+        addressPath: "/node/{query}",
+        txPath: "",
+      },
     ],
     rpcUrls: [
       { url: "https://mempool.space/api/v1/lightning", provider: "public" },
@@ -1849,11 +2964,14 @@ export const CHAINS: Chain[] = [
     symbol: "FIL",
     family: "filecoin",
     explorers: [
-      { name: "Filfox", baseUrl: "https://filfox.info", addressPath: "/en/address/{query}", txPath: "/en/message/{query}" },
+      {
+        name: "Filfox",
+        baseUrl: "https://filfox.info",
+        addressPath: "/en/address/{query}",
+        txPath: "/en/message/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.node.glif.io/rpc/v1", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.node.glif.io/rpc/v1", provider: "public" }],
   },
   {
     id: "hedera",
@@ -1861,7 +2979,12 @@ export const CHAINS: Chain[] = [
     symbol: "HBAR",
     family: "hedera",
     explorers: [
-      { name: "HashScan", baseUrl: "https://hashscan.io", addressPath: "/mainnet/account/{query}", txPath: "/mainnet/transaction/{query}" },
+      {
+        name: "HashScan",
+        baseUrl: "https://hashscan.io",
+        addressPath: "/mainnet/account/{query}",
+        txPath: "/mainnet/transaction/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://mainnet.mirrornode.hedera.com", provider: "public" },
@@ -1873,11 +2996,14 @@ export const CHAINS: Chain[] = [
     symbol: "KAS",
     family: "kaspa",
     explorers: [
-      { name: "Kaspa Explorer", baseUrl: "https://explorer.kaspa.org", addressPath: "/addresses/{query}", txPath: "/txs/{query}" },
+      {
+        name: "Kaspa Explorer",
+        baseUrl: "https://explorer.kaspa.org",
+        addressPath: "/addresses/{query}",
+        txPath: "/txs/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.kaspa.org", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.kaspa.org", provider: "public" }],
   },
   {
     id: "algorand",
@@ -1885,7 +3011,12 @@ export const CHAINS: Chain[] = [
     symbol: "ALGO",
     family: "algorand",
     explorers: [
-      { name: "Allo.info", baseUrl: "https://allo.info", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Allo.info",
+        baseUrl: "https://allo.info",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://mainnet-idx.algonode.cloud", provider: "public" },
@@ -1897,11 +3028,14 @@ export const CHAINS: Chain[] = [
     symbol: "EGLD",
     family: "multiversx",
     explorers: [
-      { name: "MultiversX Explorer", baseUrl: "https://explorer.multiversx.com", addressPath: "/accounts/{query}", txPath: "/transactions/{query}" },
+      {
+        name: "MultiversX Explorer",
+        baseUrl: "https://explorer.multiversx.com",
+        addressPath: "/accounts/{query}",
+        txPath: "/transactions/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.multiversx.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.multiversx.com", provider: "public" }],
   },
   {
     id: "starknet",
@@ -1909,11 +3043,24 @@ export const CHAINS: Chain[] = [
     symbol: "STRK",
     family: "starknet",
     explorers: [
-      { name: "Starkscan", baseUrl: "https://starkscan.co", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
-      { name: "Voyager", baseUrl: "https://voyager.online", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Starkscan",
+        baseUrl: "https://starkscan.co",
+        addressPath: "/contract/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "Voyager",
+        baseUrl: "https://voyager.online",
+        addressPath: "/contract/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://free-rpc.nethermind.io/mainnet-juno/", provider: "public" },
+      {
+        url: "https://free-rpc.nethermind.io/mainnet-juno/",
+        provider: "public",
+      },
     ],
   },
 
@@ -1925,11 +3072,20 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Etherscan Sepolia", baseUrl: "https://sepolia.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Etherscan Sepolia",
+        baseUrl: "https://sepolia.etherscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 11155111,
     rpcUrls: [
-      { url: "https://ethereum-sepolia-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://ethereum-sepolia-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -1939,11 +3095,20 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Etherscan Holesky", baseUrl: "https://holesky.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Etherscan Holesky",
+        baseUrl: "https://holesky.etherscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 17000,
     rpcUrls: [
-      { url: "https://ethereum-holesky-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://ethereum-holesky-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -1953,7 +3118,13 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Basescan Sepolia", baseUrl: "https://sepolia.basescan.org", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Basescan Sepolia",
+        baseUrl: "https://sepolia.basescan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 84532,
     rpcUrls: [
@@ -1967,11 +3138,20 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Arbiscan Sepolia", baseUrl: "https://sepolia.arbiscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Arbiscan Sepolia",
+        baseUrl: "https://sepolia.arbiscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 421614,
     rpcUrls: [
-      { url: "https://arbitrum-sepolia-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://arbitrum-sepolia-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -1981,11 +3161,20 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Etherscan Optimism Sepolia", baseUrl: "https://sepolia-optimism.etherscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Etherscan Optimism Sepolia",
+        baseUrl: "https://sepolia-optimism.etherscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 11155420,
     rpcUrls: [
-      { url: "https://optimism-sepolia-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://optimism-sepolia-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -1995,11 +3184,20 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Polygonscan Amoy", baseUrl: "https://amoy.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Polygonscan Amoy",
+        baseUrl: "https://amoy.polygonscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 80002,
     rpcUrls: [
-      { url: "https://polygon-amoy-bor-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://polygon-amoy-bor-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -2009,7 +3207,13 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "BscScan Testnet", baseUrl: "https://testnet.bscscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "BscScan Testnet",
+        baseUrl: "https://testnet.bscscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 97,
     rpcUrls: [
@@ -2023,11 +3227,20 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Snowscan Fuji", baseUrl: "https://testnet.snowscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Snowscan Fuji",
+        baseUrl: "https://testnet.snowscan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     etherscanChainId: 43113,
     rpcUrls: [
-      { url: "https://avalanche-fuji-c-chain-rpc.publicnode.com", provider: "public" },
+      {
+        url: "https://avalanche-fuji-c-chain-rpc.publicnode.com",
+        provider: "public",
+      },
     ],
   },
   {
@@ -2037,7 +3250,13 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "FtmScan Testnet", baseUrl: "https://testnet.ftmscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "FtmScan Testnet",
+        baseUrl: "https://testnet.ftmscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://rpc.testnet.fantom.network", provider: "public" },
@@ -2050,11 +3269,15 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "zkSync Explorer Sepolia", baseUrl: "https://sepolia.explorer.zksync.io", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "zkSync Explorer Sepolia",
+        baseUrl: "https://sepolia.explorer.zksync.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://sepolia.era.zksync.dev", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://sepolia.era.zksync.dev", provider: "public" }],
   },
   {
     id: "linea-sepolia",
@@ -2063,7 +3286,13 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Lineascan Sepolia", baseUrl: "https://sepolia.lineascan.build", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Lineascan Sepolia",
+        baseUrl: "https://sepolia.lineascan.build",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://linea-sepolia-rpc.publicnode.com", provider: "public" },
@@ -2076,7 +3305,13 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Scrollscan Sepolia", baseUrl: "https://sepolia.scrollscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Scrollscan Sepolia",
+        baseUrl: "https://sepolia.scrollscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://scroll-sepolia-rpc.publicnode.com", provider: "public" },
@@ -2089,11 +3324,15 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Mantlescan Sepolia", baseUrl: "https://sepolia.mantlescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Mantlescan Sepolia",
+        baseUrl: "https://sepolia.mantlescan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://rpc.sepolia.mantle.xyz", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rpc.sepolia.mantle.xyz", provider: "public" }],
   },
 
   // --- New EVM Testnets ---
@@ -2104,7 +3343,13 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Berascan Testnet", baseUrl: "https://testnet.berascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}", tokenPath: "/token/{query}" },
+      {
+        name: "Berascan Testnet",
+        baseUrl: "https://testnet.berascan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2115,7 +3360,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Ronin Saigon Explorer", baseUrl: "https://saigon-app.roninchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Ronin Saigon Explorer",
+        baseUrl: "https://saigon-app.roninchain.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2126,7 +3376,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Flarescan Coston2", baseUrl: "https://coston2.testnet.flarescan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Flarescan Coston2",
+        baseUrl: "https://coston2.testnet.flarescan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://rpc.ankr.com/flare_coston2", provider: "public" },
@@ -2139,7 +3394,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Oasis Explorer Testnet", baseUrl: "https://explorer.oasis.io/testnet/sapphire", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Oasis Explorer Testnet",
+        baseUrl: "https://explorer.oasis.io/testnet/sapphire",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2150,7 +3410,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Core Scan Testnet", baseUrl: "https://scan.test2.btcs.network", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Core Scan Testnet",
+        baseUrl: "https://scan.test2.btcs.network",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2161,7 +3426,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "MonadScan Testnet", baseUrl: "https://testnet.monadscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "MonadScan Testnet",
+        baseUrl: "https://testnet.monadscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2174,7 +3444,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/ethereum-classic/mordor", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/ethereum-classic/mordor",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2187,7 +3462,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Hypurrscan Testnet", baseUrl: "https://testnet.hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Hypurrscan Testnet",
+        baseUrl: "https://testnet.hypurrscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://rpc.hyperliquid-testnet.xyz/evm", provider: "public" },
@@ -2200,7 +3480,12 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Hypurrscan Testnet", baseUrl: "https://testnet.hypurrscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Hypurrscan Testnet",
+        baseUrl: "https://testnet.hypurrscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2213,11 +3498,14 @@ export const CHAINS: Chain[] = [
     family: "bitcoin-testnet",
     isTestnet: true,
     explorers: [
-      { name: "mempool.space Testnet", baseUrl: "https://mempool.space/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "mempool.space Testnet",
+        baseUrl: "https://mempool.space/testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://mempool.space/testnet/api", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://mempool.space/testnet/api", provider: "public" }],
   },
 
   // --- Solana Testnets ---
@@ -2228,11 +3516,14 @@ export const CHAINS: Chain[] = [
     family: "solana",
     isTestnet: true,
     explorers: [
-      { name: "Solana Explorer Testnet", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}?cluster=testnet", txPath: "/tx/{query}?cluster=testnet" },
+      {
+        name: "Solana Explorer Testnet",
+        baseUrl: "https://explorer.solana.com",
+        addressPath: "/address/{query}?cluster=testnet",
+        txPath: "/tx/{query}?cluster=testnet",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.testnet.solana.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.testnet.solana.com", provider: "public" }],
   },
   {
     id: "solana-devnet",
@@ -2241,11 +3532,14 @@ export const CHAINS: Chain[] = [
     family: "solana",
     isTestnet: true,
     explorers: [
-      { name: "Solana Explorer Devnet", baseUrl: "https://explorer.solana.com", addressPath: "/address/{query}?cluster=devnet", txPath: "/tx/{query}?cluster=devnet" },
+      {
+        name: "Solana Explorer Devnet",
+        baseUrl: "https://explorer.solana.com",
+        addressPath: "/address/{query}?cluster=devnet",
+        txPath: "/tx/{query}?cluster=devnet",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.devnet.solana.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.devnet.solana.com", provider: "public" }],
   },
 
   // --- Cardano Testnet ---
@@ -2256,11 +3550,14 @@ export const CHAINS: Chain[] = [
     family: "cardano",
     isTestnet: true,
     explorers: [
-      { name: "Cardanoscan Preprod", baseUrl: "https://preprod.cardanoscan.io", addressPath: "/address/{query}", txPath: "/transaction/{query}" },
+      {
+        name: "Cardanoscan Preprod",
+        baseUrl: "https://preprod.cardanoscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/transaction/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://preprod.koios.rest/api/v1", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://preprod.koios.rest/api/v1", provider: "public" }],
   },
 
   // --- Move Testnets ---
@@ -2271,11 +3568,14 @@ export const CHAINS: Chain[] = [
     family: "sui",
     isTestnet: true,
     explorers: [
-      { name: "SuiVision Testnet", baseUrl: "https://testnet.suivision.xyz", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "SuiVision Testnet",
+        baseUrl: "https://testnet.suivision.xyz",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://fullnode.testnet.sui.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://fullnode.testnet.sui.io", provider: "public" }],
   },
   {
     id: "aptos-testnet",
@@ -2284,7 +3584,12 @@ export const CHAINS: Chain[] = [
     family: "aptos",
     isTestnet: true,
     explorers: [
-      { name: "Aptos Explorer Testnet", baseUrl: "https://explorer.aptoslabs.com", addressPath: "/account/{query}?network=testnet", txPath: "/txn/{query}?network=testnet" },
+      {
+        name: "Aptos Explorer Testnet",
+        baseUrl: "https://explorer.aptoslabs.com",
+        addressPath: "/account/{query}?network=testnet",
+        txPath: "/txn/{query}?network=testnet",
+      },
     ],
     rpcUrls: [
       { url: "https://fullnode.testnet.aptoslabs.com/v1", provider: "public" },
@@ -2299,11 +3604,14 @@ export const CHAINS: Chain[] = [
     family: "near",
     isTestnet: true,
     explorers: [
-      { name: "NearBlocks Testnet", baseUrl: "https://testnet.nearblocks.io", addressPath: "/address/{query}", txPath: "/txns/{query}" },
+      {
+        name: "NearBlocks Testnet",
+        baseUrl: "https://testnet.nearblocks.io",
+        addressPath: "/address/{query}",
+        txPath: "/txns/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://rpc.testnet.near.org", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://rpc.testnet.near.org", provider: "public" }],
   },
 
   // --- Tron Testnets ---
@@ -2314,11 +3622,14 @@ export const CHAINS: Chain[] = [
     family: "tron",
     isTestnet: true,
     explorers: [
-      { name: "Tronscan Shasta", baseUrl: "https://shasta.tronscan.org", addressPath: "/#/address/{query}", txPath: "/#/transaction/{query}" },
+      {
+        name: "Tronscan Shasta",
+        baseUrl: "https://shasta.tronscan.org",
+        addressPath: "/#/address/{query}",
+        txPath: "/#/transaction/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://api.shasta.trongrid.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://api.shasta.trongrid.io", provider: "public" }],
   },
   {
     id: "tron-nile",
@@ -2327,11 +3638,14 @@ export const CHAINS: Chain[] = [
     family: "tron",
     isTestnet: true,
     explorers: [
-      { name: "Tronscan Nile", baseUrl: "https://nile.tronscan.org", addressPath: "/#/address/{query}", txPath: "/#/transaction/{query}" },
+      {
+        name: "Tronscan Nile",
+        baseUrl: "https://nile.tronscan.org",
+        addressPath: "/#/address/{query}",
+        txPath: "/#/transaction/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://nile.trongrid.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://nile.trongrid.io", provider: "public" }],
   },
 
   // --- TON Testnet ---
@@ -2342,8 +3656,18 @@ export const CHAINS: Chain[] = [
     family: "ton",
     isTestnet: true,
     explorers: [
-      { name: "TON Viewer Testnet", baseUrl: "https://testnet.tonviewer.com", addressPath: "/{query}", txPath: "/transaction/{query}" },
-      { name: "Tonscan Testnet", baseUrl: "https://testnet.tonscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "TON Viewer Testnet",
+        baseUrl: "https://testnet.tonviewer.com",
+        addressPath: "/{query}",
+        txPath: "/transaction/{query}",
+      },
+      {
+        name: "Tonscan Testnet",
+        baseUrl: "https://testnet.tonscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://testnet.toncenter.com/api/v2", provider: "public" },
@@ -2358,11 +3682,24 @@ export const CHAINS: Chain[] = [
     family: "starknet",
     isTestnet: true,
     explorers: [
-      { name: "Starkscan Sepolia", baseUrl: "https://sepolia.starkscan.co", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
-      { name: "Voyager Sepolia", baseUrl: "https://sepolia.voyager.online", addressPath: "/contract/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Starkscan Sepolia",
+        baseUrl: "https://sepolia.starkscan.co",
+        addressPath: "/contract/{query}",
+        txPath: "/tx/{query}",
+      },
+      {
+        name: "Voyager Sepolia",
+        baseUrl: "https://sepolia.voyager.online",
+        addressPath: "/contract/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://free-rpc.nethermind.io/sepolia-juno/", provider: "public" },
+      {
+        url: "https://free-rpc.nethermind.io/sepolia-juno/",
+        provider: "public",
+      },
     ],
   },
 
@@ -2374,7 +3711,12 @@ export const CHAINS: Chain[] = [
     family: "xrp",
     isTestnet: true,
     explorers: [
-      { name: "XRPScan Testnet", baseUrl: "https://testnet.xrpscan.com", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "XRPScan Testnet",
+        baseUrl: "https://testnet.xrpscan.com",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://s.altnet.rippletest.net:51234/", provider: "public" },
@@ -2389,7 +3731,12 @@ export const CHAINS: Chain[] = [
     family: "stellar",
     isTestnet: true,
     explorers: [
-      { name: "StellarExpert Testnet", baseUrl: "https://stellar.expert/explorer/testnet", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "StellarExpert Testnet",
+        baseUrl: "https://stellar.expert/explorer/testnet",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://horizon-testnet.stellar.org", provider: "public" },
@@ -2404,7 +3751,12 @@ export const CHAINS: Chain[] = [
     family: "hedera",
     isTestnet: true,
     explorers: [
-      { name: "HashScan Testnet", baseUrl: "https://hashscan.io", addressPath: "/testnet/account/{query}", txPath: "/testnet/transaction/{query}" },
+      {
+        name: "HashScan Testnet",
+        baseUrl: "https://hashscan.io",
+        addressPath: "/testnet/account/{query}",
+        txPath: "/testnet/transaction/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://testnet.mirrornode.hedera.com", provider: "public" },
@@ -2419,7 +3771,12 @@ export const CHAINS: Chain[] = [
     family: "algorand",
     isTestnet: true,
     explorers: [
-      { name: "Allo.info Testnet", baseUrl: "https://testnet.allo.info", addressPath: "/account/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Allo.info Testnet",
+        baseUrl: "https://testnet.allo.info",
+        addressPath: "/account/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
       { url: "https://testnet-idx.algonode.cloud", provider: "public" },
@@ -2434,11 +3791,14 @@ export const CHAINS: Chain[] = [
     family: "multiversx",
     isTestnet: true,
     explorers: [
-      { name: "MultiversX Devnet Explorer", baseUrl: "https://devnet-explorer.multiversx.com", addressPath: "/accounts/{query}", txPath: "/transactions/{query}" },
+      {
+        name: "MultiversX Devnet Explorer",
+        baseUrl: "https://devnet-explorer.multiversx.com",
+        addressPath: "/accounts/{query}",
+        txPath: "/transactions/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://devnet-api.multiversx.com", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://devnet-api.multiversx.com", provider: "public" }],
   },
 
   // --- Polkadot Testnet ---
@@ -2449,11 +3809,14 @@ export const CHAINS: Chain[] = [
     family: "polkadot",
     isTestnet: true,
     explorers: [
-      { name: "Subscan Westend", baseUrl: "https://westend.subscan.io", addressPath: "/account/{query}", txPath: "/extrinsic/{query}" },
+      {
+        name: "Subscan Westend",
+        baseUrl: "https://westend.subscan.io",
+        addressPath: "/account/{query}",
+        txPath: "/extrinsic/{query}",
+      },
     ],
-    rpcUrls: [
-      { url: "https://westend-rpc.polkadot.io", provider: "public" },
-    ],
+    rpcUrls: [{ url: "https://westend-rpc.polkadot.io", provider: "public" }],
   },
 
   // --- Filecoin Testnet ---
@@ -2464,10 +3827,18 @@ export const CHAINS: Chain[] = [
     family: "filecoin",
     isTestnet: true,
     explorers: [
-      { name: "Filfox Calibration", baseUrl: "https://calibration.filfox.info", addressPath: "/en/address/{query}", txPath: "/en/message/{query}" },
+      {
+        name: "Filfox Calibration",
+        baseUrl: "https://calibration.filfox.info",
+        addressPath: "/en/address/{query}",
+        txPath: "/en/message/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://api.calibration.node.glif.io/rpc/v1", provider: "public" },
+      {
+        url: "https://api.calibration.node.glif.io/rpc/v1",
+        provider: "public",
+      },
     ],
   },
 
@@ -2479,7 +3850,12 @@ export const CHAINS: Chain[] = [
     family: "litecoin",
     isTestnet: true,
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/litecoin/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/litecoin/testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2492,7 +3868,12 @@ export const CHAINS: Chain[] = [
     family: "dogecoin",
     isTestnet: true,
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dogecoin/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/dogecoin/testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2505,7 +3886,12 @@ export const CHAINS: Chain[] = [
     family: "bitcoincash",
     isTestnet: true,
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/bitcoin-cash/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/bitcoin-cash/testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2518,7 +3904,12 @@ export const CHAINS: Chain[] = [
     family: "zcash",
     isTestnet: true,
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/zcash/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/zcash/testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2531,7 +3922,12 @@ export const CHAINS: Chain[] = [
     family: "dash",
     isTestnet: true,
     explorers: [
-      { name: "BlockExplorer.one", baseUrl: "https://blockexplorer.one/dash/testnet", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BlockExplorer.one",
+        baseUrl: "https://blockexplorer.one/dash/testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2544,7 +3940,12 @@ export const CHAINS: Chain[] = [
     family: "lightning",
     isTestnet: true,
     explorers: [
-      { name: "mempool.space Testnet", baseUrl: "https://mempool.space/testnet/lightning", addressPath: "/node/{query}", txPath: "" },
+      {
+        name: "mempool.space Testnet",
+        baseUrl: "https://mempool.space/testnet/lightning",
+        addressPath: "/node/{query}",
+        txPath: "",
+      },
     ],
     rpcUrls: [],
   },
@@ -2557,7 +3958,12 @@ export const CHAINS: Chain[] = [
     family: "kaspa",
     isTestnet: true,
     explorers: [
-      { name: "Kaspa Explorer Testnet", baseUrl: "https://explorer-tn11.kaspa.org", addressPath: "/addresses/{query}", txPath: "/txs/{query}" },
+      {
+        name: "Kaspa Explorer Testnet",
+        baseUrl: "https://explorer-tn11.kaspa.org",
+        addressPath: "/addresses/{query}",
+        txPath: "/txs/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2570,7 +3976,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/osmosis-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/osmosis-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2581,7 +3993,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/celestia-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/celestia-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2592,7 +4010,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/dydx-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/dydx-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2603,7 +4027,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/injective-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/injective-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2614,7 +4044,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/axelar-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/axelar-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2625,7 +4061,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/kava-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/kava-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2636,7 +4078,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/persistence-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/persistence-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2647,7 +4095,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/archway-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/archway-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2658,7 +4112,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/noble-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/noble-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2669,7 +4129,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/neutron-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/neutron-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2680,7 +4146,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/coreum-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/coreum-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2691,7 +4163,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/mantra-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/mantra-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2702,7 +4180,13 @@ export const CHAINS: Chain[] = [
     family: "cosmos",
     isTestnet: true,
     explorers: [
-      { name: "Mintscan", baseUrl: "https://www.mintscan.io/babylon-testnet", addressPath: "/address/{query}", txPath: "/tx/{query}", validatorPath: "/validators/{query}" },
+      {
+        name: "Mintscan",
+        baseUrl: "https://www.mintscan.io/babylon-testnet",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        validatorPath: "/validators/{query}",
+      },
     ],
     rpcUrls: [],
   },
@@ -2715,10 +4199,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Blockscout Chiado", baseUrl: "https://gnosis-chiado.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Blockscout Chiado",
+        baseUrl: "https://gnosis-chiado.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://gnosis-chiado.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://gnosis-chiado.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2728,10 +4221,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Blastscan Sepolia", baseUrl: "https://sepolia.blastscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Blastscan Sepolia",
+        baseUrl: "https://sepolia.blastscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://blast-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://blast-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2741,10 +4243,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Worldscan Sepolia", baseUrl: "https://sepolia.worldscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Worldscan Sepolia",
+        baseUrl: "https://sepolia.worldscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://worldchain-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://worldchain-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2754,10 +4265,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Zora Sepolia Explorer", baseUrl: "https://sepolia.explorer.zora.energy", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Zora Sepolia Explorer",
+        baseUrl: "https://sepolia.explorer.zora.energy",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://zora-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://zora-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2767,10 +4287,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Uniscan Sepolia", baseUrl: "https://sepolia.uniscan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Uniscan Sepolia",
+        baseUrl: "https://sepolia.uniscan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://unichain-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://unichain-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2780,10 +4309,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Celoscan Sepolia", baseUrl: "https://sepolia.celoscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Celoscan Sepolia",
+        baseUrl: "https://sepolia.celoscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://celo-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://celo-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2793,10 +4331,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Apescan Curtis", baseUrl: "https://curtis.apescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Apescan Curtis",
+        baseUrl: "https://curtis.apescan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://apechain-curtis.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://apechain-curtis.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2806,10 +4353,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Polygon zkEVM Cardona Scan", baseUrl: "https://cardona-zkevm.polygonscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Polygon zkEVM Cardona Scan",
+        baseUrl: "https://cardona-zkevm.polygonscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://polygonzkevm-cardona.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://polygonzkevm-cardona.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2819,10 +4375,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "opBNBscan Testnet", baseUrl: "https://testnet.opbnbscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "opBNBscan Testnet",
+        baseUrl: "https://testnet.opbnbscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://opbnb-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://opbnb-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2832,10 +4397,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Sonicscan Testnet", baseUrl: "https://testnet.sonicscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Sonicscan Testnet",
+        baseUrl: "https://testnet.sonicscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://sonic-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://sonic-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2845,10 +4419,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Abscan Testnet", baseUrl: "https://testnet.abscan.org", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Abscan Testnet",
+        baseUrl: "https://testnet.abscan.org",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://abstract-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://abstract-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2858,10 +4441,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Soneium Minato Explorer", baseUrl: "https://soneium-minato.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Soneium Minato Explorer",
+        baseUrl: "https://soneium-minato.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://soneium-minato.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://soneium-minato.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2871,10 +4463,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Modescan Sepolia", baseUrl: "https://sepolia.modescan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Modescan Sepolia",
+        baseUrl: "https://sepolia.modescan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://mode-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://mode-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2884,10 +4485,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Bobascan Sepolia", baseUrl: "https://sepolia.bobascan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Bobascan Sepolia",
+        baseUrl: "https://sepolia.bobascan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://boba-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://boba-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2897,10 +4507,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "BOB Sepolia Explorer", baseUrl: "https://testnet-explorer.gobob.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "BOB Sepolia Explorer",
+        baseUrl: "https://testnet-explorer.gobob.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://bob-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://bob-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2910,10 +4529,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "ZetaChain Testnet Explorer", baseUrl: "https://athens.explorer.zetachain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "ZetaChain Testnet Explorer",
+        baseUrl: "https://athens.explorer.zetachain.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://zetachain-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://zetachain-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2923,10 +4551,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Fraxscan Sepolia", baseUrl: "https://sepolia.fraxscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Fraxscan Sepolia",
+        baseUrl: "https://sepolia.fraxscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://frax-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://frax-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2936,10 +4573,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Rootstock Testnet Explorer", baseUrl: "https://rootstock-testnet.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Rootstock Testnet Explorer",
+        baseUrl: "https://rootstock-testnet.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://rootstock-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://rootstock-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2949,10 +4595,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Flowscan EVM Testnet", baseUrl: "https://evm-testnet.flowscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Flowscan EVM Testnet",
+        baseUrl: "https://evm-testnet.flowscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://flow-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://flow-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2962,10 +4617,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Ink Sepolia Explorer", baseUrl: "https://explorer-sepolia.inkonchain.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Ink Sepolia Explorer",
+        baseUrl: "https://explorer-sepolia.inkonchain.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://ink-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://ink-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2975,10 +4639,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Shapescan Sepolia", baseUrl: "https://sepolia.shapescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Shapescan Sepolia",
+        baseUrl: "https://sepolia.shapescan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://shape-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://shape-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -2988,10 +4661,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Superseed Sepolia Explorer", baseUrl: "https://sepolia-explorer.superseed.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Superseed Sepolia Explorer",
+        baseUrl: "https://sepolia-explorer.superseed.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://superseed-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://superseed-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3001,10 +4683,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Polynomialscan Sepolia", baseUrl: "https://sepolia.polynomialscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Polynomialscan Sepolia",
+        baseUrl: "https://sepolia.polynomialscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://polynomial-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://polynomial-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3014,10 +4705,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Storyscan Aeneid", baseUrl: "https://aeneid.storyscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Storyscan Aeneid",
+        baseUrl: "https://aeneid.storyscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://story-aeneid.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://story-aeneid.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3027,10 +4727,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Lens Sepolia Explorer", baseUrl: "https://explorer.sepolia.lens.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Lens Sepolia Explorer",
+        baseUrl: "https://explorer.sepolia.lens.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://lens-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://lens-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3040,10 +4749,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Anime Sepolia Explorer", baseUrl: "https://sepolia.explorer.anime.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Anime Sepolia Explorer",
+        baseUrl: "https://sepolia.explorer.anime.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://anime-sepolia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://anime-sepolia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3053,10 +4771,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Citrea Testnet Explorer", baseUrl: "https://explorer.testnet.citrea.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Citrea Testnet Explorer",
+        baseUrl: "https://explorer.testnet.citrea.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://citrea-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://citrea-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3066,10 +4793,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Botanixscan Testnet", baseUrl: "https://testnet.botanixscan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Botanixscan Testnet",
+        baseUrl: "https://testnet.botanixscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://botanix-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://botanix-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3079,10 +4815,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "XFIscan Testnet", baseUrl: "https://testnet.xfiscan.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "XFIscan Testnet",
+        baseUrl: "https://testnet.xfiscan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://crossfi-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://crossfi-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3092,10 +4837,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Galactica Testnet Explorer", baseUrl: "https://testnet.explorer.galactica.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Galactica Testnet Explorer",
+        baseUrl: "https://testnet.explorer.galactica.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://galactica-cassiopeia.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://galactica-cassiopeia.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3105,10 +4859,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Humanity Testnet Explorer", baseUrl: "https://humanity-testnet.explorer.alchemy.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Humanity Testnet Explorer",
+        baseUrl: "https://humanity-testnet.explorer.alchemy.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://humanity-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://humanity-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3118,10 +4881,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Stablescan Testnet", baseUrl: "https://testnet.stablescan.xyz", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Stablescan Testnet",
+        baseUrl: "https://testnet.stablescan.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://stable-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://stable-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3131,10 +4903,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Settlus Testnet Explorer", baseUrl: "https://testnet.settlus.network", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Settlus Testnet Explorer",
+        baseUrl: "https://testnet.settlus.network",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://settlus-septestnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://settlus-septestnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3144,10 +4925,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "Plasma Testnet Scan", baseUrl: "https://testnet.plasmascan.io", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "Plasma Testnet Scan",
+        baseUrl: "https://testnet.plasmascan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://plasma-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://plasma-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3157,10 +4947,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "MegaETH Testnet Explorer", baseUrl: "https://testnet.megaeth.blockscout.com", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "MegaETH Testnet Explorer",
+        baseUrl: "https://testnet.megaeth.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://megaeth-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://megaeth-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
   {
@@ -3170,10 +4969,19 @@ export const CHAINS: Chain[] = [
     family: "evm",
     isTestnet: true,
     explorers: [
-      { name: "ADI Testnet Explorer", baseUrl: "https://explorer.testnet.adifoundation.ai", addressPath: "/address/{query}", txPath: "/tx/{query}" },
+      {
+        name: "ADI Testnet Explorer",
+        baseUrl: "https://explorer.testnet.adifoundation.ai",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
     ],
     rpcUrls: [
-      { url: "https://adi-testnet.g.alchemy.com/v2/{key}", provider: "alchemy", keyEnvVar: "ALCHEMY_API_KEY" },
+      {
+        url: "https://adi-testnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
     ],
   },
 ];

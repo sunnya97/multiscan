@@ -12,9 +12,13 @@ function inputTypes(results: DetectionResult[]): string[] {
   return [...new Set(results.map((r) => r.inputType))];
 }
 
-const EVM_CHAINS = CHAINS.filter((c) => c.family === "evm" && !c.isTestnet).map((c) => c.id);
+const EVM_CHAINS = CHAINS.filter((c) => c.family === "evm" && !c.isTestnet).map(
+  (c) => c.id,
+);
 
-const COSMOS_CHAIN_IDS = CHAINS.filter((c) => c.family === "cosmos" && c.bech32Prefix).map((c) => c.id);
+const COSMOS_CHAIN_IDS = CHAINS.filter(
+  (c) => c.family === "cosmos" && c.bech32Prefix,
+).map((c) => c.id);
 
 // --- EVM address (0x + 40 hex) ---
 
@@ -40,15 +44,21 @@ describe("EVM address detection", () => {
   });
 
   it("rejects wrong length (too short)", () => {
-    expect(detect("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA9604", CHAINS)).toHaveLength(0);
+    expect(
+      detect("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA9604", CHAINS),
+    ).toHaveLength(0);
   });
 
   it("rejects wrong length (too long)", () => {
-    expect(detect("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA960455", CHAINS)).toHaveLength(0);
+    expect(
+      detect("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA960455", CHAINS),
+    ).toHaveLength(0);
   });
 
   it("rejects invalid hex chars", () => {
-    expect(detect("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA9604G", CHAINS)).toHaveLength(0);
+    expect(
+      detect("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA9604G", CHAINS),
+    ).toHaveLength(0);
   });
 });
 
@@ -74,14 +84,20 @@ describe("0x + 64 hex detection", () => {
     const results = detect(hash, CHAINS);
     const sui = results.filter((r) => r.chain.id === "sui");
     expect(sui).toHaveLength(2);
-    expect(sui.map((r) => r.inputType).sort()).toEqual(["address", "transaction"]);
+    expect(sui.map((r) => r.inputType).sort()).toEqual([
+      "address",
+      "transaction",
+    ]);
   });
 
   it("includes Aptos as both address and transaction", () => {
     const results = detect(hash, CHAINS);
     const aptos = results.filter((r) => r.chain.id === "aptos");
     expect(aptos).toHaveLength(2);
-    expect(aptos.map((r) => r.inputType).sort()).toEqual(["address", "transaction"]);
+    expect(aptos.map((r) => r.inputType).sort()).toEqual([
+      "address",
+      "transaction",
+    ]);
   });
 });
 
@@ -107,14 +123,20 @@ describe("IBC denom detection", () => {
 
 describe("factory denom detection", () => {
   it("matches correct cosmos chain by bech32 prefix", () => {
-    const results = detect("factory/osmo1abc123def456ghi789jkl012mno345pqr678stu/utoken", CHAINS);
+    const results = detect(
+      "factory/osmo1abc123def456ghi789jkl012mno345pqr678stu/utoken",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("osmosis");
     expect(results[0].inputType).toBe("denom");
   });
 
   it("rejects unknown prefix", () => {
-    const results = detect("factory/unknown1abc123def456ghi789jkl012mno345pqr678stu/utoken", CHAINS);
+    const results = detect(
+      "factory/unknown1abc123def456ghi789jkl012mno345pqr678stu/utoken",
+      CHAINS,
+    );
     expect(results).toHaveLength(0);
   });
 });
@@ -149,14 +171,20 @@ describe("Cosmos bech32 address detection", () => {
   for (const [prefix, addr] of testCases) {
     it(`detects ${prefix} address`, () => {
       const results = detect(addr, CHAINS);
-      expect(results.length, `No match for ${prefix} address`).toBeGreaterThanOrEqual(1);
+      expect(
+        results.length,
+        `No match for ${prefix} address`,
+      ).toBeGreaterThanOrEqual(1);
       expect(results[0].inputType).toBe("address");
       expect(results[0].chain.bech32Prefix).toBe(prefix);
     });
   }
 
   it("rejects uppercase bech32 address", () => {
-    const results = detect("COSMOS1QYPQXPQ9QCRSSZG2PVXQ6RS0ZQG3YYC5LZV7XU", CHAINS);
+    const results = detect(
+      "COSMOS1QYPQXPQ9QCRSSZG2PVXQ6RS0ZQG3YYC5LZV7XU",
+      CHAINS,
+    );
     expect(results).toHaveLength(0);
   });
 });
@@ -165,34 +193,49 @@ describe("Cosmos bech32 address detection", () => {
 
 describe("Cosmos valoper address detection", () => {
   it("detects cosmosvaloper address", () => {
-    const results = detect("cosmosvaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4epsluffn", CHAINS);
+    const results = detect(
+      "cosmosvaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4epsluffn",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("cosmos");
     expect(results[0].inputType).toBe("validator");
   });
 
   it("detects osmovaloper address", () => {
-    const results = detect("osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4", CHAINS);
+    const results = detect(
+      "osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("osmosis");
     expect(results[0].inputType).toBe("validator");
   });
 
   it("generates Mintscan validator URL", () => {
-    const results = detect("osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4", CHAINS);
+    const results = detect(
+      "osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4",
+      CHAINS,
+    );
     expect(results[0].explorerUrls.length).toBeGreaterThan(0);
     expect(results[0].explorerUrls[0].url).toContain("/validators/");
   });
 
   it("detects celestiavaloper address", () => {
-    const results = detect("celestiavaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4eptv8mxz", CHAINS);
+    const results = detect(
+      "celestiavaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4eptv8mxz",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("celestia");
     expect(results[0].inputType).toBe("validator");
   });
 
   it("does not match regular address as validator", () => {
-    const results = detect("osmo1qypqxpq9qcrsszg2pvxq6rs0zqg3yyc50eacts", CHAINS);
+    const results = detect(
+      "osmo1qypqxpq9qcrsszg2pvxq6rs0zqg3yyc50eacts",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].inputType).toBe("address");
   });
@@ -215,13 +258,19 @@ describe("Bitcoin address detection", () => {
   });
 
   it("detects bech32 address starting with bc1", () => {
-    const results = detect("bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq", CHAINS);
+    const results = detect(
+      "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("bitcoin");
   });
 
   it("detects taproot address starting with bc1p", () => {
-    const results = detect("bc1pmfr3p9j00pfxjh0zmgp99y8zftmd3s5pmedqhyptwy6lm87hf5sspknck9", CHAINS);
+    const results = detect(
+      "bc1pmfr3p9j00pfxjh0zmgp99y8zftmd3s5pmedqhyptwy6lm87hf5sspknck9",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("bitcoin");
   });
@@ -267,7 +316,10 @@ describe("Litecoin address detection", () => {
   });
 
   it("detects ltc1 bech32 address", () => {
-    const results = detect("ltc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfhmdq", CHAINS);
+    const results = detect(
+      "ltc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfhmdq",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("litecoin");
   });
@@ -468,13 +520,19 @@ describe("Filecoin detection", () => {
   });
 
   it("detects f3 address (BLS)", () => {
-    const results = detect("f3vfs6f7tagrcpnwv65wq3leznbajqyg77bmijrpvoyjv3zjyi3urq25vigfbs3ob6ug5xdihajumtgsxnz2pa", CHAINS);
+    const results = detect(
+      "f3vfs6f7tagrcpnwv65wq3leznbajqyg77bmijrpvoyjv3zjyi3urq25vigfbs3ob6ug5xdihajumtgsxnz2pa",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("filecoin");
   });
 
   it("detects bafy CID as transaction", () => {
-    const results = detect("bafy2bzacedfto5wl5xbafi3yiop6xfbji4wnr2qhp64zra73wku7qdmcuwsta", CHAINS);
+    const results = detect(
+      "bafy2bzacedfto5wl5xbafi3yiop6xfbji4wnr2qhp64zra73wku7qdmcuwsta",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("filecoin");
     expect(results[0].inputType).toBe("transaction");
@@ -500,7 +558,9 @@ describe("Hedera detection", () => {
   it("generates explorer URLs", () => {
     const results = detect("0.0.1234567", CHAINS);
     expect(results[0].explorerUrls[0].name).toBe("HashScan");
-    expect(results[0].explorerUrls[0].url).toContain("/mainnet/account/0.0.1234567");
+    expect(results[0].explorerUrls[0].url).toContain(
+      "/mainnet/account/0.0.1234567",
+    );
   });
 });
 
@@ -508,7 +568,10 @@ describe("Hedera detection", () => {
 
 describe("Kaspa detection", () => {
   it("detects kaspa: prefixed address", () => {
-    const results = detect("kaspa:qr6m0t8gkfhsn0l5ynfadtvuetg3fle940dalpsqqaqeqqq4lujwsg3wrr50", CHAINS);
+    const results = detect(
+      "kaspa:qr6m0t8gkfhsn0l5ynfadtvuetg3fle940dalpsqqaqeqqq4lujwsg3wrr50",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("kaspa");
     expect(results[0].inputType).toBe("address");
@@ -585,13 +648,18 @@ describe("Starknet detection", () => {
     const results = detect(hash, CHAINS);
     const starknet = results.filter((r) => r.chain.id === "starknet");
     expect(starknet).toHaveLength(2);
-    expect(starknet.map((r) => r.inputType).sort()).toEqual(["address", "transaction"]);
+    expect(starknet.map((r) => r.inputType).sort()).toEqual([
+      "address",
+      "transaction",
+    ]);
   });
 
   it("generates explorer URLs", () => {
     const hash = "0x" + "a".repeat(64);
     const results = detect(hash, CHAINS);
-    const starknetAddr = results.find((r) => r.chain.id === "starknet" && r.inputType === "address")!;
+    const starknetAddr = results.find(
+      (r) => r.chain.id === "starknet" && r.inputType === "address",
+    )!;
     expect(starknetAddr.explorerUrls.length).toBe(2);
     expect(starknetAddr.explorerUrls[0].name).toBe("Starkscan");
     expect(starknetAddr.explorerUrls[0].url).toContain("/contract/");
@@ -614,14 +682,20 @@ describe("Tron address detection", () => {
 
 describe("TON address detection", () => {
   it("detects EQ + 46 chars with hyphens/underscores", () => {
-    const results = detect("EQBvW8Z5huBkMJYdnfAEM5JqTNkuWX3diqYENkWsIL0XggGG", CHAINS);
+    const results = detect(
+      "EQBvW8Z5huBkMJYdnfAEM5JqTNkuWX3diqYENkWsIL0XggGG",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("ton");
     expect(results[0].inputType).toBe("address");
   });
 
   it("detects UQ prefix", () => {
-    const results = detect("UQBvW8Z5huBkMJYdnfAEM5JqTNkuWX3diqYENkWsIL0XggGG", CHAINS);
+    const results = detect(
+      "UQBvW8Z5huBkMJYdnfAEM5JqTNkuWX3diqYENkWsIL0XggGG",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("ton");
   });
@@ -710,7 +784,9 @@ describe("bare 64 hex detection", () => {
   it("includes Bitcoin tx", () => {
     const results = detect(hex64, CHAINS);
     expect(chainIds(results)).toContain("bitcoin");
-    expect(results.find((r) => r.chain.id === "bitcoin")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "bitcoin")!.inputType).toBe(
+      "transaction",
+    );
   });
 
   it("includes all Cosmos chains as tx", () => {
@@ -722,36 +798,64 @@ describe("bare 64 hex detection", () => {
 
   it("includes UTXO chains as tx", () => {
     const results = detect(hex64, CHAINS);
-    expect(results.find((r) => r.chain.id === "dogecoin")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "litecoin")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "bitcoin-cash")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "zcash")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "dogecoin")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "litecoin")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "bitcoin-cash")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "zcash")!.inputType).toBe(
+      "transaction",
+    );
   });
 
   it("includes Tron tx, TON tx, Polkadot tx", () => {
     const results = detect(hex64, CHAINS);
-    expect(results.find((r) => r.chain.id === "tron")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "ton")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "polkadot")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "tron")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "ton")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "polkadot")!.inputType).toBe(
+      "transaction",
+    );
   });
 
   it("includes NEAR as address (implicit account)", () => {
     const results = detect(hex64, CHAINS);
-    expect(results.find((r) => r.chain.id === "near")!.inputType).toBe("address");
+    expect(results.find((r) => r.chain.id === "near")!.inputType).toBe(
+      "address",
+    );
   });
 
   it("includes Monero, XRP, Stellar, Cardano as tx", () => {
     const results = detect(hex64, CHAINS);
-    expect(results.find((r) => r.chain.id === "monero")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "xrp")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "stellar")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "cardano")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "monero")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "xrp")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "stellar")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "cardano")!.inputType).toBe(
+      "transaction",
+    );
   });
 
   it("includes MultiversX and Kaspa as tx", () => {
     const results = detect(hex64, CHAINS);
-    expect(results.find((r) => r.chain.id === "multiversx")!.inputType).toBe("transaction");
-    expect(results.find((r) => r.chain.id === "kaspa")!.inputType).toBe("transaction");
+    expect(results.find((r) => r.chain.id === "multiversx")!.inputType).toBe(
+      "transaction",
+    );
+    expect(results.find((r) => r.chain.id === "kaspa")!.inputType).toBe(
+      "transaction",
+    );
   });
 });
 
@@ -842,7 +946,9 @@ describe("edge cases", () => {
 
   it("rejects non-base58 in Bitcoin addresses (0, O, I, l)", () => {
     // 'O' is not in base58
-    expect(detect("1O1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", CHAINS)).toHaveLength(0);
+    expect(detect("1O1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", CHAINS)).toHaveLength(
+      0,
+    );
   });
 
   it("rejects random text", () => {
@@ -854,7 +960,10 @@ describe("edge cases", () => {
 
 describe("Litecoin testnet detection", () => {
   it("detects tltc1 bech32 address", () => {
-    const results = detect("tltc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfhmdq", CHAINS);
+    const results = detect(
+      "tltc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfhmdq",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("litecoin-testnet");
     expect(results[0].inputType).toBe("address");
@@ -886,7 +995,10 @@ describe("Filecoin Calibration testnet detection", () => {
 
 describe("Kaspa testnet detection", () => {
   it("detects kaspatest: prefixed address", () => {
-    const results = detect("kaspatest:qr6m0t8gkfhsn0l5ynfadtvuetg3fle940dalpsqqaqeqqq4lujwsg3wrr50", CHAINS);
+    const results = detect(
+      "kaspatest:qr6m0t8gkfhsn0l5ynfadtvuetg3fle940dalpsqqaqeqqq4lujwsg3wrr50",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("kaspa-testnet");
     expect(results[0].inputType).toBe("address");
@@ -895,7 +1007,10 @@ describe("Kaspa testnet detection", () => {
 
 describe("Bitcoin testnet detection", () => {
   it("detects tb1 bech32 address", () => {
-    const results = detect("tb1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq", CHAINS);
+    const results = detect(
+      "tb1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("bitcoin-testnet");
     expect(results[0].inputType).toBe("address");
@@ -939,7 +1054,10 @@ describe("Bitcoin Cash testnet detection", () => {
 
 describe("THORChain address detection", () => {
   it("detects thor bech32 address", () => {
-    const results = detect("thor13r58hsww07rassmm98kual9x4k4gp53fxzcus5", CHAINS);
+    const results = detect(
+      "thor13r58hsww07rassmm98kual9x4k4gp53fxzcus5",
+      CHAINS,
+    );
     expect(results).toHaveLength(1);
     expect(results[0].chain.id).toBe("thorchain");
     expect(results[0].inputType).toBe("address");
@@ -1179,16 +1297,23 @@ describe("Nockchain detection", () => {
     expect(results).toHaveLength(2);
     const nock = results.filter((r) => r.chain.id === "nockchain");
     expect(nock).toHaveLength(2);
-    expect(nock.map((r) => r.inputType).sort()).toEqual(["address", "transaction"]);
+    expect(nock.map((r) => r.inputType).sort()).toEqual([
+      "address",
+      "transaction",
+    ]);
   });
 
   it("generates NockBlocks explorer URLs", () => {
     const addr = "51qFuv98Rg3Jg4Ka92KGdXEh16ocuzTmDZFH9wyCTeVHwaBwGSNHjWW";
     const results = detect(addr, CHAINS);
-    const nockAddr = results.find((r) => r.chain.id === "nockchain" && r.inputType === "address")!;
+    const nockAddr = results.find(
+      (r) => r.chain.id === "nockchain" && r.inputType === "address",
+    )!;
     expect(nockAddr.explorerUrls[0].name).toBe("NockBlocks");
     expect(nockAddr.explorerUrls[0].url).toContain("/address/");
-    const nockTx = results.find((r) => r.chain.id === "nockchain" && r.inputType === "transaction")!;
+    const nockTx = results.find(
+      (r) => r.chain.id === "nockchain" && r.inputType === "transaction",
+    )!;
     expect(nockTx.explorerUrls[0].url).toContain("/tx/");
   });
 

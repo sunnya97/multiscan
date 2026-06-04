@@ -1,0 +1,16 @@
+# Dependencies & build output
+node_modules/
+**/dist/
+.wrangler/
+.raycast/
+
+# Lockfiles (managed by npm)
+package-lock.json
+**/package-lock.json
+
+# Generated
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Local tooling / settings
+.claude/

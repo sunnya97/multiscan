@@ -4,7 +4,10 @@
   "description": "Multiscan — paste any crypto address or transaction hash, auto-detect the chain, and open the block explorer",
   "icon": "command-icon.png",
   "author": "sunnya97",
-  "categories": ["Finance", "Web"],
+  "categories": [
+    "Finance",
+    "Web"
+  ],
   "license": "MIT",
   "commands": [
     {
