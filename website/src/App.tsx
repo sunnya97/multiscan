@@ -231,6 +231,10 @@ export default function App() {
           isLoading={isLoading}
           selectedIndex={selectedIndex}
           onSuggest={() => setShowSuggestModal(true)}
+          onCopyAddress={(addr) => {
+            navigator.clipboard.writeText(addr);
+            showToast("Copied address");
+          }}
         />
         {displayResults.length > 0 && (
           <div className="keyboard-hints">

@@ -138,6 +138,7 @@ interface ResultsListProps {
   isLoading: boolean;
   selectedIndex: number;
   onSuggest?: () => void;
+  onCopyAddress?: (address: string) => void;
 }
 
 function truncateAddress(addr: string): string {
@@ -156,6 +157,7 @@ export default function ResultsList({
   isLoading,
   selectedIndex,
   onSuggest,
+  onCopyAddress,
 }: ResultsListProps) {
   const inputType = results[0]?.inputType;
   const isAddress = inputType === "address";
@@ -267,9 +269,21 @@ export default function ResultsList({
         <div className="resolution-banner">
           <span className="resolution-banner__name">{resolvedName}</span>
           <span className="resolution-banner__arrow">&rarr;</span>
-          <span className="resolution-banner__address">
-            {truncateAddress(resolvedAddress)}
-          </span>
+          <button
+            type="button"
+            className="resolution-banner__address"
+            onClick={() => onCopyAddress?.(resolvedAddress)}
+            title="Copy address"
+            aria-label={`Copy address ${resolvedAddress}`}
+          >
+            <span className="resolution-banner__address-text">
+              {truncateAddress(resolvedAddress)}
+            </span>
+            <svg className="resolution-banner__copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+          </button>
         </div>
       )}
 
