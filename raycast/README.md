@@ -17,6 +17,17 @@ Paste any crypto address or transaction hash to instantly detect the chain and o
 2. Paste an address, transaction hash, or name (e.g. `vitalik.eth`)
 3. Press Enter to open the result in a block explorer
 
+## Privacy
+
+The address, transaction hash, or name you enter is sent to the Multiscan lookup
+service ([multiscan.dev](https://multiscan.dev), or your own Worker URL in
+preferences) to detect the chain, resolve names, and verify on-chain activity.
+Nothing is sent until you type or paste a query.
+
+Clipboard auto-fill is **off by default**. If you enable it in preferences, the
+extension reads your clipboard on launch and, when it looks like an address,
+looks it up automatically — so only turn it on if you're comfortable with that.
+
 ## Powered by
 
 [multiscan.dev](https://multiscan.dev) — the open-source multi-chain lookup engine.

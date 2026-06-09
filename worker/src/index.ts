@@ -1,4 +1,4 @@
-import { CHAINS, Env } from "./chains";
+import { CHAINS, Env, RateLimiter } from "./chains";
 import { detect } from "./detect";
 import { resolveNameService } from "./resolve";
 import { checkExistingSuggestion, createSuggestion } from "./suggest";
@@ -24,6 +24,44 @@ function jsonResponse(data: unknown, status = 200): Response {
   });
 }
 
+// Anti-DoS guard: longest legitimate input (a Cardano Byron address) is ~110
+// chars. 512 leaves generous headroom for future long formats while rejecting
+// oversized payloads. Per-format length is already enforced by detection regexes.
+const MAX_INPUT_LENGTH = 512;
+const MAX_NETWORK_NAME_LENGTH = 100;
+const MAX_DESCRIPTION_LENGTH = 1000;
+
+/** Per-client key for rate limiting, derived from Cloudflare's connecting IP. */
+function clientKey(request: Request): string {
+  return request.headers.get("CF-Connecting-IP") ?? "unknown";
+}
+
+/**
+ * Returns true if the request should be blocked. Fails open when the binding is
+ * absent (local dev / tests) or the limiter errors, so availability is never
+ * worse than today.
+ */
+async function isRateLimited(
+  limiter: RateLimiter | undefined,
+  key: string,
+): Promise<boolean> {
+  if (!limiter) return false;
+  try {
+    const { success } = await limiter.limit({ key });
+    return !success;
+  } catch {
+    return false;
+  }
+}
+
+/** Collapse to a single line and cap length — used for the GitHub issue title. */
+function sanitizeNetworkName(raw: string): string {
+  return raw
+    .replace(/[\r\n\t]+/g, " ")
+    .trim()
+    .slice(0, MAX_NETWORK_NAME_LENGTH);
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     // Handle CORS preflight
@@ -35,9 +73,12 @@ export default {
 
     // POST /api/suggest/check — check for existing network suggestions
     if (url.pathname === "/api/suggest/check" && request.method === "POST") {
+      if (await isRateLimited(env.SUGGEST_RATE_LIMITER, clientKey(request))) {
+        return jsonResponse({ error: "Too many requests" }, 429);
+      }
       try {
         const body = (await request.json()) as { networkName?: string };
-        const networkName = (body.networkName ?? "").trim();
+        const networkName = sanitizeNetworkName(body.networkName ?? "");
         if (!networkName) {
           return jsonResponse({ error: "Missing networkName" }, 400);
         }
@@ -50,18 +91,24 @@ export default {
 
     // POST /api/suggest/create — create a new suggestion or upvote existing
     if (url.pathname === "/api/suggest/create" && request.method === "POST") {
+      if (await isRateLimited(env.SUGGEST_RATE_LIMITER, clientKey(request))) {
+        return jsonResponse({ error: "Too many requests" }, 429);
+      }
       try {
         const body = (await request.json()) as {
           networkName?: string;
           description?: string;
         };
-        const networkName = (body.networkName ?? "").trim();
+        const networkName = sanitizeNetworkName(body.networkName ?? "");
         if (!networkName) {
           return jsonResponse({ error: "Missing networkName" }, 400);
         }
+        const description = (body.description ?? "")
+          .trim()
+          .slice(0, MAX_DESCRIPTION_LENGTH);
         const result = await createSuggestion(
           networkName,
-          body.description,
+          description || undefined,
           env,
         );
         return jsonResponse(result);
@@ -73,6 +120,10 @@ export default {
     // Only accept POST /api/lookup
     if (url.pathname !== "/api/lookup" || request.method !== "POST") {
       return jsonResponse({ error: "POST /api/lookup expected" }, 404);
+    }
+
+    if (await isRateLimited(env.LOOKUP_RATE_LIMITER, clientKey(request))) {
+      return jsonResponse({ error: "Too many requests" }, 429);
     }
 
     let input: string;
@@ -90,6 +141,10 @@ export default {
 
     if (!input) {
       return jsonResponse({ error: "Missing input" }, 400);
+    }
+
+    if (input.length > MAX_INPUT_LENGTH) {
+      return jsonResponse({ error: "Input too long" }, 400);
     }
 
     // Try name resolution first (e.g. vitalik.eth → 0x...)

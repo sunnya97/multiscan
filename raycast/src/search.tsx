@@ -106,10 +106,24 @@ export default function SearchCommand(props: LaunchProps) {
   const [nameNotFound, setNameNotFound] = useState(false);
   const [coinGeckoUrl, setCoinGeckoUrl] = useState<string | null>(null);
 
-  const { data: clipboardText } = usePromise(async () => {
-    const clip = await Clipboard.readText();
-    return clip?.trim() ?? "";
-  });
+  const prefs = getPreferenceValues<{
+    workerUrl: string;
+    autoFillFromClipboard?: boolean;
+  }>();
+  const workerUrl = prefs.workerUrl;
+
+  // Clipboard auto-fill is opt-in: it reads the clipboard and triggers a lookup
+  // (which sends the contents to the worker) without explicit user action, so it
+  // is off by default to avoid sending unrelated copied data — e.g. a private key
+  // or token — off-device. Only read the clipboard when the user enables it.
+  const { data: clipboardText } = usePromise(
+    async () => {
+      const clip = await Clipboard.readText();
+      return clip?.trim() ?? "";
+    },
+    [],
+    { execute: prefs.autoFillFromClipboard === true },
+  );
 
   // Auto-fill from clipboard on launch (skip if launched via fallback)
   useEffect(() => {
@@ -124,9 +138,6 @@ export default function SearchCommand(props: LaunchProps) {
       }
     }
   }, [clipboardText]);
-
-  const prefs = getPreferenceValues<{ workerUrl: string }>();
-  const workerUrl = prefs.workerUrl;
 
   const explorerOverrides = useMemo(() => getExplorerOverrides(), []);
 
