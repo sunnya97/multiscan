@@ -68,18 +68,27 @@ export interface Chain {
   isTestnet?: boolean;
 }
 
+/** Cloudflare Workers rate-limiting binding (configured in wrangler.toml). */
+export interface RateLimiter {
+  limit(options: { key: string }): Promise<{ success: boolean }>;
+}
+
 export interface Env {
   ETHERSCAN_API_KEY?: string;
   ALCHEMY_API_KEY?: string;
   HELIUS_API_KEY?: string;
   NOCKBLOCKS_API_KEY?: string;
+  GITHUB_TOKEN?: string;
+  // Rate-limiting bindings. Optional so local dev / tests run without them.
+  LOOKUP_RATE_LIMITER?: RateLimiter;
+  SUGGEST_RATE_LIMITER?: RateLimiter;
 }
 
 /** Replace {key} placeholder with the actual secret value. Returns null if key is required but missing. */
 export function resolveRpcUrl(endpoint: RpcEndpoint, env: Env): string | null {
   if (!endpoint.keyEnvVar) return endpoint.url;
   const key = env[endpoint.keyEnvVar as keyof Env];
-  if (!key) return null;
+  if (typeof key !== "string" || !key) return null;
   return endpoint.url.replace("{key}", key);
 }
 

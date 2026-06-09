@@ -28,6 +28,15 @@
       "required": true
     },
     {
+      "name": "autoFillFromClipboard",
+      "title": "Clipboard",
+      "label": "Auto-fill search from clipboard on open",
+      "description": "When enabled, the clipboard contents are read on launch and, if they look like an address, sent to the lookup service automatically. Off by default so unrelated copied text is never sent without your action.",
+      "type": "checkbox",
+      "default": false,
+      "required": false
+    },
+    {
       "name": "explorerEthereum",
       "title": "Ethereum Explorer",
       "description": "Base URL for Ethereum block explorer",
