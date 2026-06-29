@@ -62,6 +62,29 @@ function sanitizeNetworkName(raw: string): string {
     .slice(0, MAX_NETWORK_NAME_LENGTH);
 }
 
+/** Verify a Cloudflare Turnstile token via siteverify. Returns false on any error. */
+async function verifyTurnstile(
+  token: string,
+  secret: string,
+  ip: string,
+): Promise<boolean> {
+  try {
+    const body = new URLSearchParams({
+      secret,
+      response: token,
+      remoteip: ip,
+    });
+    const resp = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      { method: "POST", body },
+    );
+    const data = (await resp.json()) as { success?: boolean };
+    return data.success === true;
+  } catch {
+    return false;
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     // Handle CORS preflight
@@ -98,7 +121,27 @@ export default {
         const body = (await request.json()) as {
           networkName?: string;
           description?: string;
+          turnstileToken?: string;
         };
+        // Bot protection: enforced only when a Turnstile secret is configured,
+        // so local dev (no secret) keeps working.
+        if (env.TURNSTILE_SECRET) {
+          const token =
+            typeof body.turnstileToken === "string" ? body.turnstileToken : "";
+          const ok =
+            token.length > 0 &&
+            (await verifyTurnstile(
+              token,
+              env.TURNSTILE_SECRET,
+              clientKey(request),
+            ));
+          if (!ok) {
+            return jsonResponse(
+              { error: "Challenge verification failed" },
+              403,
+            );
+          }
+        }
         const networkName = sanitizeNetworkName(body.networkName ?? "");
         if (!networkName) {
           return jsonResponse({ error: "Missing networkName" }, 400);

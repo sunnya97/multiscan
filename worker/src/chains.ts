@@ -79,6 +79,9 @@ export interface Env {
   HELIUS_API_KEY?: string;
   NOCKBLOCKS_API_KEY?: string;
   GITHUB_TOKEN?: string;
+  // Cloudflare Turnstile secret. When set, /api/suggest/create requires a valid
+  // challenge token; when absent (local dev), the check is skipped.
+  TURNSTILE_SECRET?: string;
   // Rate-limiting bindings. Optional so local dev / tests run without them.
   LOOKUP_RATE_LIMITER?: RateLimiter;
   SUGGEST_RATE_LIMITER?: RateLimiter;

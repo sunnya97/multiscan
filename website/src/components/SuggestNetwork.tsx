@@ -1,4 +1,29 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+// Public Turnstile site key (safe to embed). The matching secret is set as the
+// worker's TURNSTILE_SECRET; verification is only enforced when that is present.
+const TURNSTILE_SITE_KEY = "0x4AAAAAADs-QWgnebCfpxy0";
+const TURNSTILE_SCRIPT_SRC =
+  "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+interface TurnstileApi {
+  render(
+    el: HTMLElement,
+    opts: {
+      sitekey: string;
+      callback: (token: string) => void;
+      "error-callback"?: () => void;
+      "expired-callback"?: () => void;
+    },
+  ): string;
+  remove(widgetId: string): void;
+}
+
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
 
 interface SuggestNetworkProps {
   onClose: () => void;
@@ -17,6 +42,49 @@ export default function SuggestNetwork({ onClose }: SuggestNetworkProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<SuggestResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState(false);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+
+  // Render the Turnstile widget. Loads the script once, then renders explicitly.
+  useEffect(() => {
+    let widgetId: string | undefined;
+
+    const renderWidget = () => {
+      if (!turnstileRef.current || !window.turnstile || widgetId) return;
+      widgetId = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token) => {
+          setTurnstileToken(token);
+          setTurnstileError(false);
+        },
+        "error-callback": () => setTurnstileError(true),
+        "expired-callback": () => setTurnstileToken(null),
+      });
+    };
+
+    if (window.turnstile) {
+      renderWidget();
+      return;
+    }
+
+    let script = document.querySelector<HTMLScriptElement>(
+      'script[src^="https://challenges.cloudflare.com/turnstile"]',
+    );
+    if (!script) {
+      script = document.createElement("script");
+      script.src = TURNSTILE_SCRIPT_SRC;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", renderWidget);
+
+    return () => {
+      script?.removeEventListener("load", renderWidget);
+      if (widgetId && window.turnstile) window.turnstile.remove(widgetId);
+    };
+  }, []);
 
   const handleSubmit = async () => {
     const trimmed = networkName.trim();
@@ -32,6 +100,7 @@ export default function SuggestNetwork({ onClose }: SuggestNetworkProps) {
         body: JSON.stringify({
           networkName: trimmed,
           description: description.trim() || undefined,
+          turnstileToken: turnstileToken ?? undefined,
         }),
       });
 
@@ -80,6 +149,7 @@ export default function SuggestNetwork({ onClose }: SuggestNetworkProps) {
               rows={3}
             />
             {error && <p className="suggest-modal__error">{error}</p>}
+            <div className="suggest-modal__turnstile" ref={turnstileRef} />
             <div className="suggest-modal__actions">
               <button
                 className="suggest-modal__btn suggest-modal__btn--secondary"
@@ -90,7 +160,11 @@ export default function SuggestNetwork({ onClose }: SuggestNetworkProps) {
               <button
                 className="suggest-modal__btn suggest-modal__btn--primary"
                 onClick={handleSubmit}
-                disabled={!networkName.trim() || isSubmitting}
+                disabled={
+                  !networkName.trim() ||
+                  isSubmitting ||
+                  (!turnstileToken && !turnstileError)
+                }
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
