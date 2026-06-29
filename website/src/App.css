@@ -1018,6 +1018,11 @@ body {
   border-color: var(--accent);
 }
 
+.suggest-modal__turnstile {
+  margin-bottom: 14px;
+  min-height: 65px;
+}
+
 .suggest-modal__actions {
   display: flex;
   gap: 8px;

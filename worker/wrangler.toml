@@ -30,3 +30,4 @@ simple = { limit = 5, period = 60 }
 # HELIUS_API_KEY
 # NOCKBLOCKS_API_KEY
 # GITHUB_TOKEN  (fine-grained: Issues read/write on sunnya97/multiscan only)
+# TURNSTILE_SECRET  (Cloudflare Turnstile secret; gates /api/suggest/create)
