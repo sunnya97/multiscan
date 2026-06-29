@@ -131,7 +131,7 @@ export default function SearchCommand(props: LaunchProps) {
       const clip = clipboardText.trim();
       // Accept long addresses/hashes OR short name-service inputs
       if (
-        (clip.length >= 20 && /^[a-zA-Z0-9._:\-]+$/.test(clip)) ||
+        (clip.length >= 20 && /^[a-zA-Z0-9._:-]+$/.test(clip)) ||
         isNameInput(clip)
       ) {
         setSearchText(clip);
@@ -367,7 +367,6 @@ function ResultItem({
   coinGeckoUrl?: string | null;
 }) {
   const {
-    chainId,
     chainName,
     symbol,
     inputType,
