@@ -563,6 +563,16 @@ async function detectEvmTokenAlchemy(
   alchemyUrl: string,
   address: string,
 ): Promise<boolean> {
+  // An address with no bytecode is an EOA (wallet) and can never be a token.
+  // Guard against alchemy_getTokenMetadata returning default (non-null) decimals
+  // for EOAs on some chains (e.g. Gnosis, Blast, Zora, World Chain, Unichain),
+  // which produced false "token" tags for plain wallet addresses.
+  const code = (await evmRpcCall(alchemyUrl, "eth_getCode", [
+    address,
+    "latest",
+  ])) as string | null;
+  if (!code || code === "0x") return false;
+
   const result = (await evmRpcCall(alchemyUrl, "alchemy_getTokenMetadata", [
     address,
   ])) as {
