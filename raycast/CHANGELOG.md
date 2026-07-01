@@ -1,6 +1,6 @@
 # Multiscan Changelog
 
-## [Initial Version] - 2026-03-09
+## [Initial Version] - {PR_MERGE_DATE}
 
 - Paste any crypto address or transaction hash to auto-detect the chain
 - Support for 70+ chains including Bitcoin, Ethereum, Solana, Cosmos ecosystem, and more
