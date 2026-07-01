@@ -25,7 +25,7 @@
       "description": "URL of the crypto-lookup Cloudflare Worker",
       "type": "textfield",
       "default": "https://multiscan.dev/api",
-      "required": true
+      "required": false
     },
     {
       "name": "autoFillFromClipboard",
