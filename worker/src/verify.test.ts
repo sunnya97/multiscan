@@ -1163,6 +1163,11 @@ describe("detectTokens", () => {
     const addr = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // USDC
     routeFetch([
       {
+        // Token contract has bytecode
+        match: (url, body) => !!body?.includes("eth_getCode"),
+        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: "0x60806040" }),
+      },
+      {
         match: (url, body) => !!body?.includes("alchemy_getTokenMetadata"),
         response: jsonResponse({
           jsonrpc: "2.0",
@@ -1186,6 +1191,40 @@ describe("detectTokens", () => {
       ALCHEMY_API_KEY: "key",
     });
     expect(tokenChains.has("ethereum")).toBe(true);
+  });
+
+  it("does not flag an EOA as a token even if Alchemy returns default decimals", async () => {
+    // vitalik.eth resolves to an EOA (no contract code on any chain). Some chains'
+    // alchemy_getTokenMetadata returns a non-null decimals for it — the eth_getCode
+    // guard must prevent the false "token" tag.
+    const addr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+    routeFetch([
+      {
+        // EOA: no bytecode
+        match: (url, body) => !!body?.includes("eth_getCode"),
+        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: "0x" }),
+      },
+      {
+        // Buggy chains still return default decimals for the EOA
+        match: (url, body) => !!body?.includes("alchemy_getTokenMetadata"),
+        response: jsonResponse({
+          jsonrpc: "2.0",
+          id: 1,
+          result: { decimals: 18 },
+        }),
+      },
+      {
+        // Non-Alchemy fallback: decimals() on an EOA returns empty
+        match: (url, body) => !!body?.includes("eth_call"),
+        response: jsonResponse({ jsonrpc: "2.0", id: 1, result: "0x" }),
+      },
+    ]);
+
+    const detections = detect(addr, CHAINS);
+    const tokenChains = await detectTokens(addr, detections, {
+      ALCHEMY_API_KEY: "key",
+    });
+    expect(tokenChains.size).toBe(0);
   });
 
   it("detects EVM token via fallback (eth_call decimals) when no Alchemy", async () => {
