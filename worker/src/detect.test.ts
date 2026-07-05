@@ -528,14 +528,15 @@ describe("Filecoin detection", () => {
     expect(results[0].chain.id).toBe("filecoin");
   });
 
-  it("detects bafy CID as transaction", () => {
+  it("detects bafy CID as both IPFS content and a Filecoin transaction", () => {
     const results = detect(
       "bafy2bzacedfto5wl5xbafi3yiop6xfbji4wnr2qhp64zra73wku7qdmcuwsta",
       CHAINS,
     );
-    expect(results).toHaveLength(1);
-    expect(results[0].chain.id).toBe("filecoin");
-    expect(results[0].inputType).toBe("transaction");
+    // A dag-cbor CIDv1 is a valid Filecoin message CID *and* IPFS content.
+    expect(chainIds(results)).toEqual(["ipfs", "filecoin"]);
+    const filecoin = results.find((r) => r.chain.id === "filecoin")!;
+    expect(filecoin.inputType).toBe("transaction");
   });
 
   it("generates explorer URLs", () => {
@@ -1330,5 +1331,77 @@ describe("Nockchain detection", () => {
     expect(addr.length).toBe(48);
     const results = detect(addr, CHAINS);
     expect(results[0].chain.id).toBe("bittensor");
+  });
+});
+
+// --- IPFS / IPNS content addressing ---
+
+describe("IPFS / IPNS detection", () => {
+  const CIDV0 = "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG";
+  const CIDV1 = "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
+  const IPNS_KEY =
+    "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8";
+
+  it("detects a CIDv0 (Qm…) as IPFS", () => {
+    const results = detect(CIDV0, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("ipfs");
+    expect(results[0].inputType).toBe("cid");
+    expect(results[0].explorerUrls[0].url).toBe(
+      `https://ipfs.io/ipfs/${CIDV0}`,
+    );
+  });
+
+  it("detects a CIDv1 (bafy…) as IPFS", () => {
+    const results = detect(CIDV1, CHAINS);
+    expect(results[0].chain.id).toBe("ipfs");
+    expect(results[0].explorerUrls.some((e) => e.name === "Pinata")).toBe(true);
+  });
+
+  it("detects a base36 key (k51…) as IPNS", () => {
+    const results = detect(IPNS_KEY, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("ipns");
+    expect(results[0].explorerUrls[0].url).toBe(
+      `https://ipfs.io/ipns/${IPNS_KEY}`,
+    );
+    // Pinata is excluded from IPNS (403), so only 2 gateways
+    expect(results[0].explorerUrls).toHaveLength(2);
+  });
+
+  it("strips the ipfs:// scheme from the gateway URL", () => {
+    const results = detect(`ipfs://${CIDV0}`, CHAINS);
+    expect(results[0].chain.id).toBe("ipfs");
+    expect(results[0].explorerUrls[0].url).toBe(
+      `https://ipfs.io/ipfs/${CIDV0}`,
+    );
+  });
+
+  it("routes ipns://<cid> to IPNS", () => {
+    const results = detect(`ipns://${CIDV0}`, CHAINS);
+    expect(results[0].chain.id).toBe("ipns");
+    expect(results[0].explorerUrls[0].url).toBe(
+      `https://ipfs.io/ipns/${CIDV0}`,
+    );
+  });
+
+  it("resolves an ipns:// DNSLink domain", () => {
+    const results = detect("ipns://docs.ipfs.tech", CHAINS);
+    expect(results[0].chain.id).toBe("ipns");
+    expect(results[0].explorerUrls[0].url).toBe(
+      "https://ipfs.io/ipns/docs.ipfs.tech",
+    );
+  });
+
+  it("does not treat a bare domain as IPNS", () => {
+    // bare domains must not be swept up as content addresses
+    const results = detect("docs.ipfs.tech", CHAINS);
+    expect(results.every((r) => r.chain.family !== "ipfs")).toBe(true);
+  });
+
+  it("does not misclassify a Solana address as a CID", () => {
+    const sol = "So11111111111111111111111111111111111111112";
+    const results = detect(sol, CHAINS);
+    expect(results[0].chain.id).toBe("solana");
   });
 });

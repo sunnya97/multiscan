@@ -34,9 +34,15 @@ export type FormatFamily =
   | "iota"
   | "nockchain"
   | "stacks"
+  | "ipfs"
   | "bitcoin-testnet";
 
-export type InputType = "address" | "transaction" | "denom" | "validator";
+export type InputType =
+  | "address"
+  | "transaction"
+  | "denom"
+  | "validator"
+  | "cid";
 
 export interface Explorer {
   name: string;
@@ -4995,5 +5001,56 @@ export const CHAINS: Chain[] = [
         keyEnvVar: "ALCHEMY_API_KEY",
       },
     ],
+  },
+
+  // --- Content addressing (not a chain — gateways act as "explorers") ---
+  {
+    id: "ipfs",
+    name: "IPFS",
+    symbol: "",
+    family: "ipfs",
+    explorers: [
+      {
+        name: "IPFS.io",
+        baseUrl: "https://ipfs.io",
+        addressPath: "/ipfs/{query}",
+        txPath: "/ipfs/{query}",
+      },
+      {
+        name: "dweb.link",
+        baseUrl: "https://dweb.link",
+        addressPath: "/ipfs/{query}",
+        txPath: "/ipfs/{query}",
+      },
+      {
+        name: "Pinata",
+        baseUrl: "https://gateway.pinata.cloud",
+        addressPath: "/ipfs/{query}",
+        txPath: "/ipfs/{query}",
+      },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "ipns",
+    name: "IPNS",
+    symbol: "",
+    family: "ipfs",
+    // Pinata's public gateway rejects /ipns/ (403), so only ipfs.io + dweb.link.
+    explorers: [
+      {
+        name: "IPFS.io",
+        baseUrl: "https://ipfs.io",
+        addressPath: "/ipns/{query}",
+        txPath: "/ipns/{query}",
+      },
+      {
+        name: "dweb.link",
+        baseUrl: "https://dweb.link",
+        addressPath: "/ipns/{query}",
+        txPath: "/ipns/{query}",
+      },
+    ],
+    rpcUrls: [],
   },
 ];

@@ -30,9 +30,11 @@ export default function ResultCard({
       ? "ADDR"
       : inputType === "transaction"
         ? "TX"
-        : inputType === "validator"
-          ? "VALIDATOR"
-          : "DENOM";
+        : inputType === "cid"
+          ? "CID"
+          : inputType === "validator"
+            ? "VALIDATOR"
+            : "DENOM";
   const cardRef = useRef<HTMLDivElement>(null);
   const [logoBroken, setLogoBroken] = useState(false);
   const logoSrc = CHAIN_LOGO[chainName];
