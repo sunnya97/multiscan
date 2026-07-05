@@ -94,7 +94,10 @@ describe("CHAINS data integrity", () => {
     for (const chain of CHAINS) {
       expect(chain.id, `${chain.id} missing id`).toBeTruthy();
       expect(chain.name, `${chain.id} missing name`).toBeTruthy();
-      expect(chain.symbol, `${chain.id} missing symbol`).toBeTruthy();
+      // Content-addressing pseudo-networks (IPFS/IPNS) have no ticker symbol.
+      if (chain.family !== "ipfs") {
+        expect(chain.symbol, `${chain.id} missing symbol`).toBeTruthy();
+      }
       expect(chain.family, `${chain.id} missing family`).toBeTruthy();
     }
   });
@@ -146,6 +149,8 @@ describe("CHAINS data integrity", () => {
       "nano",
       "chia",
       "iota",
+      "ipfs",
+      "ipns",
     ]);
     for (const chain of CHAINS) {
       if (unverifiable.has(chain.id)) continue;

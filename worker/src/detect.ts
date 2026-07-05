@@ -8,6 +8,52 @@ interface Match {
 const BASE58_CHAR =
   "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]";
 
+// --- IPFS / IPNS content identifiers ---
+// CIDv0: base58btc, "Qm" + 44 chars (46 total). Sits in the length gap between
+// Solana (32-44) and Nockchain (50-60), so no collision.
+const CIDV0_RE = new RegExp(`^Qm${BASE58_CHAR}{44}$`);
+// CIDv1: base32 (multibase "b"), version byte encodes to "a" → always "ba…".
+const CIDV1_B32_RE = /^ba[a-z2-7]{57,}$/;
+// IPNS name published as a base36 libp2p-key CIDv1 → "k51…".
+const IPNS_KEY_RE = /^k51[a-z0-9]{50,}$/;
+// DNSLink domain (only accepted behind an explicit ipns:// scheme).
+const DNSLINK_RE = /^(?=.{4,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
+
+function isContentCid(s: string): boolean {
+  return CIDV0_RE.test(s) || CIDV1_B32_RE.test(s);
+}
+
+/** Detect IPFS content CIDs and IPNS names (with optional ipfs://|ipns:// scheme). */
+function detectIpfs(trimmed: string): Match[] {
+  const lower = trimmed.toLowerCase();
+
+  if (lower.startsWith("ipns://")) {
+    const name = trimmed.slice(7);
+    if (IPNS_KEY_RE.test(name) || isContentCid(name) || DNSLINK_RE.test(name)) {
+      return [{ chainId: "ipns", inputType: "cid" }];
+    }
+    return [];
+  }
+  if (lower.startsWith("ipfs://")) {
+    const cid = trimmed.slice(7);
+    if (isContentCid(cid)) return [{ chainId: "ipfs", inputType: "cid" }];
+    return [];
+  }
+
+  // Bare forms: content CID → IPFS, base36 key → IPNS.
+  if (isContentCid(trimmed)) {
+    const m: Match[] = [{ chainId: "ipfs", inputType: "cid" }];
+    // A dag-cbor CIDv1 (bafy…) is also a valid Filecoin message CID — surface
+    // both so the user can open it as IPFS content or as a Filecoin tx.
+    if (/^bafy/i.test(trimmed)) {
+      m.push({ chainId: "filecoin", inputType: "transaction" });
+    }
+    return m;
+  }
+  if (IPNS_KEY_RE.test(trimmed)) return [{ chainId: "ipns", inputType: "cid" }];
+  return [];
+}
+
 // Urbit phoneme tables (256 suffixes, 256 prefixes)
 const URBIT_SUFFIXES = new Set(
   "zod nec bud wes sev per sut let ful pen syt dur wep ser wyl sun ryp syx dyr nup heb peg lup dep dys put lug hec ryt tyv syd nex lun mep lut sep pes del sul ped tem led tul met wen byn hex feb pyl dul het mev rut tyl wyd tep bes dex sef wyc bur der nep pur rys reb den nut sub pet rul syn reg tyd sup sem wyn rec meg net sec mul nym tev web sum mut nyx rex teb fus hep ben mus wyx sym sel ruc dec wex syr wet dyl myn mes det bet bel tux tug myr pel syp ter meb set dut deg tex sur fel tud nux rux ren wyt nub med lyt dus neb rum tyn seg lyx pun res red fun rev ref mec ted rus bex leb dux ryn num pyx ryg ryx fep tyr tus tyc leg nem fer mer ten lus nus syl tec mex pub rym tuc fyl lep deb ber mug hut tun byl sud pem dev lur def bus bep run mel pex dyt byt typ lev myl wed duc fur fex nul luc len ner lex rup ned lec ryd lyd fen wel nyd hus rel rud nes hes fet des ret dun ler nyr seb hul ryl lud rem lys fyn wer ryc sug nys nyl lyn dyn dem lux fed sed bec mun lyr tes mud nyt byr sen weg fyr mur tel rep teg pec nel nev fes".split(
@@ -59,6 +105,10 @@ function getMatches(input: string): Match[] {
   const trimmed = input.trim();
 
   if (!trimmed) return matches;
+
+  // IPFS content CIDs / IPNS names (incl. ipfs://|ipns:// schemes)
+  const ipfsMatches = detectIpfs(trimmed);
+  if (ipfsMatches.length > 0) return ipfsMatches;
 
   // 0x + 40 hex chars = EVM address (42 chars total)
   if (/^0x[0-9a-fA-F]{40}$/i.test(trimmed)) {
@@ -492,8 +542,9 @@ function buildExplorerUrls(
         if (!explorer.validatorPath) return null;
         pathTemplate = explorer.validatorPath;
       } else {
+        // address and cid both use addressPath; only transaction uses txPath
         pathTemplate =
-          inputType === "address" ? explorer.addressPath : explorer.txPath;
+          inputType === "transaction" ? explorer.txPath : explorer.addressPath;
       }
       const path = pathTemplate.replace("{query}", encodeURIComponent(query));
       return { name: explorer.name, url: `${explorer.baseUrl}${path}` };
@@ -516,6 +567,10 @@ export function detect(input: string, chains: Chain[]): DetectionResult[] {
       let query = trimmed;
       if (chain.family === "urbit" && !trimmed.startsWith("~")) {
         query = `~${trimmed}`;
+      }
+      // Strip the ipfs://|ipns:// scheme so gateway URLs get the bare CID/name
+      if (chain.family === "ipfs") {
+        query = trimmed.replace(/^(ipfs|ipns):\/\//i, "");
       }
       return {
         chain,

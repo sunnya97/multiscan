@@ -1,4 +1,9 @@
-export type InputType = "address" | "transaction" | "denom" | "validator";
+export type InputType =
+  | "address"
+  | "transaction"
+  | "denom"
+  | "validator"
+  | "cid";
 
 export type VerificationStatus = "unverified" | "found" | "not_found";
 

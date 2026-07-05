@@ -168,6 +168,8 @@ const CLOUD_ITEMS: CloudItem[] = [
   { type: "chain", name: "Dash" },
   { type: "chain", name: "IOTA" },
   { type: "chain", name: "Urbit" },
+  { type: "chain", name: "IPFS" },
+  { type: "chain", name: "IPNS" },
   { type: "name", name: ".eth" },
   { type: "name", name: ".sol" },
   { type: "name", name: ".bnb" },

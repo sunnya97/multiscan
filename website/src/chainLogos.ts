@@ -1,6 +1,9 @@
 const L = (file: string) => `/logos/${file}.png`;
 
 export const CHAIN_LOGO: Record<string, string> = {
+  // Content addressing (shared IPFS glyph)
+  IPFS: "/logos/ipfs.svg",
+  IPNS: "/logos/ipfs.svg",
   // EVM
   Ethereum: L("ethereum"),
   Base: L("base"),
