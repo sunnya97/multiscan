@@ -35,6 +35,7 @@ export type FormatFamily =
   | "nockchain"
   | "stacks"
   | "ipfs"
+  | "midnight"
   | "bitcoin-testnet";
 
 export type InputType =
@@ -5001,6 +5002,39 @@ export const CHAINS: Chain[] = [
         keyEnvVar: "ALCHEMY_API_KEY",
       },
     ],
+  },
+
+  // --- Midnight (privacy sidechain; unshielded bech32m addresses) ---
+  {
+    id: "midnight",
+    name: "Midnight",
+    symbol: "NIGHT",
+    family: "midnight",
+    explorers: [
+      {
+        name: "Midnight Explorer",
+        baseUrl: "https://midnightexplorer.com",
+        addressPath: "/address/{query}",
+        txPath: "/transactions/{query}",
+      },
+    ],
+    rpcUrls: [],
+  },
+  {
+    id: "midnight-testnet",
+    name: "Midnight Testnet",
+    symbol: "tNIGHT",
+    family: "midnight",
+    isTestnet: true,
+    explorers: [
+      {
+        name: "Midnight Explorer",
+        baseUrl: "https://testnet.midnightexplorer.com",
+        addressPath: "/address/{query}",
+        txPath: "/transactions/{query}",
+      },
+    ],
+    rpcUrls: [],
   },
 
   // --- Content addressing (not a chain — gateways act as "explorers") ---
