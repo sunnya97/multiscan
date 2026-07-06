@@ -151,6 +151,8 @@ describe("CHAINS data integrity", () => {
       "iota",
       "ipfs",
       "ipns",
+      "midnight",
+      "midnight-testnet",
     ]);
     for (const chain of CHAINS) {
       if (unverifiable.has(chain.id)) continue;

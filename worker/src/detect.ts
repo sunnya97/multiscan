@@ -110,6 +110,17 @@ function getMatches(input: string): Match[] {
   const ipfsMatches = detectIpfs(trimmed);
   if (ipfsMatches.length > 0) return ipfsMatches;
 
+  // Midnight unshielded address (bech32m): mn_addr1… (mainnet),
+  // mn_addr_test1… / _preprod1… / _preview1… (testnet). HRP is unique, no collision.
+  if (/^mn_addr1[0-9a-z]{30,}$/.test(trimmed)) {
+    matches.push({ chainId: "midnight", inputType: "address" });
+    return matches;
+  }
+  if (/^mn_addr_(test|preprod|preview)1[0-9a-z]{30,}$/.test(trimmed)) {
+    matches.push({ chainId: "midnight-testnet", inputType: "address" });
+    return matches;
+  }
+
   // 0x + 40 hex chars = EVM address (42 chars total)
   if (/^0x[0-9a-fA-F]{40}$/i.test(trimmed)) {
     for (const id of EVM_CHAIN_IDS) {
