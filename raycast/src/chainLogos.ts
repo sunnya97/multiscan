@@ -238,6 +238,10 @@ const CHAIN_LOGO_SLUG: Record<string, string> = {
 };
 
 export function getChainLogoUrl(chainName: string): string | undefined {
+  // IPFS/IPNS share a single SVG glyph (no .png slug).
+  if (chainName === "IPFS" || chainName === "IPNS") {
+    return "https://multiscan.dev/logos/ipfs.svg";
+  }
   const slug = CHAIN_LOGO_SLUG[chainName];
   if (!slug) return undefined;
   return `https://multiscan.dev/logos/${slug}.png`;

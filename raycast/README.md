@@ -8,6 +8,7 @@ Paste any crypto address or transaction hash to instantly detect the chain and o
 - **70+ chains** — Bitcoin, Ethereum, Solana, Cosmos ecosystem, Sui, Aptos, Cardano, Polkadot, TON, XRP, Tron, and many more
 - **On-chain verification** — Confirms whether an address has activity on each detected chain
 - **Name resolution** — Resolves ENS (.eth), SNS (.sol), BNB (.bnb), and other name services
+- **IPFS / IPNS** — Detects content identifiers (CIDs) and IPNS names and links to public gateways
 - **Testnet support** — Detects testnet addresses and displays a Testnet badge
 - **Customizable explorers** — Override the default block explorer for any chain in preferences
 
