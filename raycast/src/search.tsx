@@ -381,13 +381,15 @@ function ResultItem({
   const typeLabel =
     inputType === "address"
       ? "Address"
-      : inputType === "validator"
-        ? "Validator"
-        : inputType === "denom"
-          ? "Denom"
-          : "Transaction";
+      : inputType === "cid"
+        ? "CID"
+        : inputType === "validator"
+          ? "Validator"
+          : inputType === "denom"
+            ? "Denom"
+            : "Transaction";
   const tagColor =
-    inputType === "address" || inputType === "validator"
+    inputType === "address" || inputType === "validator" || inputType === "cid"
       ? Color.Blue
       : Color.Green;
 

@@ -1,5 +1,10 @@
 # Multiscan Changelog
 
+## [IPFS & IPNS support] - {PR_MERGE_DATE}
+
+- Detect IPFS content identifiers (CIDs) and IPNS names, with links to public gateways (ipfs.io, dweb.link, Pinata)
+- Supports CIDv0, CIDv1, base36 IPNS keys, and `ipfs://` / `ipns://` schemes
+
 ## [Initial Version] - {PR_MERGE_DATE}
 
 - Paste any crypto address or transaction hash to auto-detect the chain
