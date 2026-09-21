@@ -1,5 +1,13 @@
 const CHAIN_LOGO_SLUG: Record<string, string> = {
   // EVM
+  "Robinhood Chain": "robinhood",
+  Arc: "arc",
+  Tempo: "tempo",
+  Katana: "katana",
+  TAC: "tac",
+  "Sei EVM": "sei",
+  "Injective EVM": "injective",
+  "Cronos EVM": "cronos",
   Ethereum: "ethereum",
   Base: "base",
   Arbitrum: "arbitrum",

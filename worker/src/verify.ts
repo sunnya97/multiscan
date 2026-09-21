@@ -148,6 +148,51 @@ async function verifyEvmAddrRpc(
   return hasBalance || hasNonce;
 }
 
+/** Tempo's eth_getBalance is a nonzero placeholder even for unused addresses.
+ * Check actual state instead. pathUSD is the default fee token; receive-only
+ * accounts holding other TIP-20 tokens may still be missed by this RPC heuristic.
+ * https://tempo.xyz/developers/docs/quickstart/evm-compatibility
+ */
+async function verifyTempoAddrRpc(
+  rpcUrl: string,
+  address: string,
+): Promise<boolean> {
+  const results = await Promise.allSettled([
+    evmRpcCall(rpcUrl, "eth_getTransactionCount", [address, "latest"]),
+    evmRpcCall(rpcUrl, "eth_getCode", [address, "latest"]),
+    evmRpcCall(rpcUrl, "eth_call", [
+      {
+        to: "0x20c0000000000000000000000000000000000000", // pathUSD
+        data: `0x70a08231${address.slice(2).padStart(64, "0")}`, // balanceOf
+      },
+      "latest",
+    ]),
+  ]);
+  // Validate RPC results so errors don't become definitive negative matches.
+  const values = results.map((result) =>
+    result.status === "fulfilled" &&
+    typeof result.value === "string" &&
+    /^0x[0-9a-f]*$/i.test(result.value)
+      ? result.value
+      : null,
+  );
+  const hasNonceOrBalance = [values[0], values[2]].some(
+    (value) => value !== null && /[1-9a-f]/i.test(value.slice(2)),
+  );
+  const hasCode = values[1] !== null && values[1] !== "0x";
+  if (hasNonceOrBalance || hasCode) {
+    return true;
+  }
+  if (
+    values.some((value) => value === null) ||
+    values[0] === "0x" ||
+    values[2] === "0x"
+  ) {
+    throw new Error("Incomplete Tempo address verification");
+  }
+  return false;
+}
+
 // --- Bitcoin ---
 
 async function verifyBitcoinTx(
@@ -1160,6 +1205,7 @@ async function verifyEvm(
     if (inputType === "transaction") {
       return verifyEvmTxRpc(url, input);
     } else {
+      if (chain.id === "tempo") return verifyTempoAddrRpc(url, input);
       return verifyEvmAddrRpc(url, input);
     }
   });

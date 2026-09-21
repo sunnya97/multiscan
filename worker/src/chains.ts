@@ -1699,6 +1699,164 @@ export const CHAINS: Chain[] = [
     ],
   },
 
+  // Chain ID 4663: https://docs.robinhood.com/chain/connecting/
+  {
+    id: "robinhood",
+    name: "Robinhood Chain",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      {
+        name: "Robinhood Blockscout",
+        baseUrl: "https://robinhoodchain.blockscout.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [
+      {
+        url: "https://robinhood-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
+      { url: "https://rpc.mainnet.chain.robinhood.com", provider: "public" },
+    ],
+  },
+  // Chain ID 5042: https://docs.arc.io/arc/references/connect-to-arc
+  {
+    id: "arc",
+    name: "Arc",
+    symbol: "USDC",
+    family: "evm",
+    explorers: [
+      {
+        name: "Arc Explorer",
+        baseUrl: "https://explorer.arc.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [
+      {
+        url: "https://arc-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
+      { url: "https://rpc.mainnet.arc.io", provider: "public" },
+    ],
+  },
+  // Chain ID 4217: https://tempo.xyz/developers/docs/quickstart/connection-details
+  {
+    id: "tempo",
+    name: "Tempo",
+    symbol: "USD",
+    family: "evm",
+    explorers: [
+      {
+        name: "Tempo Explorer",
+        baseUrl: "https://explore.tempo.xyz",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+      },
+    ],
+    rpcUrls: [
+      {
+        url: "https://tempo-mainnet.g.alchemy.com/v2/{key}",
+        provider: "alchemy",
+        keyEnvVar: "ALCHEMY_API_KEY",
+      },
+      { url: "https://rpc.tempo.xyz", provider: "public" },
+    ],
+  },
+  // Chain ID 747474: https://docs.katana.network/katana/technical-reference/network-information/
+  {
+    id: "katana",
+    name: "Katana",
+    symbol: "ETH",
+    family: "evm",
+    explorers: [
+      {
+        name: "Katanascan",
+        baseUrl: "https://katanascan.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [{ url: "https://rpc.katana.network", provider: "public" }],
+  },
+  // Chain ID 239: https://www.tac.build/blog/the-summoning-and-the-day-after
+  {
+    id: "tac",
+    name: "TAC",
+    symbol: "TAC",
+    family: "evm",
+    explorers: [
+      {
+        name: "TAC Explorer",
+        baseUrl: "https://explorer.tac.build",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [{ url: "https://rpc.tac.build", provider: "public" }],
+  },
+  // Chain ID 1329: https://docs.sei.io/evm/building-a-frontend
+  {
+    id: "sei-evm",
+    name: "Sei EVM",
+    symbol: "SEI",
+    family: "evm",
+    explorers: [
+      {
+        name: "Seiscan",
+        baseUrl: "https://seiscan.io",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [{ url: "https://evm-rpc.sei-apis.com", provider: "public" }],
+  },
+  // Chain ID 25: https://docs.cronos.com/for-users/metamask
+  {
+    id: "cronos",
+    name: "Cronos EVM",
+    symbol: "CRO",
+    family: "evm",
+    explorers: [
+      {
+        name: "Cronos Explorer",
+        baseUrl: "https://explorer.cronos.com",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [{ url: "https://evm.cronos.com", provider: "public" }],
+  },
+  // Chain ID 1776: https://docs.injective.network/developers-evm/evm-integrations-cheat-sheet
+  {
+    id: "injective-evm",
+    name: "Injective EVM",
+    symbol: "INJ",
+    family: "evm",
+    explorers: [
+      {
+        name: "Injective Blockscout",
+        baseUrl: "https://blockscout.injective.network",
+        addressPath: "/address/{query}",
+        txPath: "/tx/{query}",
+        tokenPath: "/token/{query}",
+      },
+    ],
+    rpcUrls: [
+      { url: "https://sentry.evm-rpc.injective.network", provider: "public" },
+    ],
+  },
   // --- Non-EVM Chains ---
   {
     id: "bitcoin",

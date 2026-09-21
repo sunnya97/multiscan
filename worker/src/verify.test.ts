@@ -66,6 +66,79 @@ function routeFetch(
 
 // --- EVM verification ---
 
+describe("Tempo verification", () => {
+  const address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+  const chain = CHAINS.find((c) => c.id === "tempo")!;
+  const emptyBalance = `0x${"0".repeat(64)}`;
+
+  function mockRpc(overrides: Record<string, unknown> = {}) {
+    const responses: Record<string, unknown> = {
+      eth_getBalance:
+        "0x9612084f0316e0ebd5182f398e5195a51b5ca47667d4c9b26c9b26c9b26c9b2",
+      eth_getTransactionCount: "0x0",
+      eth_getCode: "0x",
+      eth_call: emptyBalance,
+      ...overrides,
+    };
+    mockFetch.mockImplementation(async (_input, init) => {
+      const { method } = JSON.parse(String(init?.body));
+      return jsonResponse({ jsonrpc: "2.0", id: 1, result: responses[method] });
+    });
+  }
+
+  it("does not mark unused addresses found from Tempo's placeholder balance", async () => {
+    mockRpc();
+    const [result] = await verifyResults(address, detect(address, [chain]), {});
+    expect(result.status).toBe("not_found");
+    expect(
+      mockFetch.mock.calls.map(
+        ([, init]) => JSON.parse(String(init?.body)).method,
+      ),
+    ).not.toContain("eth_getBalance");
+  });
+
+  it.each([
+    ["eth_getTransactionCount", "0x1"],
+    ["eth_getCode", "0x60806040"],
+    ["eth_getCode", "0x00"],
+    ["eth_call", `0x${"0".repeat(63)}1`],
+  ])("finds addresses with real state from %s", async (method, value) => {
+    mockRpc({ [method]: value });
+    const [result] = await verifyResults(address, detect(address, [chain]), {});
+    expect(result.status).toBe("found");
+    const call = mockFetch.mock.calls
+      .map(([, init]) => JSON.parse(String(init?.body)))
+      .find((body) => body.method === "eth_call");
+    expect(call.params).toEqual([
+      {
+        to: "0x20c0000000000000000000000000000000000000",
+        data: `0x70a08231${address.slice(2).padStart(64, "0")}`,
+      },
+      "latest",
+    ]);
+  });
+
+  it.each([undefined, null, "0x", "invalid"])(
+    "leaves failed balance reads unverified (%s)",
+    async (value) => {
+      mockRpc({ eth_call: value });
+      const [result] = await verifyResults(
+        address,
+        detect(address, [chain]),
+        {},
+      );
+      expect(result.status).toBe("unverified");
+    },
+  );
+
+  it("verifies transactions through the standard receipt RPC", async () => {
+    const hash = `0x${"ab".repeat(32)}`;
+    mockRpc({ eth_getTransactionReceipt: { transactionHash: hash } });
+    const [result] = await verifyResults(hash, detect(hash, [chain]), {});
+    expect(result.status).toBe("found");
+  });
+});
+
 describe("EVM verification", () => {
   const env: Env = {
     ALCHEMY_API_KEY: "test-key",
