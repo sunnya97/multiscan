@@ -1405,3 +1405,46 @@ describe("IPFS / IPNS detection", () => {
     expect(results[0].chain.id).toBe("solana");
   });
 });
+
+// --- Midnight ---
+
+describe("Midnight detection", () => {
+  // Representative bech32m unshielded addresses (mn_addr HRP)
+  const MAINNET =
+    "mn_addr1qxyzq0v9r5m8k3n7p2wl4t6h8s0d2f4g6j8k0m2n4p6r8t0v2w4y6a8c0e2g4";
+  const TESTNET =
+    "mn_addr_test1qxyzq0v9r5m8k3n7p2wl4t6h8s0d2f4g6j8k0m2n4p6r8t0v2w4y6a8c";
+
+  it("detects a mainnet unshielded address", () => {
+    const results = detect(MAINNET, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("midnight");
+    expect(results[0].inputType).toBe("address");
+    expect(results[0].explorerUrls[0].url).toBe(
+      `https://midnightexplorer.com/address/${MAINNET}`,
+    );
+  });
+
+  it("detects a testnet address as midnight-testnet", () => {
+    const results = detect(TESTNET, CHAINS);
+    expect(results).toHaveLength(1);
+    expect(results[0].chain.id).toBe("midnight-testnet");
+    expect(results[0].explorerUrls[0].url).toBe(
+      `https://testnet.midnightexplorer.com/address/${TESTNET}`,
+    );
+  });
+
+  it("detects preprod/preview testnet HRPs", () => {
+    for (const hrp of ["mn_addr_preprod1", "mn_addr_preview1"]) {
+      const addr = hrp + "qxyzq0v9r5m8k3n7p2wl4t6h8s0d2f4g6j8k0m2n4p6";
+      const results = detect(addr, CHAINS);
+      expect(results[0].chain.id).toBe("midnight-testnet");
+    }
+  });
+
+  it("does not match a Cardano addr1 address", () => {
+    const cardano = "addr1" + "q".repeat(90);
+    const results = detect(cardano, CHAINS);
+    expect(results.every((r) => r.chain.family !== "midnight")).toBe(true);
+  });
+});

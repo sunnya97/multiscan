@@ -1,6 +1,8 @@
 const L = (file: string) => `/logos/${file}.png`;
 
 export const CHAIN_LOGO: Record<string, string> = {
+  Midnight: "/logos/midnight.svg",
+  "Midnight Testnet": "/logos/midnight.svg",
   // Content addressing (shared IPFS glyph)
   IPFS: "/logos/ipfs.svg",
   IPNS: "/logos/ipfs.svg",
