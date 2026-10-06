@@ -170,7 +170,7 @@ async function resolveSpaceID(name: string): Promise<string | null> {
 // --- ICNS resolver ---
 
 const ICNS_CONTRACT =
-  "osmo1xk0s8xgktn9x5vwcgtjdceflgpasksjcll6yqzfzfj4lnq3rha4s3fwmma"; // ICNS resolver on Osmosis
+  "osmo1xk0s8xgktn9x5vwcgtjdxqzadg88fgn33p8u9cnpdxwemvxscvast52cdd"; // ICNS resolver on Osmosis
 
 async function resolveICNS(
   name: string,
